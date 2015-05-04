@@ -9,6 +9,11 @@
 /* Begin PBXBuildFile section */
 		86A90391C14EC059A6A111A8 /* Pods_FlickrParty.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1726BFD8A5D27E1374040223 /* Pods_FlickrParty.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		990A47191AF7D8DA00CC4E3E /* BaseCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 990A47181AF7D8DA00CC4E3E /* BaseCollectionViewController.swift */; };
+		990A471B1AF7DB3900CC4E3E /* FlickrAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 990A471A1AF7DB3900CC4E3E /* FlickrAPIClient.swift */; };
+		990A471D1AF7DBA000CC4E3E /* FlickrAPIClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 990A471C1AF7DBA000CC4E3E /* FlickrAPIClientTests.swift */; };
+		990A471F1AF7DBBE00CC4E3E /* BaseCollectionViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 990A471E1AF7DBBE00CC4E3E /* BaseCollectionViewControllerTests.swift */; };
+		990A47211AF7DDF800CC4E3E /* DataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 990A47201AF7DDF800CC4E3E /* DataSource.swift */; };
+		990A47231AF7DF0E00CC4E3E /* DataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 990A47221AF7DF0E00CC4E3E /* DataSourceTests.swift */; };
 		9958CB7E1AF7CC8D0050DB8B /* PartyPhotosViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9958CB7D1AF7CC8D0050DB8B /* PartyPhotosViewController.swift */; };
 		9960E0C61AF7C45400107687 /* AppDelegateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9960E0C51AF7C45400107687 /* AppDelegateTests.swift */; };
 		9983C7FE1AF7BE77003AEEF9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9983C7FD1AF7BE77003AEEF9 /* AppDelegate.swift */; };
@@ -33,6 +38,11 @@
 		1726BFD8A5D27E1374040223 /* Pods_FlickrParty.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FlickrParty.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		630FB5B95F75FF4C1D6FE4BC /* Pods-FlickrParty.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FlickrParty.release.xcconfig"; path = "Pods/Target Support Files/Pods-FlickrParty/Pods-FlickrParty.release.xcconfig"; sourceTree = "<group>"; };
 		990A47181AF7D8DA00CC4E3E /* BaseCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseCollectionViewController.swift; sourceTree = "<group>"; };
+		990A471A1AF7DB3900CC4E3E /* FlickrAPIClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlickrAPIClient.swift; sourceTree = "<group>"; };
+		990A471C1AF7DBA000CC4E3E /* FlickrAPIClientTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlickrAPIClientTests.swift; sourceTree = "<group>"; };
+		990A471E1AF7DBBE00CC4E3E /* BaseCollectionViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseCollectionViewControllerTests.swift; sourceTree = "<group>"; };
+		990A47201AF7DDF800CC4E3E /* DataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataSource.swift; sourceTree = "<group>"; };
+		990A47221AF7DF0E00CC4E3E /* DataSourceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataSourceTests.swift; sourceTree = "<group>"; };
 		9958CB7D1AF7CC8D0050DB8B /* PartyPhotosViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PartyPhotosViewController.swift; sourceTree = "<group>"; };
 		9960E0C41AF7C45400107687 /* FlickrPartyTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "FlickrPartyTests-Bridging-Header.h"; sourceTree = "<group>"; };
 		9960E0C51AF7C45400107687 /* AppDelegateTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegateTests.swift; sourceTree = "<group>"; };
@@ -110,9 +120,11 @@
 			children = (
 				9983C7FD1AF7BE77003AEEF9 /* AppDelegate.swift */,
 				990A47181AF7D8DA00CC4E3E /* BaseCollectionViewController.swift */,
+				990A47201AF7DDF800CC4E3E /* DataSource.swift */,
+				990A471A1AF7DB3900CC4E3E /* FlickrAPIClient.swift */,
+				9958CB7D1AF7CC8D0050DB8B /* PartyPhotosViewController.swift */,
 				9983C8061AF7BE77003AEEF9 /* Images.xcassets */,
 				9983C8081AF7BE77003AEEF9 /* LaunchScreen.xib */,
-				9958CB7D1AF7CC8D0050DB8B /* PartyPhotosViewController.swift */,
 				9983C7FB1AF7BE77003AEEF9 /* Supporting Files */,
 			);
 			path = FlickrParty;
@@ -133,6 +145,9 @@
 				99B1964E1AF7D5FC00F1D803 /* FlickrSearchAPIErrorResponse.json */,
 				99B196501AF7D66400F1D803 /* FlickrSearchAPIResponse.json */,
 				9960E0C51AF7C45400107687 /* AppDelegateTests.swift */,
+				990A471E1AF7DBBE00CC4E3E /* BaseCollectionViewControllerTests.swift */,
+				990A47221AF7DF0E00CC4E3E /* DataSourceTests.swift */,
+				990A471C1AF7DBA000CC4E3E /* FlickrAPIClientTests.swift */,
 				99B1964C1AF7D00A00F1D803 /* PartyPhotosViewControllerTests.swift */,
 				9983C8131AF7BE77003AEEF9 /* Supporting Files */,
 			);
@@ -299,8 +314,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				990A471B1AF7DB3900CC4E3E /* FlickrAPIClient.swift in Sources */,
 				990A47191AF7D8DA00CC4E3E /* BaseCollectionViewController.swift in Sources */,
 				9958CB7E1AF7CC8D0050DB8B /* PartyPhotosViewController.swift in Sources */,
+				990A47211AF7DDF800CC4E3E /* DataSource.swift in Sources */,
 				9983C7FE1AF7BE77003AEEF9 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -309,8 +326,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				990A471D1AF7DBA000CC4E3E /* FlickrAPIClientTests.swift in Sources */,
 				99B1964D1AF7D00A00F1D803 /* PartyPhotosViewControllerTests.swift in Sources */,
+				990A47231AF7DF0E00CC4E3E /* DataSourceTests.swift in Sources */,
 				9960E0C61AF7C45400107687 /* AppDelegateTests.swift in Sources */,
+				990A471F1AF7DBBE00CC4E3E /* BaseCollectionViewControllerTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
