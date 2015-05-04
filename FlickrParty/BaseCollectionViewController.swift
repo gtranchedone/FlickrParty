@@ -14,7 +14,7 @@ public class BaseCollectionViewController: UICollectionViewController, ViewDataS
 
     public var dataSource: ViewDataSource? {
         didSet {
-            dataSource?.delelgate = self
+            dataSource?.delegate = self
         }
     }
     
@@ -84,6 +84,10 @@ public class BaseCollectionViewController: UICollectionViewController, ViewDataS
     // MARK: ViewDataSourceDelegate
     
     public func viewDataSourceDidFetchContent(dataSource: ViewDataSource) {
+        // TODO: missing implementation
+    }
+    
+    public func viewDataSourceDidFailFetchingContent(dataSource: ViewDataSource, error: NSError) {
         // TODO: missing implementation
     }
 

@@ -6,8 +6,29 @@
 //  Copyright (c) 2015 Gianluca Tranchedone. All rights reserved.
 //
 
+import UIKit
 import XCTest
 import FlickrParty
+
+class MockCollectionView : UICollectionView {
+    
+    var didCallReloadData = false
+    
+    override func reloadData() {
+        didCallReloadData = true
+    }
+    
+}
+
+class MockPartyPhotosViewController : PartyPhotosViewController {
+    
+    var viewControllerAttemptedToPresent: UIViewController?
+    
+    override func presentViewController(viewControllerToPresent: UIViewController, animated flag: Bool, completion: (() -> Void)?) {
+        viewControllerAttemptedToPresent = viewControllerToPresent
+    }
+    
+}
 
 class PartyPhotosViewControllerTests: XCTestCase {
 
@@ -30,9 +51,26 @@ class PartyPhotosViewControllerTests: XCTestCase {
     }
     
     func testViewControllerHasAppropriateTitleAfterViewDidLoad() {
-        self.viewController?.view
+        viewController?.view
         let actualTitle = viewController!.title
         XCTAssertEqual("Parties", actualTitle!, "PartyPhotosViewController doesn't have an appropriate title")
+    }
+    
+    func testViewControllerReloadsDataWhenReceivingNoticeThatDataSourceFetchedData() {
+        let collectionView = MockCollectionView(frame: CGRectZero, collectionViewLayout: UICollectionViewFlowLayout())
+        viewController?.collectionView = collectionView
+        viewController?.viewDataSourceDidFetchContent(PhotosDataSource())
+        XCTAssertTrue(collectionView.didCallReloadData, "PartyPhotosViewController didn't reload the collectionView after photos were fetched")
+    }
+    
+    func testViewControllerPresentsAlertWhenReceivingNoticeThatDataSourceFailed() {
+        let errorMessage = "This test is supposed to make this message visible to the user"
+        let userInfo = [NSLocalizedDescriptionKey: errorMessage]
+        let error = NSError(domain: "TestDomain", code: 1, userInfo: userInfo)
+        let mockViewController = MockPartyPhotosViewController()
+        mockViewController.viewDataSourceDidFailFetchingContent(PhotosDataSource(), error: error)
+        let alertController = mockViewController.viewControllerAttemptedToPresent as? UIAlertController
+        XCTAssertEqual(alertController!.message!, errorMessage, "PhotosViewController didn't present the right error message to the user")
     }
     
 }

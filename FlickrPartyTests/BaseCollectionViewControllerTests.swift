@@ -56,7 +56,7 @@ class BaseCollectionViewControllerTests: XCTestCase {
     func testViewControllerSetsItselfAsDelegateOfTheDataSourceOnSet() {
         let dataSource = MockDataSource()
         viewController?.dataSource = dataSource
-        let delegate = viewController?.dataSource?.delelgate as? BaseCollectionViewController
+        let delegate = viewController?.dataSource?.delegate as? BaseCollectionViewController
         XCTAssertEqual(delegate!, viewController!, "The viewController didn't set itself as the delegate of the dataSource")
     }
     

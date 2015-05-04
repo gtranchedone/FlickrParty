@@ -17,4 +17,20 @@ public class PartyPhotosViewController: BaseCollectionViewController {
         self.tabBarItem = UITabBarItem(tabBarSystemItem: .Featured, tag: 0)
     }
     
+    public override func viewDataSourceDidFetchContent(dataSource: ViewDataSource) {
+        collectionView?.reloadData()
+    }
+    
+    public override func viewDataSourceDidFailFetchingContent(dataSource: ViewDataSource, error: NSError) {
+        if let userInfo = error.userInfo {
+            var message = "Please try again later"
+            if let errorMessage = userInfo[NSLocalizedDescriptionKey] as? String {
+                message = errorMessage
+            }
+            let alertController = UIAlertController(title: "An error occurred", message: message, preferredStyle: .Alert)
+            alertController.addAction(UIAlertAction(title: "Dismiss", style: .Cancel, handler: nil))
+            self.presentViewController(alertController, animated: true, completion: nil)
+        }
+    }
+    
 }

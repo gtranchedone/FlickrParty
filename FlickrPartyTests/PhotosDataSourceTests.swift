@@ -12,10 +12,27 @@ import FlickrParty
 
 class MockAPIClient : APIClient {
     
+    var error: NSError?
     var didCallFetchContent = false;
     
     override func fetchPhotosWithTags(tags: Array<String>?, completionBlock: (error: NSError?) -> Void) {
         didCallFetchContent = true
+        completionBlock(error: error)
+    }
+    
+}
+
+class MockDelegate : ViewDataSourceDelegate {
+    
+    var didCallDelegateForSuccess = false
+    var didCallDelegateForFailure = false
+    
+    func viewDataSourceDidFetchContent(dataSource: ViewDataSource) {
+        didCallDelegateForSuccess = true
+    }
+    
+    func viewDataSourceDidFailFetchingContent(dataSource: ViewDataSource, error: NSError) {
+        didCallDelegateForFailure = true
     }
     
 }
@@ -38,6 +55,22 @@ class PhotosDataSourceTests: XCTestCase {
         dataSource?.fetchContent()
         let apiClient = dataSource!.apiClient as? MockAPIClient
         XCTAssertEqual(true, apiClient!.didCallFetchContent)
+    }
+    
+    func testCallsDelegateWithDidFetchDataMessage() {
+        let delegate = MockDelegate()
+        dataSource?.delegate = delegate
+        dataSource?.fetchContent()
+        XCTAssertTrue(delegate.didCallDelegateForSuccess, "PhotosDataSource didn't call the delegate after successfully fetching content")
+    }
+    
+    func testCallsDelegateWithDidFailFetchingDataMessage() {
+        let delegate = MockDelegate()
+        let apiClient = dataSource?.apiClient as? MockAPIClient
+        apiClient?.error = NSError(domain: "TestsDomain", code: 1, userInfo: nil)
+        dataSource?.delegate = delegate
+        dataSource?.fetchContent()
+        XCTAssertTrue(delegate.didCallDelegateForFailure, "PhotosDataSource didn't call the delegate after successfully fetching content")
     }
 
 }

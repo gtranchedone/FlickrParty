@@ -10,13 +10,14 @@ import UIKit
 
 public protocol ViewDataSourceDelegate {
     
-     func viewDataSourceDidFetchContent(dataSource: ViewDataSource)
+    func viewDataSourceDidFetchContent(dataSource: ViewDataSource)
+    func viewDataSourceDidFailFetchingContent(dataSource: ViewDataSource, error: NSError)
     
 }
 
 public class ViewDataSource: NSObject {
     
-    public var delelgate: ViewDataSourceDelegate?
+    public var delegate: ViewDataSourceDelegate?
     public var apiClient: APIClient?
     
     public override init() {
