@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		86A90391C14EC059A6A111A8 /* Pods_FlickrParty.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1726BFD8A5D27E1374040223 /* Pods_FlickrParty.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		990A47191AF7D8DA00CC4E3E /* BaseCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 990A47181AF7D8DA00CC4E3E /* BaseCollectionViewController.swift */; };
 		9958CB7E1AF7CC8D0050DB8B /* PartyPhotosViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9958CB7D1AF7CC8D0050DB8B /* PartyPhotosViewController.swift */; };
 		9960E0C61AF7C45400107687 /* AppDelegateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9960E0C51AF7C45400107687 /* AppDelegateTests.swift */; };
 		9983C7FE1AF7BE77003AEEF9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9983C7FD1AF7BE77003AEEF9 /* AppDelegate.swift */; };
@@ -31,6 +32,7 @@
 /* Begin PBXFileReference section */
 		1726BFD8A5D27E1374040223 /* Pods_FlickrParty.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FlickrParty.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		630FB5B95F75FF4C1D6FE4BC /* Pods-FlickrParty.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FlickrParty.release.xcconfig"; path = "Pods/Target Support Files/Pods-FlickrParty/Pods-FlickrParty.release.xcconfig"; sourceTree = "<group>"; };
+		990A47181AF7D8DA00CC4E3E /* BaseCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseCollectionViewController.swift; sourceTree = "<group>"; };
 		9958CB7D1AF7CC8D0050DB8B /* PartyPhotosViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PartyPhotosViewController.swift; sourceTree = "<group>"; };
 		9960E0C41AF7C45400107687 /* FlickrPartyTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "FlickrPartyTests-Bridging-Header.h"; sourceTree = "<group>"; };
 		9960E0C51AF7C45400107687 /* AppDelegateTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegateTests.swift; sourceTree = "<group>"; };
@@ -107,6 +109,7 @@
 			isa = PBXGroup;
 			children = (
 				9983C7FD1AF7BE77003AEEF9 /* AppDelegate.swift */,
+				990A47181AF7D8DA00CC4E3E /* BaseCollectionViewController.swift */,
 				9983C8061AF7BE77003AEEF9 /* Images.xcassets */,
 				9983C8081AF7BE77003AEEF9 /* LaunchScreen.xib */,
 				9958CB7D1AF7CC8D0050DB8B /* PartyPhotosViewController.swift */,
@@ -296,6 +299,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				990A47191AF7D8DA00CC4E3E /* BaseCollectionViewController.swift in Sources */,
 				9958CB7E1AF7CC8D0050DB8B /* PartyPhotosViewController.swift in Sources */,
 				9983C7FE1AF7BE77003AEEF9 /* AppDelegate.swift in Sources */,
 			);

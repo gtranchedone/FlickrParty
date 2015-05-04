@@ -23,6 +23,12 @@ class PartyPhotosViewControllerTests: XCTestCase {
         super.tearDown()
     }
     
+    func testViewControllerIsKindOfBaseCollectionViewController() {
+        // Casting to AnyObject avoid compiler warning. I prefer to keep this test as is, rather then deleting it.
+        XCTAssertTrue((self.viewController as? AnyObject) is BaseCollectionViewController,
+            "PartyPhotosViewController doesn't inherit from BaseCollectionViewController")
+    }
+    
     func testViewControllerHasAppropriateTitleAfterViewDidLoad() {
         self.viewController?.view
         let actualTitle = self.viewController!.title

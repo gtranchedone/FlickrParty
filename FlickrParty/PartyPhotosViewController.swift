@@ -8,7 +8,7 @@
 
 import UIKit
 
-public class PartyPhotosViewController: UICollectionViewController {
+public class PartyPhotosViewController: BaseCollectionViewController {
  
     public init() {
         let flowLayout = UICollectionViewFlowLayout()
