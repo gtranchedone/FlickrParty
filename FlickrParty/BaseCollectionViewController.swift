@@ -13,6 +13,17 @@ let reuseIdentifier = "Cell"
 public
 class BaseCollectionViewController: UICollectionViewController {
 
+    public var dataSource: ViewDataSource?
+    
+    public init() {
+        let flowLayout = UICollectionViewFlowLayout()
+        super.init(collectionViewLayout: flowLayout)
+    }
+    
+    required public init(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override public func viewDidLoad() {
         super.viewDidLoad()
         self.collectionView!.registerClass(UICollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
@@ -36,14 +47,22 @@ class BaseCollectionViewController: UICollectionViewController {
     // MARK: UICollectionViewDataSource
 
     override public func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
-        //#warning Incomplete method implementation -- Return the number of sections
-        return 0
+        if let dataSource = self.dataSource {
+            return dataSource.numberOfSections()
+        }
+        else {
+            return 0
+        }
     }
 
 
     override public func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        //#warning Incomplete method implementation -- Return the number of items in the section
-        return 0
+        if let dataSource = self.dataSource {
+            return dataSource.numberOfItemsInSection(section)
+        }
+        else {
+            return 0
+        }
     }
 
     override public func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {

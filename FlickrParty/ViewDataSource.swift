@@ -8,7 +8,7 @@
 
 import UIKit
 
-public class DataSource: NSObject {
+public class ViewDataSource: NSObject {
     
     public func numberOfItems() -> Int {
         return 0

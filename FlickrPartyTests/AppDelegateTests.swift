@@ -16,23 +16,23 @@ class AppDelegateTests: XCTestCase {
     
     override func setUp() {
         super.setUp()
-        self.appDelegate = AppDelegate()
-        self.appDelegate?.application(UIApplication.sharedApplication(), didFinishLaunchingWithOptions: nil)
+        appDelegate = AppDelegate()
+        appDelegate?.application(UIApplication.sharedApplication(), didFinishLaunchingWithOptions: nil)
     }
     
     override func tearDown() {
-        self.appDelegate = nil
+        appDelegate = nil
         super.tearDown()
     }
 
     func testRootViewControllerIsTabBarController() {
-        let window = self.appDelegate?.window
+        let window = appDelegate?.window
         let rootViewController = window?.rootViewController
         XCTAssert(rootViewController is UITabBarController, "The app's rootViewController isn't a TabBarController")
     }
     
     func testRootViewControllerHasPartyPhotosControllerAsFirstTab() {
-        let window = self.appDelegate?.window
+        let window = appDelegate?.window
         let rootViewController = window?.rootViewController as? UITabBarController
         let navigationController: UINavigationController? = rootViewController?.viewControllers?.first as? UINavigationController
         let viewController = navigationController?.viewControllers.first as? UIViewController

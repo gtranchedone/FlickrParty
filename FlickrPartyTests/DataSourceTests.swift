@@ -12,36 +12,36 @@ import FlickrParty
 
 class DataSourceTests: XCTestCase {
 
-    var dataSource: DataSource?
+    var dataSource: ViewDataSource?
     
     override func setUp() {
         super.setUp()
-        self.dataSource = DataSource()
+        dataSource = ViewDataSource()
     }
     
     override func tearDown() {
-        self.dataSource = nil
+        dataSource = nil
         super.tearDown()
     }
 
     func testReturnsNoItemsByDefault() {
-        XCTAssertEqual(self.dataSource!.numberOfItems(), 0, "DataSource isn't returning the right number of items")
+        XCTAssertEqual(dataSource!.numberOfItems(), 0, "DataSource isn't returning the right number of items")
     }
 
     func testReturnsNoSectionsByDefault() {
-        XCTAssertEqual(self.dataSource!.numberOfSections(), 0, "DataSource isn't returning the right number of sections")
+        XCTAssertEqual(dataSource!.numberOfSections(), 0, "DataSource isn't returning the right number of sections")
     }
     
     func testReturnsNoItemsInAnySectionByDefault() {
-        XCTAssertEqual(self.dataSource!.numberOfItemsInSection(0), 0, "DataSource isn't returning the right number of items in section 0")
+        XCTAssertEqual(dataSource!.numberOfItemsInSection(0), 0, "DataSource isn't returning the right number of items in section 0")
     }
     
     func testReturnsNoItemsInAnySectionByDefault2() {
-        XCTAssertEqual(self.dataSource!.numberOfItemsInSection(1), 0, "DataSource isn't returning the right number of items in section 1")
+        XCTAssertEqual(dataSource!.numberOfItemsInSection(1), 0, "DataSource isn't returning the right number of items in section 1")
     }
     
     func testReturnsNilForItemsAtIndexPathByDefault() {
-        XCTAssertNil(self.dataSource?.itemAtIndexPath(NSIndexPath(forItem: 0, inSection: 0)), "DataSource isn't returning nil for item at indexPath")
+        XCTAssertNil(dataSource?.itemAtIndexPath(NSIndexPath(forItem: 0, inSection: 0)), "DataSource isn't returning nil for item at indexPath")
     }
     
 }
