@@ -1,5 +1,5 @@
 //
-//  DataSourceTests.swift
+//  ViewDataSourceTests.swift
 //  FlickrParty
 //
 //  Created by Gianluca Tranchedone on 04/05/2015.
@@ -10,7 +10,7 @@ import UIKit
 import XCTest
 import FlickrParty
 
-class DataSourceTests: XCTestCase {
+class ViewDataSourceTests: XCTestCase {
 
     var dataSource: ViewDataSource?
     

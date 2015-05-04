@@ -1,5 +1,5 @@
 //
-//  DataSource.swift
+//  ViewDataSource.swift
 //  FlickrParty
 //
 //  Created by Gianluca Tranchedone on 04/05/2015.
