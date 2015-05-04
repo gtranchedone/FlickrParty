@@ -8,7 +8,29 @@
 
 import UIKit
 
+public protocol ViewDataSourceDelegate {
+    
+     func viewDataSourceDidFetchContent(dataSource: ViewDataSource)
+    
+}
+
 public class ViewDataSource: NSObject {
+    
+    public var delelgate: ViewDataSourceDelegate?
+    public var apiClient: APIClient?
+    
+    public override init() {
+        super.init()
+    }
+    
+    public init(apiClient: APIClient) {
+        self.apiClient = apiClient
+        super.init()
+    }
+    
+    public func fetchContent() {
+        // subclassing hook
+    }
     
     public func numberOfItems() -> Int {
         return 0

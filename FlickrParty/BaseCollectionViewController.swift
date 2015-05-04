@@ -10,10 +10,13 @@ import UIKit
 
 let reuseIdentifier = "Cell"
 
-public
-class BaseCollectionViewController: UICollectionViewController {
+public class BaseCollectionViewController: UICollectionViewController, ViewDataSourceDelegate {
 
-    public var dataSource: ViewDataSource?
+    public var dataSource: ViewDataSource? {
+        didSet {
+            dataSource?.delelgate = self
+        }
+    }
     
     public init() {
         let flowLayout = UICollectionViewFlowLayout()
@@ -27,6 +30,13 @@ class BaseCollectionViewController: UICollectionViewController {
     override public func viewDidLoad() {
         super.viewDidLoad()
         self.collectionView!.registerClass(UICollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
+    }
+    
+    override public func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        if let dataSource = self.dataSource {
+            dataSource.fetchContent()
+        }
     }
 
     override public func didReceiveMemoryWarning() {
@@ -69,6 +79,12 @@ class BaseCollectionViewController: UICollectionViewController {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! UICollectionViewCell
         cell.backgroundColor = UIColor.yellowColor()
         return cell
+    }
+    
+    // MARK: ViewDataSourceDelegate
+    
+    public func viewDataSourceDidFetchContent(dataSource: ViewDataSource) {
+        // TODO: missing implementation
     }
 
 }

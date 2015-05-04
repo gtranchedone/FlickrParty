@@ -13,8 +13,13 @@ import FlickrParty
 // declaring the class here instead of inside the methods to make the compiler happy
 class MockDataSource : ViewDataSource {
     
+    var fetchedContent = false
     var sections = 0
     var items = 0
+    
+    override func fetchContent() {
+        fetchedContent = true
+    }
     
     override func numberOfSections() -> Int {
         return sections
@@ -38,6 +43,21 @@ class BaseCollectionViewControllerTests: XCTestCase {
     override func tearDown() {
         viewController = nil
         super.tearDown()
+    }
+    
+    func testFetchContentWhenViewIsAboutToAppear() {
+        let dataSource = MockDataSource()
+        viewController?.dataSource = dataSource
+        viewController?.beginAppearanceTransition(true, animated: false)
+        XCTAssertTrue(dataSource.fetchedContent, "The view controller didn't ask the dataSource to fetch the data")
+        
+    }
+    
+    func testViewControllerSetsItselfAsDelegateOfTheDataSourceOnSet() {
+        let dataSource = MockDataSource()
+        viewController?.dataSource = dataSource
+        let delegate = viewController?.dataSource?.delelgate as? BaseCollectionViewController
+        XCTAssertEqual(delegate!, viewController!, "The viewController didn't set itself as the delegate of the dataSource")
     }
     
     func testRespondsToCollectionViewDataSourceMethodsUsingDataSource() {

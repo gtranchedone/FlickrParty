@@ -8,6 +8,6 @@
 
 import UIKit
 
-class FlickrAPIClient: NSObject {
+public class FlickrAPIClient: APIClient {
    
 }
