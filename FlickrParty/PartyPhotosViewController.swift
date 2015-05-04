@@ -18,6 +18,7 @@ public class PartyPhotosViewController: BaseCollectionViewController {
     }
     
     public override func viewDataSourceDidFetchContent(dataSource: ViewDataSource) {
+        stopAnimatingActivityIndicator()
         collectionView?.reloadData()
     }
     
@@ -30,6 +31,13 @@ public class PartyPhotosViewController: BaseCollectionViewController {
             let alertController = UIAlertController(title: "An error occurred", message: message, preferredStyle: .Alert)
             alertController.addAction(UIAlertAction(title: "Dismiss", style: .Cancel, handler: nil))
             self.presentViewController(alertController, animated: true, completion: nil)
+        }
+        stopAnimatingActivityIndicator()
+    }
+    
+    private func stopAnimatingActivityIndicator() {
+        if let backgroundView = self.collectionView?.backgroundView as? CollectionBackgroundView {
+            backgroundView.activityIndicator.stopAnimating()
         }
     }
     

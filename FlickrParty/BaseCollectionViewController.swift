@@ -24,19 +24,18 @@ public class BaseCollectionViewController: UICollectionViewController, ViewDataS
     }
     
     required public init(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        super.init(coder: aDecoder)
     }
     
     override public func viewDidLoad() {
         super.viewDidLoad()
         self.collectionView!.registerClass(UICollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
+        self.collectionView!.backgroundView = CollectionBackgroundView(frame: self.collectionView!.bounds)
     }
     
     override public func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        if let dataSource = self.dataSource {
-            dataSource.fetchContent()
-        }
+        reloadData()
     }
 
     override public func didReceiveMemoryWarning() {
@@ -53,6 +52,17 @@ public class BaseCollectionViewController: UICollectionViewController, ViewDataS
         // Pass the selected object to the new view controller.
     }
     */
+    
+    // MARK: Helpers
+    
+    public func reloadData() {
+        if let backgroundView = self.collectionView?.backgroundView as? CollectionBackgroundView {
+            backgroundView.activityIndicator.startAnimating()
+        }
+        if let dataSource = self.dataSource {
+            dataSource.fetchContent()
+        }
+    }
 
     // MARK: UICollectionViewDataSource
 

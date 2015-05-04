@@ -73,4 +73,31 @@ class PartyPhotosViewControllerTests: XCTestCase {
         XCTAssertEqual(alertController!.message!, errorMessage, "PhotosViewController didn't present the right error message to the user")
     }
     
+    func testAnimatesActivityIndicatorWhileFetchingPhotos() {
+        let backgroundView = viewController?.collectionView?.backgroundView as? CollectionBackgroundView
+        let activityIndicator = backgroundView?.activityIndicator
+        viewController?.dataSource = MockDataSource()
+        viewController?.beginAppearanceTransition(true, animated: false)
+        XCTAssertTrue(activityIndicator!.isAnimating(), "PhotosViewController isn't animating activity indicator while fetching photos")
+    }
+    
+    func testStopsAnimatingActivityIndicatorAfterFetchingPhotos() {
+        let backgroundView = viewController?.collectionView?.backgroundView as? CollectionBackgroundView
+        let activityIndicator = backgroundView?.activityIndicator
+        viewController?.dataSource = MockDataSource()
+        viewController?.beginAppearanceTransition(true, animated: false)
+        viewController?.viewDataSourceDidFetchContent(viewController!.dataSource!)
+        XCTAssertFalse(activityIndicator!.isAnimating(), "PhotosViewController didn't stop activity indicator after fetching photos")
+    }
+    
+    func testStopsAnimatingActivityIndicatorAfterFailingToFetchingPhotos() {
+        let backgroundView = viewController?.collectionView?.backgroundView as? CollectionBackgroundView
+        let activityIndicator = backgroundView?.activityIndicator
+        viewController?.dataSource = MockDataSource()
+        viewController?.beginAppearanceTransition(true, animated: false)
+        let error = NSError(domain: "TestDomain", code: 0, userInfo: nil)
+        viewController?.viewDataSourceDidFailFetchingContent(viewController!.dataSource!, error: error)
+        XCTAssertFalse(activityIndicator!.isAnimating(), "PhotosViewController didn't stop activity indicator after fetching photos")
+    }
+    
 }

@@ -84,4 +84,9 @@ class BaseCollectionViewControllerTests: XCTestCase {
         XCTAssertEqual(numberOfItemsInSection, 2, "Displaying unexpected number of section")
     }
     
+    func testCollectionViewHasBackgroundViewAfterViewIsLoaded() {
+        viewController?.view
+        XCTAssertTrue(viewController!.collectionView!.backgroundView!.isKindOfClass(CollectionBackgroundView.self), "The CollectionView has no backgroundView")
+    }
+    
 }

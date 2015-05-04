@@ -32,6 +32,7 @@ public class AppDelegate: UIResponder, UIApplicationDelegate {
     
     private func setUpRootViewController() {
         let partyPhotosViewController = PartyPhotosViewController()
+        partyPhotosViewController.dataSource = PhotosDataSource(apiClient: FlickrAPIClient())
         let partyPhotosNavigationController = UINavigationController(rootViewController: partyPhotosViewController)
         let tabBarController = UITabBarController()
         tabBarController.viewControllers = [partyPhotosNavigationController]

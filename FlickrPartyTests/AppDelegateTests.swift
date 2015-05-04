@@ -38,5 +38,21 @@ class AppDelegateTests: XCTestCase {
         let viewController = navigationController?.viewControllers.first as? UIViewController
         XCTAssert(viewController is PartyPhotosViewController, "The first tab doesn't contain a PartyPhotosViewController")
     }
+    
+    func testPhotosViewControllerHasPhotoDataSource() {
+        let window = appDelegate?.window
+        let rootViewController = window?.rootViewController as? UITabBarController
+        let navigationController: UINavigationController? = rootViewController?.viewControllers?.first as? UINavigationController
+        let viewController = navigationController?.viewControllers.first as? PartyPhotosViewController
+        XCTAssertTrue(viewController?.dataSource! is PhotosDataSource, "The PhotosViewController hasn't the right dataSource")
+    }
+    
+    func testPhotosViewControllerHasPhotoDataSourceWithRightAPIClient() {
+        let window = appDelegate?.window
+        let rootViewController = window?.rootViewController as? UITabBarController
+        let navigationController: UINavigationController? = rootViewController?.viewControllers?.first as? UINavigationController
+        let viewController = navigationController?.viewControllers.first as? PartyPhotosViewController
+        XCTAssertTrue(viewController!.dataSource!.apiClient!.isKindOfClass(FlickrAPIClient.self), "The photosDataSource wasn't setup properly")
+    }
 
 }
