@@ -13,11 +13,12 @@ import FlickrParty
 class MockAPIClient : APIClient {
     
     var error: NSError?
+    var stubPhotos: Array<Photo>?
     var didCallFetchContent = false;
     
-    override func fetchPhotosWithTags(tags: Array<String>?, completionBlock: (error: NSError?) -> Void) {
+    override func fetchPhotosWithTags(tags: Array<String>?, completionBlock: (photos: Array<Photo>?, error: NSError?) -> Void) {
         didCallFetchContent = true
-        completionBlock(error: error)
+        completionBlock(photos:stubPhotos, error: error)
     }
     
 }
