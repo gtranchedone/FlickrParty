@@ -8,10 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		86A90391C14EC059A6A111A8 /* Pods_FlickrParty.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1726BFD8A5D27E1374040223 /* Pods_FlickrParty.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		9958CB7E1AF7CC8D0050DB8B /* PartyPhotosViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9958CB7D1AF7CC8D0050DB8B /* PartyPhotosViewController.swift */; };
+		9960E0C61AF7C45400107687 /* AppDelegateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9960E0C51AF7C45400107687 /* AppDelegateTests.swift */; };
 		9983C7FE1AF7BE77003AEEF9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9983C7FD1AF7BE77003AEEF9 /* AppDelegate.swift */; };
 		9983C8071AF7BE77003AEEF9 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9983C8061AF7BE77003AEEF9 /* Images.xcassets */; };
 		9983C80A1AF7BE77003AEEF9 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9983C8081AF7BE77003AEEF9 /* LaunchScreen.xib */; };
-		9983C8161AF7BE77003AEEF9 /* FlickrPartyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9983C8151AF7BE77003AEEF9 /* FlickrPartyTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -27,6 +28,9 @@
 /* Begin PBXFileReference section */
 		1726BFD8A5D27E1374040223 /* Pods_FlickrParty.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FlickrParty.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		630FB5B95F75FF4C1D6FE4BC /* Pods-FlickrParty.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FlickrParty.release.xcconfig"; path = "Pods/Target Support Files/Pods-FlickrParty/Pods-FlickrParty.release.xcconfig"; sourceTree = "<group>"; };
+		9958CB7D1AF7CC8D0050DB8B /* PartyPhotosViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PartyPhotosViewController.swift; sourceTree = "<group>"; };
+		9960E0C41AF7C45400107687 /* FlickrPartyTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "FlickrPartyTests-Bridging-Header.h"; sourceTree = "<group>"; };
+		9960E0C51AF7C45400107687 /* AppDelegateTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegateTests.swift; sourceTree = "<group>"; };
 		9983C7F81AF7BE77003AEEF9 /* FlickrParty.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FlickrParty.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9983C7FC1AF7BE77003AEEF9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9983C7FD1AF7BE77003AEEF9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -34,7 +38,6 @@
 		9983C8091AF7BE77003AEEF9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		9983C80F1AF7BE77003AEEF9 /* FlickrPartyTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FlickrPartyTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		9983C8141AF7BE77003AEEF9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		9983C8151AF7BE77003AEEF9 /* FlickrPartyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlickrPartyTests.swift; sourceTree = "<group>"; };
 		D7CE6F5BC500305BB5D498A7 /* Pods-FlickrParty.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FlickrParty.debug.xcconfig"; path = "Pods/Target Support Files/Pods-FlickrParty/Pods-FlickrParty.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -100,6 +103,7 @@
 				9983C7FD1AF7BE77003AEEF9 /* AppDelegate.swift */,
 				9983C8061AF7BE77003AEEF9 /* Images.xcassets */,
 				9983C8081AF7BE77003AEEF9 /* LaunchScreen.xib */,
+				9958CB7D1AF7CC8D0050DB8B /* PartyPhotosViewController.swift */,
 				9983C7FB1AF7BE77003AEEF9 /* Supporting Files */,
 			);
 			path = FlickrParty;
@@ -116,8 +120,9 @@
 		9983C8121AF7BE77003AEEF9 /* FlickrPartyTests */ = {
 			isa = PBXGroup;
 			children = (
-				9983C8151AF7BE77003AEEF9 /* FlickrPartyTests.swift */,
 				9983C8131AF7BE77003AEEF9 /* Supporting Files */,
+				9960E0C51AF7C45400107687 /* AppDelegateTests.swift */,
+				9960E0C41AF7C45400107687 /* FlickrPartyTests-Bridging-Header.h */,
 			);
 			path = FlickrPartyTests;
 			sourceTree = "<group>";
@@ -280,6 +285,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9958CB7E1AF7CC8D0050DB8B /* PartyPhotosViewController.swift in Sources */,
 				9983C7FE1AF7BE77003AEEF9 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -288,7 +294,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9983C8161AF7BE77003AEEF9 /* FlickrPartyTests.swift in Sources */,
+				9960E0C61AF7C45400107687 /* AppDelegateTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -423,6 +429,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_MODULES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -434,6 +441,8 @@
 				INFOPLIST_FILE = FlickrPartyTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "FlickrPartyTests/FlickrPartyTests-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/FlickrParty.app/FlickrParty";
 			};
 			name = Debug;
@@ -442,6 +451,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_MODULES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -449,6 +459,7 @@
 				INFOPLIST_FILE = FlickrPartyTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "FlickrPartyTests/FlickrPartyTests-Bridging-Header.h";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/FlickrParty.app/FlickrParty";
 			};
 			name = Release;
