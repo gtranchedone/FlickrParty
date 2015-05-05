@@ -16,7 +16,7 @@ To build and run this project, clone the repository and run `pod install`.
     pod install
 
 **Note: This project exposes a Flickr API Key. It would be recommended not to store API Keys like displayed in this project. I've done like so for simplicity.
-Moreover, it would be adviced that you used your own Flickr API Key. You can get one at [https://www.flickr.com/services/api/](https://www.flickr.com/services/api/)**
+Moreover, it would be adviced that you used your own Flickr API Key. You can get one at [https://www.flickr.com/services/api/](https://www.flickr.com/services/api/).**
 
 ## TODO
 
