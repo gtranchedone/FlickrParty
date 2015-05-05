@@ -28,9 +28,14 @@ class MockDelegate : ViewDataSourceDelegate {
     
     var didCallDelegateForSuccess = false
     var didCallDelegateForFailure = false
+    var didCallDelegateForInvalidation = false
     
     func viewDataSourceDidFetchContent(dataSource: ViewDataSource) {
         didCallDelegateForSuccess = true
+    }
+    
+    func viewDataSourceDidInvalidateContent(dataSource: ViewDataSource) {
+        didCallDelegateForInvalidation = true
     }
     
     func viewDataSourceDidFailFetchingContent(dataSource: ViewDataSource, error: NSError) {

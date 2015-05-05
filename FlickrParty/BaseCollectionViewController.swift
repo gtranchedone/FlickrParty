@@ -97,6 +97,10 @@ public class BaseCollectionViewController: UICollectionViewController, ViewDataS
         collectionView?.reloadData()
     }
     
+    public func viewDataSourceDidInvalidateContent(dataSource: ViewDataSource) {
+        collectionView?.reloadData()
+    }
+    
     public func viewDataSourceDidFailFetchingContent(dataSource: ViewDataSource, error: NSError) {
         if let userInfo = error.userInfo {
             var message = "Please try again later"

@@ -24,6 +24,7 @@ Moreover, it would be adviced that you used your own Flickr API Key. You can get
 - [x] Implement simple UI for photo details
 - [x] Add support for multiple results pages
 - [x] Improve image caching by setting a limit on the cache
-- [ ] Improve performance when scrolling many pages by temporarily dropping Photos that aren't being displayed
+- [x] Improve memory usage by responding to -didReceiveMemoryWarning and dropping all photos. Then reload to display content. (temporary solution)
+- [ ] Improve performance when scrolling many pages by temporarily dropping Photos that aren't being displayed (final memory usage solution)
 - [ ] Add tab for photos near current location
 - [ ] Add tab for searching photos freely

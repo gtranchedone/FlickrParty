@@ -12,6 +12,11 @@ public class PhotosDataSource: ViewDataSource {
    
     private var photos: Array<Photo>?
     
+    override public func invalidateContent() {
+        photos = nil
+        self.delegate?.viewDataSourceDidInvalidateContent(self)
+    }
+    
     override public func fetchContent(page: Int = 1) {
         if let apiClient = self.apiClient {
             apiClient.fetchPhotosWithTags(["party"], page: page) { [unowned self] response, possibleError in

@@ -42,6 +42,13 @@ public class PartyPhotosViewController: BaseCollectionViewController, UICollecti
         self.collectionView!.registerClass(PhotoCollectionViewCell.self, forCellWithReuseIdentifier: PhotoCellReuseIdentifier)
     }
     
+    public override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // !!!: dirty hack to avoid crashing the app when exceeding memory. To be fixed by creating a cache for Photos using Haneke.
+        self.dataSource?.invalidateContent()
+        self.dataSource?.fetchContent()
+    }
+    
     // MARK: - UICollectionViewDelegate -
     
     public override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {

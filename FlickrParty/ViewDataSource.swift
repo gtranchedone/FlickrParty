@@ -11,6 +11,7 @@ import UIKit
 public protocol ViewDataSourceDelegate {
     
     func viewDataSourceDidFetchContent(dataSource: ViewDataSource)
+    func viewDataSourceDidInvalidateContent(dataSource: ViewDataSource)
     func viewDataSourceDidFailFetchingContent(dataSource: ViewDataSource, error: NSError)
     
 }
@@ -28,6 +29,10 @@ public class ViewDataSource: NSObject {
     public init(apiClient: APIClient) {
         self.apiClient = apiClient
         super.init()
+    }
+    
+    public func invalidateContent() {
+        // subclassing hook
     }
     
     public func fetchContent(page: Int = 1) {
