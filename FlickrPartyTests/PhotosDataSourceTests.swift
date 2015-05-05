@@ -34,6 +34,10 @@ class MockDelegate : ViewDataSourceDelegate {
         didCallDelegateForSuccess = true
     }
     
+    func viewDataSourceWillFetchContent(dataSource: ViewDataSource) {
+        // do nothing
+    }
+    
     func viewDataSourceDidInvalidateContent(dataSource: ViewDataSource) {
         didCallDelegateForInvalidation = true
     }

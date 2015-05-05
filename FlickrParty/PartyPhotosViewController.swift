@@ -16,17 +16,22 @@ public class PartyPhotosViewController: BaseCollectionViewController, UICollecti
     
     let imageCache = Cache<UIImage>(name: "PartyPhotosCache")
     
+    deinit {
+        NSNotificationCenter.defaultCenter().removeObserver(self)
+    }
+    
     public convenience init() {
         let flowLayout = UICollectionViewFlowLayout()
         flowLayout.sectionInset = UIEdgeInsets(top: 10.0, left: 10.0, bottom: 10.0, right: 10.0)
         flowLayout.minimumInteritemSpacing = 10.0
         flowLayout.minimumLineSpacing = 10.0
         self.init(collectionViewLayout: flowLayout)
-        imageCache.addFormat(Format<UIImage>(name: ThumbailsFormatName, diskCapacity: 50 * 1024 * 1024, transform: nil)) // capacity of 50MB
     }
     
     public override init(collectionViewLayout layout: UICollectionViewLayout) {
         super.init(collectionViewLayout: layout)
+        imageCache.addFormat(Format<UIImage>(name: ThumbailsFormatName, diskCapacity: 50 * 1024 * 1024, transform: nil)) // capacity of 50MB
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "didBecomeActive", name: UIApplicationDidBecomeActiveNotification, object: nil)
     }
     
     required public init(coder aDecoder: NSCoder) {
@@ -95,6 +100,16 @@ public class PartyPhotosViewController: BaseCollectionViewController, UICollecti
         let sectionInsets = flowLayout.sectionInset.left + flowLayout.sectionInset.right
         let sideLenght = ((collectionView.bounds.size.width - sectionInsets - (flowLayout.minimumInteritemSpacing * 2)) / 3)
         return CGSizeMake(sideLenght, sideLenght)
+    }
+    
+    // MARK: - Notifications -
+    
+    func didBecomeActive() {
+        if let dataSource = self.dataSource {
+            if dataSource.numberOfItems() <= 0 && !dataSource.loading {
+                self.reloadData()
+            }
+        }
     }
     
 }

@@ -14,12 +14,10 @@ public class PhotoDetailsViewController: UIViewController, UIScrollViewDelegate 
     var photo: Photo?
     let imageView = UIImageView()
     let scrollView = UIScrollView()
-    let backgroundView = CollectionBackgroundView()
     let imageCache = Cache<UIImage>(name: "PhotoDetailsImageCache")
     
     override public func viewDidLoad() {
         super.viewDidLoad()
-        setUpBackgroundView()
         setUpScrollView()
         setUpImageView()
         setUpView()
@@ -38,13 +36,6 @@ public class PhotoDetailsViewController: UIViewController, UIScrollViewDelegate 
     }
     
     // MARK: Helpers
-    
-    private func setUpBackgroundView() {
-        backgroundView.autoresizingMask = .FlexibleHeight | .FlexibleWidth
-        backgroundView.backgroundColor = UIColor.whiteColor()
-        backgroundView.frame = self.view.bounds
-        view.addSubview(backgroundView)
-    }
     
     private func setUpScrollView() {
         scrollView.autoresizingMask = .FlexibleHeight | .FlexibleWidth
@@ -75,13 +66,9 @@ public class PhotoDetailsViewController: UIViewController, UIScrollViewDelegate 
             return // Don't try to load an image that was already loaded
         }
         if let imageURL = photo?.imageURL {
-            backgroundView.activityIndicator.startAnimating()
             let imageFetcher = NetworkFetcher<UIImage>(URL: imageURL)
             imageCache.fetch(fetcher: imageFetcher).onSuccess { [weak self] image in
-                self?.backgroundView.activityIndicator.stopAnimating()
                 self?.imageView.image = image;
-            }.onFailure { [weak self] _ in
-                self?.backgroundView.activityIndicator.stopAnimating()
             }
         }
     }

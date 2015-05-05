@@ -52,12 +52,9 @@ public class BaseCollectionViewController: UICollectionViewController, ViewDataS
         self.collectionView!.collectionViewLayout.invalidateLayout()
     }
     
-    // MARK: Helpers
+    // MARK: Public APIs
     
     public func reloadData() {
-        if let backgroundView = self.collectionView?.backgroundView as? CollectionBackgroundView {
-            backgroundView.activityIndicator.startAnimating()
-        }
         if let dataSource = self.dataSource {
             dataSource.fetchContent()
         }
@@ -93,6 +90,8 @@ public class BaseCollectionViewController: UICollectionViewController, ViewDataS
     // MARK: ViewDataSourceDelegate
     
     public func viewDataSourceDidFetchContent(dataSource: ViewDataSource) {
+        UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+        updateBackgroundLabelWithMessage(nil)
         stopAnimatingActivityIndicator()
         collectionView?.reloadData()
     }
@@ -101,9 +100,17 @@ public class BaseCollectionViewController: UICollectionViewController, ViewDataS
         collectionView?.reloadData()
     }
     
+    public func viewDataSourceWillFetchContent(dataSource: ViewDataSource) {
+        UIApplication.sharedApplication().networkActivityIndicatorVisible = true
+        updateBackgroundLabelWithMessage(nil)
+        if dataSource.numberOfItems() <= 0 {
+            startAnimatingActivityIndicator()
+        }
+    }
+    
     public func viewDataSourceDidFailFetchingContent(dataSource: ViewDataSource, error: NSError) {
+        var message = "We were unable to load any photo"
         if let userInfo = error.userInfo {
-            var message = "Please try again later"
             if let errorMessage = userInfo[NSLocalizedDescriptionKey] as? String {
                 message = errorMessage
             }
@@ -112,11 +119,25 @@ public class BaseCollectionViewController: UICollectionViewController, ViewDataS
             self.presentViewController(alertController, animated: true, completion: nil)
         }
         stopAnimatingActivityIndicator()
+        updateBackgroundLabelWithMessage(message)
+        UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+    }
+    
+    private func updateBackgroundLabelWithMessage(message: String?) {
+        if let backgroundView = self.collectionView?.backgroundView as? CollectionBackgroundView {
+            backgroundView.textLabel.text = message
+        }
     }
     
     private func stopAnimatingActivityIndicator() {
         if let backgroundView = self.collectionView?.backgroundView as? CollectionBackgroundView {
             backgroundView.activityIndicator.stopAnimating()
+        }
+    }
+    
+    private func startAnimatingActivityIndicator() {
+        if let backgroundView = self.collectionView?.backgroundView as? CollectionBackgroundView {
+            backgroundView.activityIndicator.startAnimating()
         }
     }
 

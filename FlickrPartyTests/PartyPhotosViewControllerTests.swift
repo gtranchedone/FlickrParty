@@ -77,7 +77,7 @@ class PartyPhotosViewControllerTests: XCTestCase {
         let backgroundView = viewController?.collectionView?.backgroundView as? CollectionBackgroundView
         let activityIndicator = backgroundView?.activityIndicator
         viewController?.dataSource = MockDataSource()
-        viewController?.beginAppearanceTransition(true, animated: false)
+        viewController?.reloadData()
         XCTAssertTrue(activityIndicator!.isAnimating(), "PhotosViewController isn't animating activity indicator while fetching photos")
     }
     

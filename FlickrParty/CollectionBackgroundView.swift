@@ -21,6 +21,17 @@ public class CollectionBackgroundView: UIView {
         return activityIndicator
     }()
     
+    lazy public var textLabel: UILabel = {
+        let label = UILabel(frame: CGRectInset(self.bounds, 20.0, 20.0))
+        label.autoresizingMask = .FlexibleHeight | .FlexibleWidth
+        label.backgroundColor = UIColor.clearColor()
+        label.textColor = UIColor.lightGrayColor()
+        label.textAlignment = .Center
+        label.numberOfLines = 0
+        self.addSubview(label)
+        return label
+    }()
+    
     public override init(frame: CGRect) {
         super.init(frame: frame)
     }

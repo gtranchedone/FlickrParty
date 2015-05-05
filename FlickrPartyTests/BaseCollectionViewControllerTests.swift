@@ -19,6 +19,7 @@ class MockDataSource : ViewDataSource {
     
     override func fetchContent(page: Int = 1) {
         fetchedContent = true
+        loading = true
     }
     
     override func numberOfSections() -> Int {

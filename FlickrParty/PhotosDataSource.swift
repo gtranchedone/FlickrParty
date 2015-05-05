@@ -19,6 +19,7 @@ public class PhotosDataSource: ViewDataSource {
     
     override public func fetchContent(page: Int = 1) {
         if let apiClient = self.apiClient {
+            loading = true
             apiClient.fetchPhotosWithTags(["party"], page: page) { [unowned self] response, possibleError in
                 if let error = possibleError {
                     self.delegate?.viewDataSourceDidFailFetchingContent(self, error: error)
@@ -39,6 +40,7 @@ public class PhotosDataSource: ViewDataSource {
                     }
                     self.delegate?.viewDataSourceDidFetchContent(self)
                 }
+                self.loading = false
             }
         }
     }

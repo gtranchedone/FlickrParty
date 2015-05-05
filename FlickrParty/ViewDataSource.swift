@@ -11,6 +11,7 @@ import UIKit
 public protocol ViewDataSourceDelegate {
     
     func viewDataSourceDidFetchContent(dataSource: ViewDataSource)
+    func viewDataSourceWillFetchContent(dataSource: ViewDataSource)
     func viewDataSourceDidInvalidateContent(dataSource: ViewDataSource)
     func viewDataSourceDidFailFetchingContent(dataSource: ViewDataSource, error: NSError)
     
@@ -21,6 +22,13 @@ public class ViewDataSource: NSObject {
     public var delegate: ViewDataSourceDelegate?
     public var lastMetadata: APIResponseMetadata?
     public var apiClient: APIClient?
+    public var loading = false {
+        didSet {
+            if loading {
+                self.delegate?.viewDataSourceWillFetchContent(self)
+            }
+        }
+    }
     
     public override init() {
         super.init()
