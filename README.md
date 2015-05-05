@@ -23,6 +23,7 @@ Moreover, it would be adviced that you used your own Flickr API Key. You can get
 - [x] Implement simple UI and logic for photos tagged 'Party'
 - [x] Implement simple UI for photo details
 - [x] Add support for multiple results pages
-- [ ] Improve performance when scrolling many pages
+- [x] Improve image caching by setting a limit on the cache
+- [ ] Improve performance when scrolling many pages by temporarily dropping Photos that aren't being displayed
 - [ ] Add tab for photos near current location
 - [ ] Add tab for searching photos freely

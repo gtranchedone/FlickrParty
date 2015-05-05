@@ -9,6 +9,7 @@
 import UIKit
 import Haneke
 
+let ThumbailsFormatName = "thumbnails"
 let PhotoCellReuseIdentifier = "PhotoCellReuseIdentifier"
 
 public class PartyPhotosViewController: BaseCollectionViewController, UICollectionViewDelegateFlowLayout {
@@ -21,6 +22,7 @@ public class PartyPhotosViewController: BaseCollectionViewController, UICollecti
         flowLayout.minimumInteritemSpacing = 10.0
         flowLayout.minimumLineSpacing = 10.0
         self.init(collectionViewLayout: flowLayout)
+        imageCache.addFormat(Format<UIImage>(name: ThumbailsFormatName, diskCapacity: 50 * 1024 * 1024, transform: nil)) // capacity of 50MB
     }
     
     public override init(collectionViewLayout layout: UICollectionViewLayout) {
@@ -47,7 +49,7 @@ public class PartyPhotosViewController: BaseCollectionViewController, UICollecti
         let photo = dataSource!.itemAtIndexPath(indexPath) as! Photo
         if let thumbnailURL = photo.thumbnailURL {
             let imageFetcher = NetworkFetcher<UIImage>(URL: thumbnailURL)
-            imageCache.fetch(fetcher: imageFetcher).onSuccess { image in
+            imageCache.fetch(fetcher: imageFetcher, formatName: ThumbailsFormatName).onSuccess { image in
                 let newIndexPath = collectionView.indexPathForCell(cell)
                 if let theIndexPath = newIndexPath {
                     if theIndexPath == indexPath {
