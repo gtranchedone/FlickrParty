@@ -5,8 +5,8 @@ A simple photo gallery implemented using Flickr API written in Swift
 
 This project is written in Swift and uses CocoaPods for dependencies. The only Pods used so far are:
 
-* Alamofire (Swiftly equivalent of AFNetworking)
-* HanekeSwift (Swift port of the caching framework Haneke)
+* [Alamofire](https://github.com/Alamofire/Alamofire) (Swiftly equivalent of AFNetworking)
+* [HanekeSwift](https://github.com/Haneke/HanekeSwift) (Swift port of the caching framework Haneke)
 
 To build and run this project, clone the repository and run `pod install`.
 
