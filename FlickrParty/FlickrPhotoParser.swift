@@ -10,6 +10,26 @@ import UIKit
 
 public class FlickrPhotoParser: PhotoParser {
     
+    public override func parseMetadata(jsonObject: AnyObject) -> APIResponseMetadata {
+        var page = 0
+        var itemsPerPage = 0
+        var numberOfPages = 0
+        
+        if let photosObject = jsonObject["photos"] as? Dictionary<String, AnyObject> {
+            if let currentPage = photosObject["page"] as? Int {
+                page = currentPage
+            }
+            if let perPage = photosObject["perpage"] as? Int {
+                itemsPerPage = perPage
+            }
+            if let totalNumberOfPages = photosObject["pages"] as? Int {
+                numberOfPages = totalNumberOfPages
+            }
+        }
+        
+        return APIResponseMetadata(page: page, itemsPerPage: itemsPerPage, numberOfPages: numberOfPages)
+    }
+    
     public override func parsePhotos(rawObject: AnyObject) -> Array<Photo> {
         var photos = Array<Photo>()
         if let jsonObject = rawObject as? Dictionary<String, AnyObject> {

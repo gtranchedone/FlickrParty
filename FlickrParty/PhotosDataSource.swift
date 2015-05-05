@@ -14,12 +14,13 @@ public class PhotosDataSource: ViewDataSource {
     
     override public func fetchContent() {
         if let apiClient = self.apiClient {
-            apiClient.fetchPhotosWithTags(["party"]) { [unowned self] photos, possibleError in
+            apiClient.fetchPhotosWithTags(["party"]) { [unowned self] response, possibleError in
                 if let error = possibleError {
                     self.delegate?.viewDataSourceDidFailFetchingContent(self, error: error)
                 }
                 else {
-                    self.photos = photos
+                    self.lastMetadata = response?.metadata
+                    self.photos = response?.responseObject as? Array<Photo>
                     self.delegate?.viewDataSourceDidFetchContent(self)
                 }
             }

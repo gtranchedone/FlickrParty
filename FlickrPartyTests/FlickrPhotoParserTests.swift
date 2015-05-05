@@ -24,10 +24,22 @@ class FlickrPhotoParserTests: XCTestCase {
         super.tearDown()
     }
     
-    private func parseSamplePhotos() -> Array<Photo> {
+    func testReturnsExpectedMetadataForSampleData() {
+        let jsonObject: AnyObject? = sampleJSONObject()
+        let actualMetadata = parser!.parseMetadata(jsonObject!)
+        let expectedMetadata = APIResponseMetadata(page: 1, itemsPerPage: 100, numberOfPages: 2769)
+        XCTAssertEqual(expectedMetadata, actualMetadata, "FlickrPhotosParser didn't parse the API response metadata correctly")
+    }
+    
+    private func sampleJSONObject() -> AnyObject? {
         let filePath = NSBundle(forClass: FlickrAPIClientTests.self).pathForResource("FlickrSearchAPIResponse", ofType: "json")
         let sampleData = NSData(contentsOfFile: filePath!)
         let jsonObject = NSJSONSerialization.JSONObjectWithData(sampleData!, options: .AllowFragments, error: nil) as? Dictionary<String, AnyObject>
+        return jsonObject
+    }
+    
+    private func parseSamplePhotos() -> Array<Photo> {
+        let jsonObject: AnyObject? = sampleJSONObject()
         let parsedPhotos = parser!.parsePhotos(jsonObject!)
         return parsedPhotos
     }

@@ -26,12 +26,12 @@ public class FlickrAPIClient: APIClient {
         super.init(parser: parser)
     }
     
-    override public func fetchPhotosWithTags(tags: Array<String>, completionBlock: (photos: Array<Photo>?, error: NSError?) -> Void) {
+    override public func fetchPhotosWithTags(tags: Array<String>, completionBlock: (response: APIResponse?, error: NSError?) -> Void) {
         let tagsString = join(",", tags)
         let photosURL = String(format: FlickrAPI.TagsSearchFormat, arguments: [tagsString, FlickrAPIClient.FlickrAPIKey])
         Alamofire.request(.GET, photosURL).responseJSON(options: .AllowFragments) { [unowned self] (_, _, jsonResponse, error) -> Void in
             if let error = error {
-                completionBlock(photos: nil, error: error)
+                completionBlock(response: nil, error: error)
             }
             else if let jsonObject = jsonResponse as? Dictionary<String, AnyObject> {
                 let status = jsonObject["stat"] as? String
@@ -41,14 +41,17 @@ public class FlickrAPIClient: APIClient {
                         let code = jsonObject["code"] as! Int
                         let userInfo = [NSLocalizedDescriptionKey: message, NSUnderlyingErrorKey: jsonObject.description]
                         let apiError = NSError(domain: FlickrAPIClient.FlickrAPIDomain, code: code, userInfo: userInfo)
-                        completionBlock(photos: nil, error: apiError)
+                        completionBlock(response: nil, error: apiError)
                     }
                     else {
-                        completionBlock(photos: self.parser?.parsePhotos(jsonObject), error: nil)
+                        let metadata = self.parser?.parseMetadata(jsonObject)
+                        let photos = self.parser?.parsePhotos(jsonObject)
+                        let response = APIResponse(metadata: metadata!, responseObject: photos!)
+                        completionBlock(response: response, error: nil)
                     }
                 }
                 else {
-                    completionBlock(photos: nil, error: nil)
+                    completionBlock(response: nil, error: nil)
                 }
             }
         }

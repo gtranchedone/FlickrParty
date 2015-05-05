@@ -8,6 +8,36 @@
 
 import UIKit
 
+public struct APIResponseMetadata: Equatable {
+    
+    public let page: Int
+    public let itemsPerPage: Int
+    public let numberOfPages: Int
+    
+    public init(page: Int, itemsPerPage: Int, numberOfPages: Int) {
+        self.page = page
+        self.itemsPerPage = itemsPerPage
+        self.numberOfPages = numberOfPages
+    }
+    
+}
+
+public func ==(lhs: APIResponseMetadata, rhs: APIResponseMetadata) -> Bool {
+    return (lhs.page == rhs.page && lhs.numberOfPages == rhs.numberOfPages && lhs.itemsPerPage == rhs.itemsPerPage)
+}
+
+public struct APIResponse {
+    
+    public let metadata: APIResponseMetadata?
+    public let responseObject: AnyObject?
+    
+    public init(metadata: APIResponseMetadata?, responseObject: AnyObject?) {
+        self.metadata = metadata
+        self.responseObject = responseObject
+    }
+    
+}
+
 public class APIClient: NSObject {
     
     public var parser: PhotoParser?
@@ -20,7 +50,7 @@ public class APIClient: NSObject {
         self.parser = parser
     }
     
-    public func fetchPhotosWithTags(tags: Array<String>, completionBlock: (photos: Array<Photo>?, error: NSError?) -> Void) {
+    public func fetchPhotosWithTags(tags: Array<String>, completionBlock: (response: APIResponse?, error: NSError?) -> Void) {
         // subclassing hook
     }
     

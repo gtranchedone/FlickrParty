@@ -18,6 +18,7 @@ public protocol ViewDataSourceDelegate {
 public class ViewDataSource: NSObject {
     
     public var delegate: ViewDataSourceDelegate?
+    public var lastMetadata: APIResponseMetadata?
     public var apiClient: APIClient?
     
     public override init() {
