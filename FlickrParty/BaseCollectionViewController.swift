@@ -44,18 +44,13 @@ public class BaseCollectionViewController: UICollectionViewController, ViewDataS
 
     override public func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+        println("\n\n!!!\nDid Receive Memory Warning\n!!!\n\n")
     }
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using [segue destinationViewController].
-        // Pass the selected object to the new view controller.
+    
+    public override func willRotateToInterfaceOrientation(toInterfaceOrientation: UIInterfaceOrientation, duration: NSTimeInterval) {
+        // make sure that after every rotation of the device, the layout is valid
+        self.collectionView!.collectionViewLayout.invalidateLayout()
     }
-    */
     
     // MARK: Helpers
     

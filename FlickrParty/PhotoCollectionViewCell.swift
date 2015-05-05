@@ -8,20 +8,25 @@
 
 import UIKit
 
-class PhotoCollectionViewCell: UICollectionViewCell {
+public class PhotoCollectionViewCell: UICollectionViewCell {
  
-    lazy var imageView: UIImageView = {
-        let imageView = UIImageView()
+    let imageView = UIImageView()
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
         imageView.autoresizingMask = .FlexibleHeight | .FlexibleWidth
         imageView.backgroundColor = UIColor.lightGrayColor()
-        imageView.frame = self.contentView.bounds
         imageView.contentMode = .ScaleAspectFill
+        imageView.frame = self.contentView.bounds
         imageView.clipsToBounds = true
         self.contentView.addSubview(imageView)
-        return imageView
-    }()
+    }
+
+    required public init(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
     
-    override func prepareForReuse() {
+    override public func prepareForReuse() {
         imageView.image = nil;
         super.prepareForReuse()
     }

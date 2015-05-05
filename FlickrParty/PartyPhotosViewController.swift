@@ -59,10 +59,14 @@ public class PartyPhotosViewController: BaseCollectionViewController, UICollecti
                 }
             }
         }
-        else {
-            cell.imageView.image = nil; // force the creation of the imageView
-        }
         return cell
+    }
+    
+    public override func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+        let viewController = PhotoDetailsViewController()
+        viewController.photo = dataSource!.itemAtIndexPath(indexPath) as? Photo
+        viewController.hidesBottomBarWhenPushed = true
+        self.showViewController(viewController, sender: indexPath)
     }
     
     // MARK: - UICollectionViewFlowLayoutDelegate -
