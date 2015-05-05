@@ -9,16 +9,34 @@
 import UIKit
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+public class AppDelegate: UIResponder, UIApplicationDelegate {
 
-    var window: UIWindow?
+    public var window: UIWindow?
 
 
-    func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
+    /// MARK: - UIApplicationDelegate -
+    
+    public func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
+        setUpWindow()
+        setUpRootViewController()
+        return true
+    }
+    
+    /// MARK: Helpers
+    
+    private func setUpWindow() {
         window = UIWindow(frame: UIScreen.mainScreen().bounds)
         window?.backgroundColor = UIColor.whiteColor()
         window?.makeKeyAndVisible()
-        return true
+    }
+    
+    private func setUpRootViewController() {
+        let partyPhotosViewController = PartyPhotosViewController()
+        partyPhotosViewController.dataSource = PhotosDataSource(apiClient: FlickrAPIClient())
+        let partyPhotosNavigationController = UINavigationController(rootViewController: partyPhotosViewController)
+        let tabBarController = UITabBarController()
+        tabBarController.viewControllers = [partyPhotosNavigationController]
+        window?.rootViewController = tabBarController
     }
 
 
