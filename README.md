@@ -20,10 +20,9 @@ Moreover, it would be adviced that you used your own Flickr API Key. You can get
 
 ## TODO
 
-[x] Implement simple UI and logic for photos tagged 'Party'
-[x] Implement simple UI for photo details
-[] Add support for multiple results pages
-[] Improve performance when scrolling many pages
-[] Add tab for photos near current location
-[] Add tab for searching photos freely
-
+- [x] Implement simple UI and logic for photos tagged 'Party'
+- [x] Implement simple UI for photo details
+- [ ] Add support for multiple results pages
+- [ ] Improve performance when scrolling many pages
+- [ ] Add tab for photos near current location
+- [ ] Add tab for searching photos freely
