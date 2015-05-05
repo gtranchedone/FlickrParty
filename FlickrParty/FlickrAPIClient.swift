@@ -6,14 +6,16 @@
 //  Copyright (c) 2015 Gianluca Tranchedone. All rights reserved.
 //
 
-import UIKit
+import Foundation
+import Alamofire
 
 public class FlickrAPIClient: APIClient {
     
+    static let FlickrAPIDomain = "FlickrAPIDomain"
     static let FlickrAPIKey = "31eb1c7d7d8532ac0493443606bbce13"
     
     struct FlickrAPI {
-        let SearchFormat = "https://api.flickr.com/services/rest/?format=json&nojsoncallback=?&method=flickr.photos.search&tags=%@&extras=description,owner_name,url_t,url_o&api_key=%@"
+        static let TagsSearchFormat = "https://api.flickr.com/services/rest/?format=json&nojsoncallback=?&method=flickr.photos.search&tags=%@&extras=description,owner_name,url_t,url_o&api_key=%@"
     }
     
     public convenience init() {
@@ -24,8 +26,32 @@ public class FlickrAPIClient: APIClient {
         super.init(parser: parser)
     }
     
-    override public func fetchPhotosWithTags(tags: Array<String>?, completionBlock: (photos: Array<Photo>?, error: NSError?) -> Void) {
-        // TODO: missing implementation
+    override public func fetchPhotosWithTags(tags: Array<String>, completionBlock: (photos: Array<Photo>?, error: NSError?) -> Void) {
+        let tagsString = join(",", tags)
+        let photosURL = String(format: FlickrAPI.TagsSearchFormat, arguments: [tagsString, FlickrAPIClient.FlickrAPIKey])
+        Alamofire.request(.GET, photosURL).responseJSON(options: .AllowFragments) { [unowned self] (_, _, jsonResponse, error) -> Void in
+            if let error = error {
+                completionBlock(photos: nil, error: error)
+            }
+            else if let jsonObject = jsonResponse as? Dictionary<String, AnyObject> {
+                let status = jsonObject["stat"] as? String
+                if let status = status {
+                    if status == "fail" {
+                        let message = jsonObject["message"] as! String
+                        let code = jsonObject["code"] as! Int
+                        let userInfo = [NSLocalizedDescriptionKey: message, NSUnderlyingErrorKey: jsonObject.description]
+                        let apiError = NSError(domain: FlickrAPIClient.FlickrAPIDomain, code: code, userInfo: userInfo)
+                        completionBlock(photos: nil, error: apiError)
+                    }
+                    else {
+                        completionBlock(photos: self.parser?.parsePhotos(jsonObject), error: nil)
+                    }
+                }
+                else {
+                    completionBlock(photos: nil, error: nil)
+                }
+            }
+        }
     }
    
 }

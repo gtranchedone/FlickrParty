@@ -94,11 +94,27 @@ public class BaseCollectionViewController: UICollectionViewController, ViewDataS
     // MARK: ViewDataSourceDelegate
     
     public func viewDataSourceDidFetchContent(dataSource: ViewDataSource) {
-        // TODO: missing implementation
+        stopAnimatingActivityIndicator()
+        collectionView?.reloadData()
     }
     
     public func viewDataSourceDidFailFetchingContent(dataSource: ViewDataSource, error: NSError) {
-        // TODO: missing implementation
+        if let userInfo = error.userInfo {
+            var message = "Please try again later"
+            if let errorMessage = userInfo[NSLocalizedDescriptionKey] as? String {
+                message = errorMessage
+            }
+            let alertController = UIAlertController(title: "An error occurred", message: message, preferredStyle: .Alert)
+            alertController.addAction(UIAlertAction(title: "Dismiss", style: .Cancel, handler: nil))
+            self.presentViewController(alertController, animated: true, completion: nil)
+        }
+        stopAnimatingActivityIndicator()
+    }
+    
+    private func stopAnimatingActivityIndicator() {
+        if let backgroundView = self.collectionView?.backgroundView as? CollectionBackgroundView {
+            backgroundView.activityIndicator.stopAnimating()
+        }
     }
 
 }

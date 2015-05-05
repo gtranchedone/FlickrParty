@@ -58,6 +58,13 @@ class PhotosDataSourceTests: XCTestCase {
         XCTAssertEqual(true, apiClient!.didCallFetchContent)
     }
     
+    func testDataSourceReturnsCorrectNumberOfItemsAfterFetchingPhotos() {
+        let apiClient = dataSource!.apiClient as? MockAPIClient
+        apiClient?.stubPhotos = [Photo(identifier: "", title: "", description: "", ownerName: "", imageURL: NSURL(string: "apple.com")!, thumbnailURL: NSURL(string: "apple.com")!)]
+        dataSource?.fetchContent()
+        XCTAssertEqual(1, dataSource!.numberOfItems(), "PhotosDataSource not returning correct number of items")
+    }
+    
     func testCallsDelegateWithDidFetchDataMessage() {
         let delegate = MockDelegate()
         dataSource?.delegate = delegate

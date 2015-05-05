@@ -10,7 +10,7 @@ import UIKit
 
 public class APIClient: NSObject {
     
-    private var parser: PhotoParser?
+    public var parser: PhotoParser?
     
     public override convenience init() {
         self.init(parser: nil)
@@ -20,7 +20,7 @@ public class APIClient: NSObject {
         self.parser = parser
     }
     
-    public func fetchPhotosWithTags(tags: Array<String>?, completionBlock: (photos: Array<Photo>?, error: NSError?) -> Void) {
+    public func fetchPhotosWithTags(tags: Array<String>, completionBlock: (photos: Array<Photo>?, error: NSError?) -> Void) {
         // subclassing hook
     }
     
