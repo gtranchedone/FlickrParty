@@ -8,7 +8,7 @@
 
 import UIKit
 
-let reuseIdentifier = "Cell"
+let DefaultCellReuseIdentifier = "DefaultCellReuseIdentifier"
 
 public class BaseCollectionViewController: UICollectionViewController, ViewDataSourceDelegate {
 
@@ -18,9 +18,13 @@ public class BaseCollectionViewController: UICollectionViewController, ViewDataS
         }
     }
     
-    public init() {
+    public convenience init() {
         let flowLayout = UICollectionViewFlowLayout()
-        super.init(collectionViewLayout: flowLayout)
+        self.init(collectionViewLayout: flowLayout)
+    }
+    
+    public override init(collectionViewLayout layout: UICollectionViewLayout) {
+        super.init(collectionViewLayout: layout)
     }
     
     required public init(coder aDecoder: NSCoder) {
@@ -29,7 +33,7 @@ public class BaseCollectionViewController: UICollectionViewController, ViewDataS
     
     override public func viewDidLoad() {
         super.viewDidLoad()
-        self.collectionView!.registerClass(UICollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
+        self.collectionView!.registerClass(UICollectionViewCell.self, forCellWithReuseIdentifier: DefaultCellReuseIdentifier)
         self.collectionView!.backgroundView = CollectionBackgroundView(frame: self.collectionView!.bounds)
     }
     
@@ -86,7 +90,7 @@ public class BaseCollectionViewController: UICollectionViewController, ViewDataS
     }
 
     override public func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! UICollectionViewCell
+        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(DefaultCellReuseIdentifier, forIndexPath: indexPath) as! UICollectionViewCell
         cell.backgroundColor = UIColor.yellowColor()
         return cell
     }

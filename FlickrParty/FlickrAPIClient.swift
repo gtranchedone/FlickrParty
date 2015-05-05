@@ -15,7 +15,7 @@ public class FlickrAPIClient: APIClient {
     static let FlickrAPIKey = "31eb1c7d7d8532ac0493443606bbce13"
     
     struct FlickrAPI {
-        static let TagsSearchFormat = "https://api.flickr.com/services/rest/?format=json&nojsoncallback=?&method=flickr.photos.search&tags=%@&extras=description,owner_name,url_t,url_o&api_key=%@"
+        static let TagsSearchFormat = "https://api.flickr.com/services/rest/?format=json&nojsoncallback=?&method=flickr.photos.search&tags=%@&extras=description,owner_name,url_s,url_l,url_o&api_key=%@"
     }
     
     public convenience init() {

@@ -10,15 +10,15 @@ import UIKit
 
 public class Photo : Equatable {
     
-    let imageURL: NSURL
-    let thumbnailURL: NSURL
+    let imageURL: NSURL?
+    let thumbnailURL: NSURL?
     
     let title: String
     let ownerName: String
     let identifier: String
     let description: String
     
-    public init(identifier: String, title: String, description: String, ownerName: String, imageURL: NSURL, thumbnailURL: NSURL) {
+    public init(identifier: String, title: String, description: String, ownerName: String, imageURL: NSURL?, thumbnailURL: NSURL?) {
         self.title = title
         self.ownerName = ownerName
         self.identifier = identifier;

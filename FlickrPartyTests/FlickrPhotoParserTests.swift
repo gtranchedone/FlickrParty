@@ -43,14 +43,14 @@ class FlickrPhotoParserTests: XCTestCase {
     }
     
     func testReturnsCorrectFirstPhoto() {
-        let expectedPhoto = Photo(identifier: "17182996929", title: "Kod kuma Francuza (02.05.2015)", description: "Noćni provod u Boru - Kod kuma Francuza", ownerName: "www.bor030.net", imageURL: NSURL(string: "https://farm8.staticflickr.com/7758/17182996929_169bb08636_o.jpg")!, thumbnailURL: NSURL(string: "https://farm8.staticflickr.com/7758/17182996929_64fb30c111_t.jpg")!)
+        let expectedPhoto = Photo(identifier: "17373877915", title: "", description: "", ownerName: "BTKoch", imageURL: NSURL(string: "https://farm8.staticflickr.com/7698/17373877915_29a85fab82_l.jpg")!, thumbnailURL: NSURL(string: "https://farm8.staticflickr.com/7698/17373877915_8197c96856_m.jpg")!)
         let parsedPhotos = parseSamplePhotos()
         let actualPhoto = parsedPhotos.first!
         XCTAssertEqual(expectedPhoto, actualPhoto, "Parser didn't correctly parse first photo")
     }
     
     func testReturnsCorrectLastPhoto() {
-        let expectedPhoto = Photo(identifier: "16746460784", title: "Kod kuma Francuza (01.05.2015)", description: "Noćni provod u Boru - Kod kuma Francuza", ownerName: "www.bor030.net", imageURL: NSURL(string: "https://farm8.staticflickr.com/7760/16746460784_5d45560147_o.jpg")!, thumbnailURL: NSURL(string: "https://farm8.staticflickr.com/7760/16746460784_1a5dc3ab73_t.jpg")!)
+        let expectedPhoto = Photo(identifier: "17344959276", title: "Spring Banquet 2015 - Photo Booth", description: "Pictures from Hannah\nThe Majestic in Abilene, Texas", ownerName: "klar_rocks", imageURL: NSURL(string: "https://farm8.staticflickr.com/7698/17344959276_a8d583e9b3_o.jpg")!, thumbnailURL: NSURL(string: "https://farm8.staticflickr.com/7698/17344959276_bee2b0d2ba_m.jpg")!)
         let parsedPhotos = parseSamplePhotos()
         let actualPhoto = parsedPhotos.last!
         XCTAssertEqual(expectedPhoto, actualPhoto, "Parser didn't correctly parse last photo")

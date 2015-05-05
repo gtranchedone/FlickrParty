@@ -29,8 +29,11 @@ public class FlickrPhotoParser: PhotoParser {
         let identifier = jsonObject["id"] as? String != nil ? jsonObject["id"] as! String : ""
         let title = jsonObject["title"] as? String != nil ? jsonObject["title"] as! String : ""
         let ownerName = jsonObject["ownername"] as? String != nil ? jsonObject["ownername"] as! String : ""
-        let imageURL = jsonObject["url_o"] as? String != nil ? NSURL(string: jsonObject["url_o"] as! String)! : NSURL()
-        let thumbnailURL = jsonObject["url_t"] as? String != nil ? NSURL(string: jsonObject["url_t"] as! String)! : NSURL()
+        var imageURL = jsonObject["url_o"] as? String != nil ? NSURL(string: jsonObject["url_o"] as! String) : NSURL()
+        if imageURL == nil {
+            imageURL = jsonObject["url_l"] as? String != nil ? NSURL(string: jsonObject["url_l"] as! String) : NSURL()
+        }
+        let thumbnailURL = jsonObject["url_s"] as? String != nil ? NSURL(string: jsonObject["url_s"] as! String) : NSURL()
         var description = ""
         if let descriptionObject = jsonObject["description"] as? Dictionary<String, String> {
             if let descriptionString = descriptionObject["_content"] {
