@@ -30,7 +30,7 @@ public class ViewDataSource: NSObject {
         super.init()
     }
     
-    public func fetchContent() {
+    public func fetchContent(page: Int = 1) {
         // subclassing hook
     }
     

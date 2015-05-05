@@ -50,7 +50,7 @@ public class APIClient: NSObject {
         self.parser = parser
     }
     
-    public func fetchPhotosWithTags(tags: Array<String>, completionBlock: (response: APIResponse?, error: NSError?) -> Void) {
+    public func fetchPhotosWithTags(tags: Array<String>, page: Int = 1, completionBlock: (response: APIResponse?, error: NSError?) -> Void) {
         // subclassing hook
     }
     

@@ -17,7 +17,7 @@ class MockDataSource : ViewDataSource {
     var sections = 0
     var items = 0
     
-    override func fetchContent() {
+    override func fetchContent(page: Int = 1) {
         fetchedContent = true
     }
     

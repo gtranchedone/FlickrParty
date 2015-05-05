@@ -15,7 +15,7 @@ public class FlickrAPIClient: APIClient {
     static let FlickrAPIKey = "31eb1c7d7d8532ac0493443606bbce13"
     
     struct FlickrAPI {
-        static let TagsSearchFormat = "https://api.flickr.com/services/rest/?format=json&nojsoncallback=?&method=flickr.photos.search&tags=%@&extras=description,owner_name,url_s,url_l,url_o&api_key=%@"
+        static let TagsSearchFormat = "https://api.flickr.com/services/rest/?format=json&nojsoncallback=?&method=flickr.photos.search&tags=%@&extras=description,owner_name,url_s,url_l,url_o&api_key=%@&page=%d"
     }
     
     public convenience init() {
@@ -26,9 +26,9 @@ public class FlickrAPIClient: APIClient {
         super.init(parser: parser)
     }
     
-    override public func fetchPhotosWithTags(tags: Array<String>, completionBlock: (response: APIResponse?, error: NSError?) -> Void) {
+    override public func fetchPhotosWithTags(tags: Array<String>, page: Int = 1, completionBlock: (response: APIResponse?, error: NSError?) -> Void) {
         let tagsString = join(",", tags)
-        let photosURL = String(format: FlickrAPI.TagsSearchFormat, arguments: [tagsString, FlickrAPIClient.FlickrAPIKey])
+        let photosURL = String(format: FlickrAPI.TagsSearchFormat, arguments: [tagsString, FlickrAPIClient.FlickrAPIKey, page])
         Alamofire.request(.GET, photosURL).responseJSON(options: .AllowFragments) { [unowned self] (_, _, jsonResponse, error) -> Void in
             if let error = error {
                 completionBlock(response: nil, error: error)

@@ -69,6 +69,16 @@ public class PartyPhotosViewController: BaseCollectionViewController, UICollecti
         self.showViewController(viewController, sender: indexPath)
     }
     
+    public override func collectionView(collectionView: UICollectionView, willDisplayCell cell: UICollectionViewCell, forItemAtIndexPath indexPath: NSIndexPath) {
+        if (indexPath.item == (self.dataSource!.numberOfItems() - 1)) {
+            if let metadata = self.dataSource!.lastMetadata {
+                if metadata.page < metadata.numberOfPages {
+                    self.dataSource!.fetchContent(page: metadata.page + 1)
+                }
+            }
+        }
+    }
+    
     // MARK: - UICollectionViewFlowLayoutDelegate -
     
     public func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
