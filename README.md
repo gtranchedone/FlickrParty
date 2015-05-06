@@ -8,7 +8,7 @@ This project is written in Swift and uses CocoaPods for dependencies. The only P
 * [Alamofire](https://github.com/Alamofire/Alamofire) (Swiftly equivalent of AFNetworking)
 * [HanekeSwift](https://github.com/Haneke/HanekeSwift) (Swift port of the caching framework Haneke)
 
-To build and run this project, clone the repository and run `pod install`.
+Since the used Pods are being committed to the repository, you shouldn't need to do anything in order to build and run this project. Anyway, you can also clone the repository and run `pod install` like so:
 
     git clone ...
     cd path/to/FlickrParty
