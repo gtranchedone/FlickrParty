@@ -8,7 +8,7 @@
 
 import UIKit
 
-public class Photo : Equatable {
+public class Photo : Equatable, DebugPrintable {
     
     let imageURL: NSURL?
     let thumbnailURL: NSURL?
@@ -17,6 +17,16 @@ public class Photo : Equatable {
     let ownerName: String
     let identifier: String
     let description: String
+    public var debugDescription: String {
+        get {
+            return ["identifier": identifier,
+                    "title": title,
+                    "owner": ownerName,
+                    "description": description,
+                    "imageURL": imageURL?.description,
+                    "thumbnailURL": thumbnailURL?.description].debugDescription
+        }
+    }
     
     public init(identifier: String, title: String, description: String, ownerName: String, imageURL: NSURL?, thumbnailURL: NSURL?) {
         self.title = title

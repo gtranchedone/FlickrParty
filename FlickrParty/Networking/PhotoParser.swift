@@ -8,7 +8,9 @@
 
 import UIKit
 
-public class PhotoParser: NSObject {
+public class PhotoParser {
+    
+    public init() {}
    
     public func parseMetadata(jsonObject: AnyObject) -> APIResponseMetadata {
         // subclassing hook
