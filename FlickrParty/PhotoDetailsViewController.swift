@@ -11,10 +11,20 @@ import Haneke
 
 public class PhotoDetailsViewController: UIViewController, UIScrollViewDelegate {
 
-    var photo: Photo?
-    let imageView = UIImageView()
-    let scrollView = UIScrollView()
-    let imageCache = Cache<UIImage>(name: "PhotoDetailsImageCache")
+    public var photo: Photo?
+    public let imageView = UIImageView()
+    public let scrollView = UIScrollView()
+    public let imageCache = Cache<UIImage>(name: "PhotoDetailsImageCache")
+    public let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .Gray)
+    
+    public init(photo: Photo) {
+        self.photo = photo
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    public required init(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
     
     override public func viewDidLoad() {
         super.viewDidLoad()
@@ -59,6 +69,11 @@ public class PhotoDetailsViewController: UIViewController, UIScrollViewDelegate 
     private func setUpView() {
         title = photo?.title
         view.backgroundColor = UIColor.whiteColor()
+        view.insertSubview(activityIndicator, belowSubview: scrollView)
+        activityIndicator.setTranslatesAutoresizingMaskIntoConstraints(false)
+        let centerXContraint = NSLayoutConstraint(item: view, attribute: .CenterX, relatedBy: .Equal, toItem: activityIndicator, attribute: .CenterX, multiplier: 1, constant: 0)
+        let centerYContraint = NSLayoutConstraint(item: view, attribute: .CenterY, relatedBy: .Equal, toItem: activityIndicator, attribute: .CenterY, multiplier: 1, constant: 0)
+        view.addConstraints([centerXContraint, centerYContraint])
     }
     
     private func loadPhotoIfNeeded() {
@@ -66,8 +81,10 @@ public class PhotoDetailsViewController: UIViewController, UIScrollViewDelegate 
             return // Don't try to load an image that was already loaded
         }
         if let imageURL = photo?.imageURL {
+            activityIndicator.startAnimating()
             let imageFetcher = NetworkFetcher<UIImage>(URL: imageURL)
             imageCache.fetch(fetcher: imageFetcher).onSuccess { [weak self] image in
+                self?.activityIndicator.stopAnimating()
                 self?.imageView.image = image;
             }
         }
