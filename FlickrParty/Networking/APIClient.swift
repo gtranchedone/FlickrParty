@@ -38,20 +38,10 @@ public struct APIResponse {
     
 }
 
-public class APIClient: NSObject {
+public protocol APIClient {
     
-    public var parser: PhotoParser?
+    var parser: PhotoParser? {get set}
     
-    public override convenience init() {
-        self.init(parser: nil)
-    }
-    
-    public init(parser: PhotoParser?) {
-        self.parser = parser
-    }
-    
-    public func fetchPhotosWithTags(tags: Array<String>, page: Int = 1, completionBlock: (response: APIResponse?, error: NSError?) -> Void) {
-        // subclassing hook
-    }
+    func fetchPhotosWithTags(tags: Array<String>, page: Int, completionBlock: (response: APIResponse?, error: NSError?) -> Void)
     
 }

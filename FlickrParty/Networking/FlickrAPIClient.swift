@@ -11,6 +11,8 @@ import Alamofire
 
 public class FlickrAPIClient: APIClient {
     
+    public var parser: PhotoParser?
+    
     static let FlickrAPIDomain = "FlickrAPIDomain"
     static let FlickrAPIKey = "31eb1c7d7d8532ac0493443606bbce13"
     
@@ -22,11 +24,11 @@ public class FlickrAPIClient: APIClient {
         self.init(parser: FlickrPhotoParser())
     }
     
-    override public init(parser: PhotoParser?) {
-        super.init(parser: parser)
+    public init(parser: PhotoParser?) {
+        self.parser = parser
     }
     
-    override public func fetchPhotosWithTags(tags: Array<String>, page: Int = 1, completionBlock: (response: APIResponse?, error: NSError?) -> Void) {
+    public func fetchPhotosWithTags(tags: Array<String>, page: Int = 1, completionBlock: (response: APIResponse?, error: NSError?) -> Void) {
         let tagsString = join(",", tags)
         let photosURL = String(format: FlickrAPI.TagsSearchFormat, arguments: [tagsString, FlickrAPIClient.FlickrAPIKey, page])
         Alamofire.request(.GET, photosURL).responseJSON(options: .AllowFragments) { [unowned self] (_, _, jsonResponse, error) -> Void in

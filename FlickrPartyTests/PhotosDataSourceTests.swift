@@ -16,7 +16,9 @@ class MockAPIClient : APIClient {
     var stubPhotos: Array<Photo>?
     var didCallFetchContent = false;
     
-    override func fetchPhotosWithTags(tags: Array<String>?, page: Int = 1, completionBlock: (response: APIResponse?, error: NSError?) -> Void) {
+    var parser: PhotoParser?
+    
+    func fetchPhotosWithTags(tags: Array<String>, page: Int, completionBlock: (response: APIResponse?, error: NSError?) -> Void) {
         didCallFetchContent = true
         let response = APIResponse(metadata: nil, responseObject: stubPhotos)
         completionBlock(response: response, error: error)
