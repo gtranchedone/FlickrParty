@@ -50,12 +50,6 @@ class PhotosViewControllerTests: XCTestCase {
             "PartyPhotosViewController doesn't inherit from BaseCollectionViewController")
     }
     
-    func testViewControllerHasAppropriateTitleAfterViewDidLoad() {
-        viewController?.view
-        let actualTitle = viewController!.title
-        XCTAssertEqual("Parties", actualTitle!, "PartyPhotosViewController doesn't have an appropriate title")
-    }
-    
     func testViewControllerReloadsDataWhenReceivingNoticeThatDataSourceFetchedData() {
         let collectionView = MockCollectionView(frame: CGRectZero, collectionViewLayout: UICollectionViewFlowLayout())
         viewController?.collectionView = collectionView

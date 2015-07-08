@@ -31,14 +31,35 @@ public class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     private func setUpRootViewController() {
-        let partyPhotosViewController = PhotosViewController()
-        partyPhotosViewController.dataSource = PartyPhotosDataSource(apiClient: FlickrAPIClient())
+        let partyPhotosViewController = makePartyPhotosViewController()
         let partyPhotosNavigationController = UINavigationController(rootViewController: partyPhotosViewController)
+        
+        let nearbyPartyPhotosViewController = makeNearbyPartyPhotosViewController()
+        let nearbyPartyPhotosNavigationController = UINavigationController(rootViewController: nearbyPartyPhotosViewController)
+        
         let tabBarController = UITabBarController()
-        tabBarController.viewControllers = [partyPhotosNavigationController]
+        tabBarController.viewControllers = [partyPhotosNavigationController, nearbyPartyPhotosNavigationController]
         window?.rootViewController = tabBarController
+        
+        // NOTE: for some reason you have to set the tabBarItems here otherwise they won't show up properly or change when you select them
+        partyPhotosNavigationController.tabBarItem = UITabBarItem(title: partyPhotosViewController.title, image: UIImage(named: "TabIconBaloon"), selectedImage: nil)
+        nearbyPartyPhotosNavigationController.tabBarItem = UITabBarItem(title: nearbyPartyPhotosViewController.title, image: UIImage(named: "TabIconLocation"), selectedImage: nil)
+    }
+    
+    private func makePartyPhotosViewController() -> PhotosViewController {
+        let viewController = PhotosViewController()
+        viewController.title = "All Parties"
+        viewController.dataSource = PartyPhotosDataSource(apiClient: FlickrAPIClient())
+        return viewController
     }
 
-
+    private func makeNearbyPartyPhotosViewController() -> PhotosViewController {
+        let viewController = PhotosViewController()
+        viewController.title = "Parties Nearby"
+        viewController.tabBarItem.title = "Parties Nearby"
+        viewController.tabBarItem.image = UIImage(named: "TabIconLocation")
+        return viewController
+    }
+    
 }
 

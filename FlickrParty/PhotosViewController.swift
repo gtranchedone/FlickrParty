@@ -42,7 +42,6 @@ public class PhotosViewController: BaseCollectionViewController, UICollectionVie
     override public func viewDidLoad() {
         imageCache.removeAll() // to avoid crash with some issue in Haneke
         super.viewDidLoad()
-        self.title = "Parties"
         self.collectionView?.backgroundColor = UIColor.whiteColor()
         self.tabBarItem = UITabBarItem(tabBarSystemItem: .Featured, tag: 0)
         self.collectionView!.registerClass(PhotoCollectionViewCell.self, forCellWithReuseIdentifier: PhotoCellReuseIdentifier)

@@ -32,14 +32,17 @@ class AppDelegateTests: XCTestCase {
     }
     
     func testRootViewControllerHasPartyPhotosControllerAsFirstTab() {
-        let window = appDelegate?.window
-        let rootViewController = window?.rootViewController as? UITabBarController
-        let navigationController: UINavigationController? = rootViewController?.viewControllers?.first as? UINavigationController
-        let viewController = navigationController?.viewControllers.first as? UIViewController
+        let viewController = viewControllerInFirstTab()
         XCTAssert(viewController is PhotosViewController, "The first tab doesn't contain a PartyPhotosViewController")
     }
     
-    func testPhotosViewControllerHasPhotoDataSource() {
+    func testViewControllerIInFirstTabHasAppropriateTitleAfterViewDidLoad() {
+        let viewController = viewControllerInFirstTab()
+        let actualTitle = viewController!.title
+        XCTAssertEqual("All Parties", actualTitle!, "PartyPhotosViewController doesn't have an appropriate title")
+    }
+    
+    func testPartyPhotosViewControllerHasPhotoDataSource() {
         let window = appDelegate?.window
         let rootViewController = window?.rootViewController as? UITabBarController
         let navigationController: UINavigationController? = rootViewController?.viewControllers?.first as? UINavigationController
@@ -47,12 +50,36 @@ class AppDelegateTests: XCTestCase {
         XCTAssertTrue(viewController?.dataSource! is PhotosDataSource, "The PhotosViewController hasn't the right dataSource")
     }
     
-    func testPhotosViewControllerHasPhotoDataSourceWithRightAPIClient() {
+    func testPartyPhotosViewControllerHasPhotoDataSourceWithRightAPIClient() {
         let window = appDelegate?.window
         let rootViewController = window?.rootViewController as? UITabBarController
         let navigationController: UINavigationController? = rootViewController?.viewControllers?.first as? UINavigationController
         let viewController = navigationController?.viewControllers.first as? PhotosViewController
         XCTAssertTrue(viewController!.dataSource!.apiClient! is FlickrAPIClient, "The photosDataSource wasn't setup properly")
+    }
+    
+    func testViewControllerInSecondTabHasAppropriateTitleAfterViewDidLoad() {
+        let viewController = viewControllerInSecondTab()
+        let actualTitle = viewController!.title
+        XCTAssertEqual("Parties Nearby", actualTitle!, "PartyPhotosViewController doesn't have an appropriate title")
+    }
+    
+    // MARK: private
+    
+    func viewControllerInFirstTab() -> UIViewController? {
+        return viewControllerInTabAtIndex(0)
+    }
+    
+    func viewControllerInSecondTab() -> UIViewController? {
+        return viewControllerInTabAtIndex(1)
+    }
+    
+    func viewControllerInTabAtIndex(index: Int) -> UIViewController? {
+        let window = appDelegate?.window
+        let rootViewController = window?.rootViewController as? UITabBarController
+        let navigationController: UINavigationController? = rootViewController?.viewControllers?[index] as? UINavigationController
+        let viewController = navigationController?.viewControllers.first as? UIViewController
+        return viewController
     }
 
 }

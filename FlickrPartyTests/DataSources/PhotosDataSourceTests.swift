@@ -26,7 +26,7 @@ class MockAPIClient : APIClient {
     
 }
 
-class MockDelegate : ViewDataSourceDelegate {
+class MockDataSourceDelegate : ViewDataSourceDelegate {
     
     var didCallDelegateForSuccess = false
     var didCallDelegateForFailure = false
@@ -78,14 +78,14 @@ class PhotosDataSourceTests: XCTestCase {
     }
     
     func testCallsDelegateWithDidFetchDataMessage() {
-        let delegate = MockDelegate()
+        let delegate = MockDataSourceDelegate()
         dataSource?.delegate = delegate
         dataSource?.fetchContent()
         XCTAssertTrue(delegate.didCallDelegateForSuccess, "PhotosDataSource didn't call the delegate after successfully fetching content")
     }
     
     func testCallsDelegateWithDidFailFetchingDataMessage() {
-        let delegate = MockDelegate()
+        let delegate = MockDataSourceDelegate()
         let apiClient = dataSource?.apiClient as? MockAPIClient
         apiClient?.error = NSError(domain: "TestsDomain", code: 1, userInfo: nil)
         dataSource?.delegate = delegate
