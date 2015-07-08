@@ -23,7 +23,7 @@ public class PhotosDataSource: ViewDataSource {
     override public func fetchContent(page: Int = 1) {
         if let apiClient = self.apiClient {
             loading = true
-            apiClient.fetchPhotosWithTags(["party"], page: page) { [unowned self] response, possibleError in
+            performFetch(page) { [unowned self] response, possibleError in
                 if let error = possibleError {
                     self.delegate?.viewDataSourceDidFailFetchingContent(self, error: error)
                 }
@@ -46,6 +46,10 @@ public class PhotosDataSource: ViewDataSource {
                 self.loading = false
             }
         }
+    }
+    
+    internal func performFetch(page: Int, completionBlock: (APIResponse?, NSError?) -> Void) -> Void {
+        // TODO: subclassing hook
     }
     
     public override func numberOfItems() -> Int {

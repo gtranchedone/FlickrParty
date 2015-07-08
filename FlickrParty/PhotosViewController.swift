@@ -1,5 +1,5 @@
 //
-//  PartyPhotosViewController.swift
+//  PhotosViewController.swift
 //  FlickrParty
 //
 //  Created by Gianluca Tranchedone on 04/05/2015.
@@ -12,7 +12,7 @@ import Haneke
 let ThumbailsFormatName = "thumbnails"
 let PhotoCellReuseIdentifier = "PhotoCellReuseIdentifier"
 
-public class PartyPhotosViewController: BaseCollectionViewController, UICollectionViewDelegateFlowLayout {
+public class PhotosViewController: BaseCollectionViewController, UICollectionViewDelegateFlowLayout {
     
     private let maxInMemoryPhotos = 20
     public let imageCache = Cache<UIImage>(name: "PhotoImagesCache")

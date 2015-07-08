@@ -20,7 +20,7 @@ class MockCollectionView : UICollectionView {
     
 }
 
-class MockPartyPhotosViewController : PartyPhotosViewController {
+class MockPhotosViewController : PhotosViewController {
     
     var viewControllerAttemptedToPresent: UIViewController?
     
@@ -30,13 +30,13 @@ class MockPartyPhotosViewController : PartyPhotosViewController {
     
 }
 
-class PartyPhotosViewControllerTests: XCTestCase {
+class PhotosViewControllerTests: XCTestCase {
 
-    var viewController: PartyPhotosViewController?
+    var viewController: PhotosViewController?
     
     override func setUp() {
         super.setUp()
-        viewController = PartyPhotosViewController()
+        viewController = PhotosViewController()
     }
     
     override func tearDown() {
@@ -67,7 +67,7 @@ class PartyPhotosViewControllerTests: XCTestCase {
         let errorMessage = "This test is supposed to make this message visible to the user"
         let userInfo = [NSLocalizedDescriptionKey: errorMessage]
         let error = NSError(domain: "TestDomain", code: 1, userInfo: userInfo)
-        let mockViewController = MockPartyPhotosViewController()
+        let mockViewController = MockPhotosViewController()
         mockViewController.viewDataSourceDidFailFetchingContent(PhotosDataSource(), error: error)
         let alertController = mockViewController.viewControllerAttemptedToPresent as? UIAlertController
         XCTAssertEqual(alertController!.message!, errorMessage, "PhotosViewController didn't present the right error message to the user")

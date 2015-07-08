@@ -56,7 +56,7 @@ class PhotosDataSourceTests: XCTestCase {
     
     override func setUp() {
         super.setUp()
-        dataSource = PhotosDataSource(apiClient: MockAPIClient())
+        dataSource = PartyPhotosDataSource(apiClient: MockAPIClient())
     }
     
     override func tearDown() {
