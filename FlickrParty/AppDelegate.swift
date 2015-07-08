@@ -54,7 +54,7 @@ public class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     private func makeNearbyPartyPhotosViewController() -> PhotosViewController {
-        let viewController = PhotosViewController()
+        let viewController = NearbyPartyPhotosViewController()
         viewController.title = "Parties Nearby"
         viewController.tabBarItem.title = "Parties Nearby"
         viewController.tabBarItem.image = UIImage(named: "TabIconLocation")

@@ -10,28 +10,6 @@ import UIKit
 import XCTest
 import FlickrParty
 
-// declaring the class here instead of inside the methods to make the compiler happy
-class MockDataSource : ViewDataSource {
-    
-    var fetchedContent = false
-    var sections = 0
-    var items = 0
-    
-    override func fetchContent(page: Int = 1) {
-        fetchedContent = true
-        loading = true
-    }
-    
-    override func numberOfSections() -> Int {
-        return sections
-    }
-    
-    override func numberOfItemsInSection(section: Int) -> Int {
-        return items
-    }
-    
-}
-
 class BaseCollectionViewControllerTests: XCTestCase {
 
     var viewController: BaseCollectionViewController?
