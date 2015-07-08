@@ -62,5 +62,13 @@ public class ViewDataSource: NSObject {
     public func itemAtIndexPath(indexPath: NSIndexPath) -> AnyObject? {
         return nil
     }
+    
+    public func itemAtIndexPath(indexPath: NSIndexPath, completion: ((AnyObject?) -> ())) {
+        // subclassing hook
+    }
+    
+    public func cacheItemAtIndexPath(indexPath: NSIndexPath) {
+        // subclassing hook
+    }
    
 }

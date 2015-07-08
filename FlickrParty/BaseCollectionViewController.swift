@@ -44,7 +44,7 @@ public class BaseCollectionViewController: UICollectionViewController, ViewDataS
 
     override public func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        println("\n\n!!!\nDid Receive Memory Warning\n!!!\n\n")
+        println("\n\n!!! Received Memory Warning !!!\n\n")
     }
     
     public override func willRotateToInterfaceOrientation(toInterfaceOrientation: UIInterfaceOrientation, duration: NSTimeInterval) {

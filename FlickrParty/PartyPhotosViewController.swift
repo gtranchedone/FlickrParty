@@ -14,7 +14,8 @@ let PhotoCellReuseIdentifier = "PhotoCellReuseIdentifier"
 
 public class PartyPhotosViewController: BaseCollectionViewController, UICollectionViewDelegateFlowLayout {
     
-    let imageCache = Cache<UIImage>(name: "PartyPhotosCache")
+    private let maxInMemoryPhotos = 20
+    public let imageCache = Cache<UIImage>(name: "PhotoImagesCache")
     
     deinit {
         NSNotificationCenter.defaultCenter().removeObserver(self)
@@ -47,32 +48,27 @@ public class PartyPhotosViewController: BaseCollectionViewController, UICollecti
         self.collectionView!.registerClass(PhotoCollectionViewCell.self, forCellWithReuseIdentifier: PhotoCellReuseIdentifier)
     }
     
-    public override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // !!!: dirty hack to avoid crashing the app when exceeding memory. To be fixed by creating a cache for Photos using Haneke.
-        self.dataSource?.invalidateContent()
-        self.dataSource?.fetchContent()
-    }
-    
     // MARK: - UICollectionViewDelegate -
     
     public override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(PhotoCellReuseIdentifier, forIndexPath: indexPath) as! PhotoCollectionViewCell
-        let photo = dataSource!.itemAtIndexPath(indexPath) as! Photo
-        if let thumbnailURL = photo.thumbnailURL {
-            let imageFetcher = NetworkFetcher<UIImage>(URL: thumbnailURL)
-            imageCache.fetch(fetcher: imageFetcher, formatName: ThumbailsFormatName).onSuccess { image in
-                let newIndexPath = collectionView.indexPathForCell(cell)
-                if let theIndexPath = newIndexPath {
-                    if theIndexPath == indexPath {
+        dataSource!.itemAtIndexPath(indexPath, completion: { fetchedPhoto in
+            let photo = fetchedPhoto as! Photo
+            if let thumbnailURL = photo.thumbnailURL {
+                let imageFetcher = NetworkFetcher<UIImage>(URL: thumbnailURL)
+                self.imageCache.fetch(fetcher: imageFetcher, formatName: ThumbailsFormatName).onSuccess { image in
+                    let newIndexPath = collectionView.indexPathForCell(cell)
+                    if let theIndexPath = newIndexPath {
+                        if theIndexPath == indexPath {
+                            cell.imageView.image = image
+                        }
+                    }
+                    else {
                         cell.imageView.image = image
                     }
                 }
-                else {
-                    cell.imageView.image = image
-                }
             }
-        }
+        })
         return cell
     }
     
@@ -84,12 +80,32 @@ public class PartyPhotosViewController: BaseCollectionViewController, UICollecti
     }
     
     public override func collectionView(collectionView: UICollectionView, willDisplayCell cell: UICollectionViewCell, forItemAtIndexPath indexPath: NSIndexPath) {
+        // load more content if needed
         if (indexPath.item == (self.dataSource!.numberOfItems() - 1)) {
             if let metadata = self.dataSource!.lastMetadata {
                 if metadata.page < metadata.numberOfPages {
                     self.dataSource!.fetchContent(page: metadata.page + 1)
                 }
             }
+        }
+        
+        // cache photos that are no longer visible and are outside a minimum scrollable bounds
+        let visibleIndexPaths = collectionView.indexPathsForVisibleItems()
+        if visibleIndexPaths.isEmpty {
+            return
+        }
+        
+        let firstVisibleIndexPath = visibleIndexPaths.first as! NSIndexPath
+        let scrollingDown = (indexPath.item - firstVisibleIndexPath.item) > 0
+        var indexPathToCache: NSIndexPath!
+        if scrollingDown {
+            indexPathToCache = NSIndexPath(forItem: indexPath.item - maxInMemoryPhotos, inSection: 0)
+        }
+        else {
+            indexPathToCache = NSIndexPath(forItem: indexPath.item + maxInMemoryPhotos, inSection: 0)
+        }
+        if (indexPathToCache.item >= 0 && indexPathToCache.item < dataSource?.numberOfItems()) {
+            dataSource?.cacheItemAtIndexPath(indexPathToCache)
         }
     }
     

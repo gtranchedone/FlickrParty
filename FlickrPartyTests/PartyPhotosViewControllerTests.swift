@@ -100,4 +100,6 @@ class PartyPhotosViewControllerTests: XCTestCase {
         XCTAssertFalse(activityIndicator!.isAnimating(), "PhotosViewController didn't stop activity indicator after fetching photos")
     }
     
+    // TODO: needs tests for using new dataSource caching mechanism
+    
 }

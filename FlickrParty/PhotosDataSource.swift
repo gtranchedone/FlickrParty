@@ -7,10 +7,13 @@
 //
 
 import UIKit
+import Haneke
 
 public class PhotosDataSource: ViewDataSource {
    
     private var photos: Array<Photo>?
+    public var photosCache = Cache<Photo>(name: "PhotoObjectsCache")
+    private let placeholderPhoto = Photo(identifier: "", title: "", description: "", ownerName: "", imageURL: nil, thumbnailURL: nil)
     
     override public func invalidateContent() {
         photos = nil
@@ -68,6 +71,37 @@ public class PhotosDataSource: ViewDataSource {
         }
         else {
             return nil
+        }
+    }
+    
+    override public func itemAtIndexPath(indexPath: NSIndexPath, completion: ((AnyObject?) -> ())) {
+        if let photos = self.photos {
+            let photo = photos[indexPath.item]
+            if photo === placeholderPhoto {
+                photosCache.fetch(key: indexPath.description, formatName: HanekeGlobals.Cache.OriginalFormatName).onFailure({ error in
+                    println("\(error)")
+                    completion(photo)
+                }).onSuccess { fetchedPhoto in
+                    self.photos?[indexPath.item] = fetchedPhoto
+                    completion(fetchedPhoto)
+                }
+            }
+            else {
+                completion(photo)
+            }
+        }
+    }
+    
+    public override func cacheItemAtIndexPath(indexPath: NSIndexPath) {
+        if let thePhotos = photos {
+            let photo = thePhotos[indexPath.item]
+            if photo === placeholderPhoto {
+                return
+            }
+            
+            photosCache.set(value: photo, key: indexPath.description, formatName: HanekeGlobals.Cache.OriginalFormatName, success: { fetchedPhoto in
+                self.photos?[indexPath.item] = self.placeholderPhoto
+            })
         }
     }
     
