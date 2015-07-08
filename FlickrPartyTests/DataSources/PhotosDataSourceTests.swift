@@ -9,6 +9,7 @@
 import UIKit
 import XCTest
 import FlickrParty
+import CoreLocation
 
 class MockAPIClient : APIClient {
     
@@ -22,6 +23,10 @@ class MockAPIClient : APIClient {
         didCallFetchContent = true
         let response = APIResponse(metadata: nil, responseObject: stubPhotos)
         completionBlock(response: response, error: error)
+    }
+    
+    func fetchPhotosWithTags(tags: Array<String>, location: CLLocationCoordinate2D?, page: Int, completionBlock: (response: APIResponse?, error: NSError?) -> Void) {
+        // TODO: implement me
     }
     
 }

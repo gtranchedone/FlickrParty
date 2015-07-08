@@ -37,6 +37,7 @@
 		99F12F761B4D54FE00F682DD /* NearbyPartyPhotosViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99F12F751B4D54FE00F682DD /* NearbyPartyPhotosViewControllerTests.swift */; };
 		99F12F781B4D555600F682DD /* NearbyPartyPhotosViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99F12F771B4D555600F682DD /* NearbyPartyPhotosViewController.swift */; };
 		99F12F7B1B4D643F00F682DD /* MockDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99F12F7A1B4D643F00F682DD /* MockDataSource.swift */; };
+		99F12F7D1B4D672E00F682DD /* NearbyPartyPhotosDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99F12F7C1B4D672E00F682DD /* NearbyPartyPhotosDataSource.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -86,6 +87,7 @@
 		99F12F751B4D54FE00F682DD /* NearbyPartyPhotosViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NearbyPartyPhotosViewControllerTests.swift; sourceTree = "<group>"; };
 		99F12F771B4D555600F682DD /* NearbyPartyPhotosViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NearbyPartyPhotosViewController.swift; sourceTree = "<group>"; };
 		99F12F7A1B4D643F00F682DD /* MockDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockDataSource.swift; sourceTree = "<group>"; };
+		99F12F7C1B4D672E00F682DD /* NearbyPartyPhotosDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NearbyPartyPhotosDataSource.swift; sourceTree = "<group>"; };
 		D7CE6F5BC500305BB5D498A7 /* Pods-FlickrParty.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FlickrParty.debug.xcconfig"; path = "Pods/Target Support Files/Pods-FlickrParty/Pods-FlickrParty.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -246,6 +248,7 @@
 		99F12F5B1B4D42AA00F682DD /* DataSources */ = {
 			isa = PBXGroup;
 			children = (
+				99F12F7C1B4D672E00F682DD /* NearbyPartyPhotosDataSource.swift */,
 				99F12F5C1B4D42AA00F682DD /* PartyPhotosDataSource.swift */,
 				99F12F5D1B4D42AA00F682DD /* PhotosDataSource.swift */,
 				99F12F5E1B4D42AA00F682DD /* ViewDataSource.swift */,
@@ -446,6 +449,7 @@
 				9983C7FE1AF7BE77003AEEF9 /* AppDelegate.swift in Sources */,
 				99F12F341B4C405E00F682DD /* PhotoParser.swift in Sources */,
 				99F12F491B4D3E7C00F682DD /* BaseCollectionViewController.swift in Sources */,
+				99F12F7D1B4D672E00F682DD /* NearbyPartyPhotosDataSource.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

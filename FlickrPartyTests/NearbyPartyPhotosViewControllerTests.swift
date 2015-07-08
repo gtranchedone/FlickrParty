@@ -15,6 +15,7 @@ class MockLocationManager: CLLocationManager {
     
     static var stubAuthorizationStatus = CLAuthorizationStatus.NotDetermined
     var didAskForInUseAuthorization = false
+    var shouldFail = false
     
     override class func authorizationStatus() -> CLAuthorizationStatus {
         return stubAuthorizationStatus
@@ -22,6 +23,19 @@ class MockLocationManager: CLLocationManager {
     
     override func requestWhenInUseAuthorization() {
         didAskForInUseAuthorization = true
+    }
+    
+    override func startUpdatingLocation() {
+        if shouldFail {
+            delegate?.locationManager?(self, didFailWithError: NSError(domain: "stubs domain", code: 404, userInfo: nil))
+        }
+        else {
+            delegate?.locationManager?(self, didUpdateLocations: [])
+        }
+    }
+    
+    override func stopUpdatingLocation() {
+        // do nothing
     }
     
 }
@@ -113,6 +127,29 @@ class NearbyPartyPhotosViewControllerTests: XCTestCase {
         updateLocationAuthorizationStatusFromDeniedToAuthorized(true)
         let mockDataSource = viewController?.dataSource as! MockDataSource
         XCTAssertTrue(mockDataSource.loading, "Did not ask dataSource to reload data when authorization for using location service changed to 'authorized'")
+    }
+    
+    func testDisplaysAnAppropriateMessageIfUserLocationIsUnavailable() {
+        let mockLocationManager = viewController?.locationManager as! MockLocationManager
+        mockLocationManager.dynamicType.stubAuthorizationStatus = .AuthorizedWhenInUse
+        mockLocationManager.shouldFail = true
+        
+        viewController?.beginAppearanceTransition(true, animated: false)
+        viewController?.endAppearanceTransition()
+        
+        if let backgroundView = viewController?.collectionView?.backgroundView as? CollectionBackgroundView {
+            let expectedMessage = "Sorry, your location cannot be determined. Please try again later."
+            XCTAssertFalse(backgroundView.activityIndicator.isAnimating(), "Shouldn't be showing the activity indicator anymore")
+            if let message = backgroundView.textLabel.text {
+                XCTAssertEqual(message, expectedMessage, "Isn't showing the expected message to users whose location cannot be determined")
+            }
+            else {
+                XCTFail("Isn't showing the expected message to users who deny usage of location service")
+            }
+        }
+        else {
+            XCTFail("Doesn't have an appropriate backgroundView to display messages")
+        }
     }
     
     // MARK: Private

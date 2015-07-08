@@ -6,8 +6,8 @@
 //  Copyright (c) 2015 Gianluca Tranchedone. All rights reserved.
 //
 
-import Foundation
 import Alamofire
+import CoreLocation
 
 public class FlickrAPIClient: APIClient {
     
@@ -18,6 +18,7 @@ public class FlickrAPIClient: APIClient {
     
     struct FlickrAPI {
         static let TagsSearchFormat = "https://api.flickr.com/services/rest/?format=json&nojsoncallback=?&method=flickr.photos.search&tags=%@&extras=description,owner_name,url_s,url_l,url_o&api_key=%@&page=%d"
+        static let TagsAndGeoSearchFormat = "https://api.flickr.com/services/rest/?format=json&nojsoncallback=?&method=flickr.photos.search&tags=%@&extras=description,owner_name,url_s,url_l,url_o,geo&has_geo=1&api_key=%@&page=%d&lat=%f&long=%f"
     }
     
     public convenience init() {
@@ -29,8 +30,24 @@ public class FlickrAPIClient: APIClient {
     }
     
     public func fetchPhotosWithTags(tags: Array<String>, page: Int = 1, completionBlock: (response: APIResponse?, error: NSError?) -> Void) {
+        fetchPhotosWithTags(tags, location: nil, page: page, completionBlock: completionBlock)
+    }
+    
+    public func fetchPhotosWithTags(tags: Array<String>, location: CLLocationCoordinate2D?, page: Int, completionBlock: (response: APIResponse?, error: NSError?) -> Void) {
         let tagsString = join(",", tags)
-        let photosURL = String(format: FlickrAPI.TagsSearchFormat, arguments: [tagsString, FlickrAPIClient.FlickrAPIKey, page])
+        let arguments: [CVarArgType]
+        let format: String
+        if let coordinate = location {
+            format = FlickrAPI.TagsAndGeoSearchFormat
+            arguments = [tagsString, FlickrAPIClient.FlickrAPIKey, page, coordinate.latitude, coordinate.longitude]
+        }
+        else {
+            format = FlickrAPI.TagsSearchFormat
+            arguments = [tagsString, FlickrAPIClient.FlickrAPIKey, page]
+        }
+        let photosURL = String(format: format, arguments: arguments)
+        
+        println("- Perofming request with URL \(photosURL)")
         Alamofire.request(.GET, photosURL).responseJSON(options: .AllowFragments) { [unowned self] (_, _, jsonResponse, error) -> Void in
             if let error = error {
                 completionBlock(response: nil, error: error)

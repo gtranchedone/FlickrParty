@@ -39,7 +39,9 @@ public class BaseCollectionViewController: UICollectionViewController, ViewDataS
     
     override public func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        reloadData()
+        if (dataSource?.numberOfItems() <= 0) {
+            reloadData()
+        }
     }
 
     override public func didReceiveMemoryWarning() {

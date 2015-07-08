@@ -13,9 +13,19 @@ public class NearbyPartyPhotosViewController: PhotosViewController, CLLocationMa
 
     public var locationManager = CLLocationManager()
     
+    public override func viewDidLoad() {
+        super.viewDidLoad()
+        dataSource = NearbyPartyPhotosDataSource(apiClient: FlickrAPIClient())
+    }
+    
     public override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         askForUseLocationServiceIfNeeded()
+    }
+    
+    public override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        locationManager.stopUpdatingLocation()
     }
     
     private func askForUseLocationServiceIfNeeded() {
@@ -37,7 +47,9 @@ public class NearbyPartyPhotosViewController: PhotosViewController, CLLocationMa
         case .AuthorizedAlways, .AuthorizedWhenInUse:
             if let backgroundView = self.collectionView?.backgroundView as? CollectionBackgroundView {
                 backgroundView.textLabel.text = nil
-                reloadData()
+                if (dataSource?.numberOfItems() <= 0) {
+                    locationManager.startUpdatingLocation()
+                }
             }
             
         case .Denied, .Restricted:
@@ -48,6 +60,23 @@ public class NearbyPartyPhotosViewController: PhotosViewController, CLLocationMa
             
         case .NotDetermined:
             break
+        }
+    }
+    
+    public func locationManager(manager: CLLocationManager!, didUpdateLocations locations: [AnyObject]!) {
+        if let dataSource = dataSource as? NearbyPartyPhotosDataSource {
+            if let location = locations.first as? CLLocation {
+                dataSource.locationCoordinate = location.coordinate
+                manager.stopUpdatingLocation()
+            }
+        }
+        reloadData()
+    }
+    
+    public func locationManager(manager: CLLocationManager!, didFailWithError error: NSError!) {
+        if let backgroundView = self.collectionView?.backgroundView as? CollectionBackgroundView {
+            backgroundView.activityIndicator.stopAnimating()
+            backgroundView.textLabel.text = "Sorry, your location cannot be determined. Please try again later."
         }
     }
     
