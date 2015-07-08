@@ -1,0 +1,5 @@
+coverage_service: coveralls
+xcodeproj: FlickrParty.xcodeproj
+ignore:
+  - Pods/*
+  - FlickrPartyTests/*

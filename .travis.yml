@@ -1,0 +1,7 @@
+language: objective-c #swift isn't available as option yet
+osx_image: xcode6.4
+before_install: rvm use $RVM_RUBY_VERSION
+install: bundle install
+after_success: slather
+script:
+  xctool -reporter pretty -scheme "FlickrParty" -workspace FlickrParty.xcworkspace -sdk iphonesimulator clean test
