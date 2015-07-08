@@ -29,7 +29,9 @@ public class FlickrPhotoParser: PhotoParser {
         static let DescriptionContent = "_content"
     }
     
-    public override func parseMetadata(jsonObject: AnyObject) -> APIResponseMetadata {
+    public init() {}
+    
+    public func parseMetadata(jsonObject: AnyObject) -> APIResponseMetadata {
         var page = 0
         var itemsPerPage = 0
         var numberOfPages = 0
@@ -49,7 +51,7 @@ public class FlickrPhotoParser: PhotoParser {
         return APIResponseMetadata(page: page, itemsPerPage: itemsPerPage, numberOfPages: numberOfPages)
     }
     
-    public override func parsePhotos(rawObject: AnyObject) -> Array<Photo> {
+    public func parsePhotos(rawObject: AnyObject) -> Array<Photo> {
         var photos = Array<Photo>()
         if let jsonObject = rawObject as? Dictionary<String, AnyObject> {
             if let photosObject = jsonObject[PhotosAPIResultKey.RootJSONObject] as? Dictionary<String, AnyObject> {

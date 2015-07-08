@@ -8,18 +8,9 @@
 
 import UIKit
 
-public class PhotoParser {
-    
-    public init() {}
+public protocol PhotoParser {
    
-    public func parseMetadata(jsonObject: AnyObject) -> APIResponseMetadata {
-        // subclassing hook
-        return APIResponseMetadata(page: 0, itemsPerPage: 0, numberOfPages: 0)
-    }
-    
-    public func parsePhotos(rawObject: AnyObject) -> Array<Photo> {
-        // subclassing hook
-        return Array<Photo>()
-    }
+    func parseMetadata(jsonObject: AnyObject) -> APIResponseMetadata
+    func parsePhotos(rawObject: AnyObject) -> Array<Photo>
     
 }
