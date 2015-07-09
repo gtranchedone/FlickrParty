@@ -1,6 +1,5 @@
-[![Circle CI](https://circleci.com/gh/gtranchedone/FlickrParty.svg?style=svg)](https://circleci.com/gh/gtranchedone/FlickrParty)
-[![Coverage Status](https://coveralls.io/repos/gtranchedone/FlickrParty/badge.svg?branch=master&service=github)](https://coveralls.io/github/gtranchedone/FlickrParty?branch=master)
 [![Build Status](https://travis-ci.org/gtranchedone/FlickrParty.svg?branch=develop)](https://travis-ci.org/gtranchedone/FlickrParty)
+[![Coverage Status](https://coveralls.io/repos/gtranchedone/FlickrParty/badge.svg?branch=master&service=github)](https://coveralls.io/github/gtranchedone/FlickrParty?branch=master)
 
 # FlickrParty
 A simple photo gallery implemented using Flickr API written in Swift
