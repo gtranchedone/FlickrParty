@@ -13,7 +13,6 @@ public class AppDelegate: UIResponder, UIApplicationDelegate {
 
     public var window: UIWindow?
 
-
     /// MARK: - UIApplicationDelegate -
     
     public func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
@@ -31,34 +30,26 @@ public class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     private func setUpRootViewController() {
-        let partyPhotosViewController = makePartyPhotosViewController()
-        let partyPhotosNavigationController = UINavigationController(rootViewController: partyPhotosViewController)
-        
-        let nearbyPartyPhotosViewController = makeNearbyPartyPhotosViewController()
-        let nearbyPartyPhotosNavigationController = UINavigationController(rootViewController: nearbyPartyPhotosViewController)
-        
         let tabBarController = UITabBarController()
-        tabBarController.viewControllers = [partyPhotosNavigationController, nearbyPartyPhotosNavigationController]
+        tabBarController.viewControllers = [makePartyPhotosViewController(), makeNearbyPartyPhotosViewController()]
         window?.rootViewController = tabBarController
-        
-        // NOTE: for some reason you have to set the tabBarItems here otherwise they won't show up properly or change when you select them
-        partyPhotosNavigationController.tabBarItem = UITabBarItem(title: partyPhotosViewController.title, image: UIImage(named: "TabIconBaloon"), selectedImage: nil)
-        nearbyPartyPhotosNavigationController.tabBarItem = UITabBarItem(title: nearbyPartyPhotosViewController.title, image: UIImage(named: "TabIconLocation"), selectedImage: nil)
     }
     
-    private func makePartyPhotosViewController() -> PhotosViewController {
+    private func makePartyPhotosViewController() -> UIViewController {
         let viewController = PhotosViewController()
         viewController.title = "All Parties"
         viewController.dataSource = PartyPhotosDataSource(apiClient: FlickrAPIClient())
-        return viewController
+        viewController.tabBarItem = UITabBarItem(title: viewController.title, image: UIImage(named: "TabIconBaloon"), selectedImage: nil)
+        let navigationController = UINavigationController(rootViewController: viewController)
+        return navigationController
     }
 
-    private func makeNearbyPartyPhotosViewController() -> PhotosViewController {
+    private func makeNearbyPartyPhotosViewController() -> UIViewController {
         let viewController = NearbyPartyPhotosViewController()
         viewController.title = "Parties Nearby"
-        viewController.tabBarItem.title = "Parties Nearby"
-        viewController.tabBarItem.image = UIImage(named: "TabIconLocation")
-        return viewController
+        viewController.tabBarItem = UITabBarItem(title: viewController.title, image: UIImage(named: "TabIconLocation"), selectedImage: nil)
+        let navigationController = UINavigationController(rootViewController: viewController)
+        return navigationController
     }
     
 }

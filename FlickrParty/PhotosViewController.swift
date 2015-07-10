@@ -43,7 +43,6 @@ public class PhotosViewController: BaseCollectionViewController, UICollectionVie
         imageCache.removeAll() // to avoid crash with some issue in Haneke
         super.viewDidLoad()
         self.collectionView?.backgroundColor = UIColor.whiteColor()
-        self.tabBarItem = UITabBarItem(tabBarSystemItem: .Featured, tag: 0)
         self.collectionView!.registerClass(PhotoCollectionViewCell.self, forCellWithReuseIdentifier: PhotoCellReuseIdentifier)
     }
     
@@ -51,7 +50,7 @@ public class PhotosViewController: BaseCollectionViewController, UICollectionVie
     
     public override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(PhotoCellReuseIdentifier, forIndexPath: indexPath) as! PhotoCollectionViewCell
-        dataSource!.itemAtIndexPath(indexPath, completion: { fetchedPhoto in
+        dataSource!.itemAtIndexPath(indexPath) { fetchedPhoto in
             let photo = fetchedPhoto as! Photo
             if let thumbnailURL = photo.thumbnailURL {
                 let imageFetcher = NetworkFetcher<UIImage>(URL: thumbnailURL)
@@ -67,7 +66,7 @@ public class PhotosViewController: BaseCollectionViewController, UICollectionVie
                     }
                 }
             }
-        })
+        }
         return cell
     }
     
@@ -79,7 +78,22 @@ public class PhotosViewController: BaseCollectionViewController, UICollectionVie
     }
     
     public override func collectionView(collectionView: UICollectionView, willDisplayCell cell: UICollectionViewCell, forItemAtIndexPath indexPath: NSIndexPath) {
-        // load more content if needed
+        loadMorePhotosIfNeeded(indexPath)
+        cachePhotosThatAreNotNeededForDisplayInCollectionView(collectionView, referenceIndexPath: indexPath)
+    }
+    
+    // MARK: - UICollectionViewFlowLayoutDelegate -
+    
+    public func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+        let flowLayout = collectionViewLayout as! UICollectionViewFlowLayout
+        let sectionInsets = flowLayout.sectionInset.left + flowLayout.sectionInset.right
+        let sideLenght = ((collectionView.bounds.size.width - sectionInsets - (flowLayout.minimumInteritemSpacing * 2)) / 3)
+        return CGSizeMake(sideLenght, sideLenght)
+    }
+    
+    // MARK: - Private -
+    
+    private func loadMorePhotosIfNeeded(indexPath: NSIndexPath) {
         if (indexPath.item == (self.dataSource!.numberOfItems() - 1)) {
             if let metadata = self.dataSource!.lastMetadata {
                 if metadata.page < metadata.numberOfPages {
@@ -87,8 +101,9 @@ public class PhotosViewController: BaseCollectionViewController, UICollectionVie
                 }
             }
         }
-        
-        // cache photos that are no longer visible and are outside a minimum scrollable bounds
+    }
+    
+    private func cachePhotosThatAreNotNeededForDisplayInCollectionView(collectionView: UICollectionView, referenceIndexPath indexPath: NSIndexPath) {
         let visibleIndexPaths = collectionView.indexPathsForVisibleItems()
         if visibleIndexPaths.isEmpty {
             return
@@ -108,16 +123,7 @@ public class PhotosViewController: BaseCollectionViewController, UICollectionVie
         }
     }
     
-    // MARK: - UICollectionViewFlowLayoutDelegate -
-    
-    public func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
-        let flowLayout = collectionViewLayout as! UICollectionViewFlowLayout
-        let sectionInsets = flowLayout.sectionInset.left + flowLayout.sectionInset.right
-        let sideLenght = ((collectionView.bounds.size.width - sectionInsets - (flowLayout.minimumInteritemSpacing * 2)) / 3)
-        return CGSizeMake(sideLenght, sideLenght)
-    }
-    
-    // MARK: - Notifications -
+    // MARK: Notifications
     
     func didBecomeActive() {
         if let dataSource = self.dataSource {

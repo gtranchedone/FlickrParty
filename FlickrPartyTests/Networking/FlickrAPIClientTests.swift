@@ -23,5 +23,7 @@ class FlickrAPIClientTests: XCTestCase {
         apiClient = nil
         super.tearDown()
     }
+    
+    // TODO: Test me!!
 
 }

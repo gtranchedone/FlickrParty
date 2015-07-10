@@ -44,6 +44,8 @@ class PhotosViewControllerTests: XCTestCase {
         super.tearDown()
     }
     
+    // NOTE: Basic functionality
+    
     func testViewControllerIsKindOfBaseCollectionViewController() {
         // Casting to AnyObject avoid compiler warning. I prefer to keep this test as is, rather then deleting it.
         XCTAssertTrue((viewController as? AnyObject) is BaseCollectionViewController,

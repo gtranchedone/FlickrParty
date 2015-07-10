@@ -10,23 +10,23 @@ import UIKit
 
 public class FlickrPhotoParser: PhotoParser {
     
-    private struct PhotosAPIResultKey {
-        static let RootJSONObject = "photos"
-        static let PhotoObject = "photo"
-        static let ResponsePage = "page"
-        static let AvailablePages = "pages"
-        static let ItemsPerPage = "perpage"
+    private enum PhotosAPIResultKey: String {
+        case RootJSONObject = "photos"
+        case PhotoObject = "photo"
+        case ResponsePage = "page"
+        case AvailablePages = "pages"
+        case ItemsPerPage = "perpage"
     }
     
-    private struct PhotoKeys {
-        static let Identifier = "id"
-        static let Title = "title"
-        static let OriginalURL = "url_o"
-        static let LargeImageURL = "url_l"
-        static let SmallImageURL = "url_s"
-        static let OwnerName = "ownername"
-        static let Description = "description"
-        static let DescriptionContent = "_content"
+    private enum PhotoKeys: String {
+        case Identifier = "id"
+        case Title = "title"
+        case OriginalURL = "url_o"
+        case LargeImageURL = "url_l"
+        case SmallImageURL = "url_s"
+        case OwnerName = "ownername"
+        case Description = "description"
+        case DescriptionContent = "_content"
     }
     
     public init() {}
@@ -36,14 +36,14 @@ public class FlickrPhotoParser: PhotoParser {
         var itemsPerPage = 0
         var numberOfPages = 0
         
-        if let photosObject = jsonObject[PhotosAPIResultKey.RootJSONObject] as? Dictionary<String, AnyObject> {
-            if let currentPage = photosObject[PhotosAPIResultKey.ResponsePage] as? Int {
+        if let photosObject = jsonObject[PhotosAPIResultKey.RootJSONObject.rawValue] as? Dictionary<String, AnyObject> {
+            if let currentPage = photosObject[PhotosAPIResultKey.ResponsePage.rawValue] as? Int {
                 page = currentPage
             }
-            if let perPage = photosObject[PhotosAPIResultKey.ItemsPerPage] as? Int {
+            if let perPage = photosObject[PhotosAPIResultKey.ItemsPerPage.rawValue] as? Int {
                 itemsPerPage = perPage
             }
-            if let totalNumberOfPages = photosObject[PhotosAPIResultKey.AvailablePages] as? Int {
+            if let totalNumberOfPages = photosObject[PhotosAPIResultKey.AvailablePages.rawValue] as? Int {
                 numberOfPages = totalNumberOfPages
             }
         }
@@ -54,8 +54,8 @@ public class FlickrPhotoParser: PhotoParser {
     public func parsePhotos(rawObject: AnyObject) -> Array<Photo> {
         var photos = Array<Photo>()
         if let jsonObject = rawObject as? Dictionary<String, AnyObject> {
-            if let photosObject = jsonObject[PhotosAPIResultKey.RootJSONObject] as? Dictionary<String, AnyObject> {
-                if let photosArray = photosObject[PhotosAPIResultKey.PhotoObject] as? Array<Dictionary<String, AnyObject>> {
+            if let photosObject = jsonObject[PhotosAPIResultKey.RootJSONObject.rawValue] as? Dictionary<String, AnyObject> {
+                if let photosArray = photosObject[PhotosAPIResultKey.PhotoObject.rawValue] as? Array<Dictionary<String, AnyObject>> {
                     for photoJSONRepresentation in photosArray {
                         let photo = parsePhoto(photoJSONRepresentation)
                         photos.append(photo)
@@ -67,17 +67,17 @@ public class FlickrPhotoParser: PhotoParser {
     }
     
     private func parsePhoto(jsonObject: Dictionary<String, AnyObject>) -> Photo {
-        let identifier = parseStringFromJSONObject(jsonObject, key: PhotoKeys.Identifier)
-        let title = parseStringFromJSONObject(jsonObject, key: PhotoKeys.Title)
-        let ownerName = parseStringFromJSONObject(jsonObject, key: PhotoKeys.OwnerName)
-        var imageURL = NSURL(string: parseStringFromJSONObject(jsonObject, key: PhotoKeys.OriginalURL))
+        let identifier = parseStringFromJSONObject(jsonObject, key: PhotoKeys.Identifier.rawValue)
+        let title = parseStringFromJSONObject(jsonObject, key: PhotoKeys.Title.rawValue)
+        let ownerName = parseStringFromJSONObject(jsonObject, key: PhotoKeys.OwnerName.rawValue)
+        var imageURL = NSURL(string: parseStringFromJSONObject(jsonObject, key: PhotoKeys.OriginalURL.rawValue))
         if imageURL?.absoluteString?.isEmpty == true {
-            imageURL = NSURL(string: parseStringFromJSONObject(jsonObject, key: PhotoKeys.LargeImageURL))
+            imageURL = NSURL(string: parseStringFromJSONObject(jsonObject, key: PhotoKeys.LargeImageURL.rawValue))
         }
-        let thumbnailURL = NSURL(string: parseStringFromJSONObject(jsonObject, key: PhotoKeys.SmallImageURL))
+        let thumbnailURL = NSURL(string: parseStringFromJSONObject(jsonObject, key: PhotoKeys.SmallImageURL.rawValue))
         var description = ""
-        if let descriptionObject = jsonObject[PhotoKeys.Description] as? Dictionary<String, String> {
-            description = parseStringFromJSONObject(descriptionObject, key: PhotoKeys.DescriptionContent)
+        if let descriptionObject = jsonObject[PhotoKeys.Description.rawValue] as? Dictionary<String, String> {
+            description = parseStringFromJSONObject(descriptionObject, key: PhotoKeys.DescriptionContent.rawValue)
         }
         return Photo(identifier: identifier, title: title, description: description, ownerName: ownerName, imageURL: imageURL, thumbnailURL: thumbnailURL)
     }

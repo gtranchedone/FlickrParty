@@ -25,21 +25,25 @@ class AppDelegateTests: XCTestCase {
         super.tearDown()
     }
 
+    // MARK: - Tests for Application Setup
+    
     func testRootViewControllerIsTabBarController() {
         let window = appDelegate?.window
         let rootViewController = window?.rootViewController
         XCTAssert(rootViewController is UITabBarController, "The app's rootViewController isn't a TabBarController")
     }
     
-    func testRootViewControllerHasPartyPhotosControllerAsFirstTab() {
-        let viewController = viewControllerInFirstTab()
-        XCTAssert(viewController is PhotosViewController, "The first tab doesn't contain a PartyPhotosViewController")
-    }
+    // MARK: First Tab (Photos from Parties)
     
-    func testViewControllerIInFirstTabHasAppropriateTitleAfterViewDidLoad() {
+    func testViewControllerInFirstTabHasAppropriateTitleAfterViewDidLoad() {
         let viewController = viewControllerInFirstTab()
         let actualTitle = viewController!.title
         XCTAssertEqual("All Parties", actualTitle!, "PartyPhotosViewController doesn't have an appropriate title")
+    }
+    
+    func testRootViewControllerHasPartyPhotosControllerAsFirstTab() {
+        let viewController = viewControllerInFirstTab()
+        XCTAssert(viewController is PhotosViewController, "The first tab doesn't contain a PartyPhotosViewController")
     }
     
     func testPartyPhotosViewControllerHasPhotoDataSource() {
@@ -58,13 +62,20 @@ class AppDelegateTests: XCTestCase {
         XCTAssertTrue(viewController!.dataSource!.apiClient! is FlickrAPIClient, "The photosDataSource wasn't setup properly")
     }
     
+    // MARK: Second Tab (Photos from Parties Near You)
+    
     func testViewControllerInSecondTabHasAppropriateTitleAfterViewDidLoad() {
         let viewController = viewControllerInSecondTab()
         let actualTitle = viewController!.title
         XCTAssertEqual("Parties Nearby", actualTitle!, "PartyPhotosViewController doesn't have an appropriate title")
     }
     
-    // MARK: private
+    func testRootViewControllerHasNearbyPartyPhotosControllerAsSecondTab() {
+        let viewController = viewControllerInSecondTab()
+        XCTAssert(viewController is NearbyPartyPhotosViewController, "The second tab doesn't contain a NearbyPartyPhotosViewController")
+    }
+    
+    // MARK: Private
     
     func viewControllerInFirstTab() -> UIViewController? {
         return viewControllerInTabAtIndex(0)

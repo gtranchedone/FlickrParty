@@ -8,9 +8,9 @@
 
 import CoreLocation
 
-class NearbyPartyPhotosDataSource: PhotosDataSource {
+public class NearbyPartyPhotosDataSource: PhotosDataSource {
     
-    var locationCoordinate: CLLocationCoordinate2D?
+    public var locationCoordinate: CLLocationCoordinate2D?
 
     override internal func performFetch(page: Int, completionBlock: (APIResponse?, NSError?) -> Void) -> Void {
         if let locationCoordinate = locationCoordinate {

@@ -9,13 +9,18 @@
 import UIKit
 import CoreLocation
 
+// This is an example of how you could specialize PhotosViewController to have specific logic and a specific dataSource
+// so that the class can be aware of it and manipulate the info required by the dataSource in order to operate correctly.
 public class NearbyPartyPhotosViewController: PhotosViewController, CLLocationManagerDelegate {
 
     public var locationManager = CLLocationManager()
     
     public override func viewDidLoad() {
         super.viewDidLoad()
-        dataSource = NearbyPartyPhotosDataSource(apiClient: FlickrAPIClient())
+        if (dataSource == nil) {
+            dataSource = NearbyPartyPhotosDataSource(apiClient: FlickrAPIClient())
+        }
+        locationManager.delegate = self
     }
     
     public override func viewDidAppear(animated: Bool) {
@@ -25,17 +30,19 @@ public class NearbyPartyPhotosViewController: PhotosViewController, CLLocationMa
     
     public override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
+        // if the user location wasn't found yet, stop when the viewController isn't active anymore
         locationManager.stopUpdatingLocation()
     }
     
     private func askForUseLocationServiceIfNeeded() {
-        locationManager.delegate = self
+        // using the dynamicType ensures that we use the method from any subclass of CLLocationManager
         let authorizationStatus = locationManager.dynamicType.authorizationStatus()
         switch (authorizationStatus) {
             case .NotDetermined:
                 locationManager.requestWhenInUseAuthorization()
             
             default:
+                // update the view
                 locationManager(locationManager, didChangeAuthorizationStatus: authorizationStatus)
         }
     }
@@ -47,24 +54,27 @@ public class NearbyPartyPhotosViewController: PhotosViewController, CLLocationMa
         case .AuthorizedAlways, .AuthorizedWhenInUse:
             if let backgroundView = self.collectionView?.backgroundView as? CollectionBackgroundView {
                 backgroundView.textLabel.text = nil
-                if (dataSource?.numberOfItems() <= 0) {
-                    locationManager.startUpdatingLocation()
-                }
+            }
+            // get the latest user location
+            if (dataSource?.numberOfItems() <= 0) {
+                locationManager.startUpdatingLocation()
             }
             
         case .Denied, .Restricted:
+            self.dataSource?.invalidateContent() // reset the collectionView's content if it was populated by then the permissions changed
             if let backgroundView = self.collectionView?.backgroundView as? CollectionBackgroundView {
                 backgroundView.textLabel.text = "You've denied usage of location services, therefore we're unable to show you photos of nearby parties"
-                self.dataSource?.invalidateContent()
             }
             
         case .NotDetermined:
+            // do nothing
             break
         }
     }
     
     public func locationManager(manager: CLLocationManager!, didUpdateLocations locations: [AnyObject]!) {
         if let dataSource = dataSource as? NearbyPartyPhotosDataSource {
+            // if a location is found, stop getting location updates and update the dataSource
             if let location = locations.first as? CLLocation {
                 dataSource.locationCoordinate = location.coordinate
                 manager.stopUpdatingLocation()

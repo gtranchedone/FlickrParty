@@ -47,8 +47,7 @@ public class FlickrAPIClient: APIClient {
         }
         let photosURL = String(format: format, arguments: arguments)
         
-        println("- Perofming request with URL \(photosURL)")
-        Alamofire.request(.GET, photosURL).responseJSON(options: .AllowFragments) { [unowned self] (_, _, jsonResponse, error) -> Void in
+        performRequest(.GET, URLString: photosURL) { [unowned self] (_, _, jsonResponse, error) -> Void in
             if let error = error {
                 completionBlock(response: nil, error: error)
             }
@@ -74,6 +73,12 @@ public class FlickrAPIClient: APIClient {
                 }
             }
         }
+        
+    }
+    
+    public func performRequest(method: Alamofire.Method, URLString: URLStringConvertible, completionHandler: (NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void) {
+        println("- Perofming request with URL \(URLString)")
+        Alamofire.request(method, URLString).responseJSON(options: .AllowFragments, completionHandler: completionHandler)
     }
    
 }

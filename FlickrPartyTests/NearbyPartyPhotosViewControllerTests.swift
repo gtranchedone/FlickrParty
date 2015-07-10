@@ -11,35 +11,6 @@ import XCTest
 import FlickrParty
 import CoreLocation
 
-class MockLocationManager: CLLocationManager {
-    
-    static var stubAuthorizationStatus = CLAuthorizationStatus.NotDetermined
-    var didAskForInUseAuthorization = false
-    var shouldFail = false
-    
-    override class func authorizationStatus() -> CLAuthorizationStatus {
-        return stubAuthorizationStatus
-    }
-    
-    override func requestWhenInUseAuthorization() {
-        didAskForInUseAuthorization = true
-    }
-    
-    override func startUpdatingLocation() {
-        if shouldFail {
-            delegate?.locationManager?(self, didFailWithError: NSError(domain: "stubs domain", code: 404, userInfo: nil))
-        }
-        else {
-            delegate?.locationManager?(self, didUpdateLocations: [])
-        }
-    }
-    
-    override func stopUpdatingLocation() {
-        // do nothing
-    }
-    
-}
-
 class NearbyPartyPhotosViewControllerTests: XCTestCase {
 
     var viewController: NearbyPartyPhotosViewController?
@@ -48,6 +19,7 @@ class NearbyPartyPhotosViewControllerTests: XCTestCase {
         super.setUp()
         viewController = NearbyPartyPhotosViewController()
         viewController?.locationManager = MockLocationManager()
+        viewController?.dataSource = MockNearbyPartyPhotosDataSource()
     }
     
     override func tearDown() {
@@ -55,6 +27,8 @@ class NearbyPartyPhotosViewControllerTests: XCTestCase {
         super.tearDown()
     }
 
+    // MARK: Location Permissions Updates
+    
     func testAsksUserForLocationPermissionsWhenViewAppearsIfNotAskedBefore() {
         let mockLocationManager = viewController?.locationManager as! MockLocationManager
         viewController?.beginAppearanceTransition(true, animated: false)
@@ -149,6 +123,43 @@ class NearbyPartyPhotosViewControllerTests: XCTestCase {
         }
         else {
             XCTFail("Doesn't have an appropriate backgroundView to display messages")
+        }
+    }
+    
+    func testStopsLocationUpdatesWhenUserLocationIsFound() {
+        let locationManager = viewController?.locationManager as! MockLocationManager
+        viewController?.locationManager(locationManager, didUpdateLocations: [CLLocation(latitude: 0.0, longitude: 0.0)])
+        XCTAssertTrue(locationManager.didStopUpdatingLocation, "Didn't stop location updates once the user's location is determined")
+    }
+    
+    func testStopsLocationUpdatesWhenViewIsDisappearing() {
+        let locationManager = viewController?.locationManager as! MockLocationManager
+        viewController?.beginAppearanceTransition(false, animated: false)
+        viewController?.endAppearanceTransition()
+        XCTAssertTrue(locationManager.didStopUpdatingLocation, "Didn't stop location updates once the user's location is determined")
+    }
+    
+    // MARK: Data Source
+    
+    func testDataSourceIsNotReplacedIfPreviouslySet() {
+        viewController?.beginAppearanceTransition(true, animated: false)
+        XCTAssertTrue(viewController?.dataSource is MockNearbyPartyPhotosDataSource, "Preset dataSource is getting replaced when the view is loaded or appearing")
+    }
+    
+    func testDataSourceIsNearbyPartyPhotosDataSource() {
+        viewController?.dataSource = nil
+        viewController?.beginAppearanceTransition(true, animated: false)
+        XCTAssertTrue(viewController?.dataSource is NearbyPartyPhotosDataSource, "Default dataSource isn't of the expected type")
+    }
+    
+    func testUpdatesDataSourceWhenUserLocationIsFound() {
+        viewController?.locationManager(viewController?.locationManager, didUpdateLocations: [CLLocation(latitude: 10.0, longitude: 10.0)])
+        let dataSource = viewController?.dataSource as! MockNearbyPartyPhotosDataSource
+        if let coordinate = dataSource.locationCoordinate {
+            XCTAssertEqual(coordinate.latitude, 10.0, "The dataSource wasn't updated when the user location was determined")
+        }
+        else {
+            XCTFail("The dataSource wasn't updated when the user location was determined")
         }
     }
     

@@ -1,8 +1,8 @@
 //
-//  PhotosDataSourceTests.swift
+//  NearbyPartyPhotosDataSourceTests.swift
 //  FlickrParty
 //
-//  Created by Gianluca Tranchedone on 04/05/2015.
+//  Created by Gianluca Tranchedone on 10/07/2015.
 //  Copyright (c) 2015 Gianluca Tranchedone. All rights reserved.
 //
 
@@ -11,68 +11,24 @@ import XCTest
 import FlickrParty
 import CoreLocation
 
-class MockAPIClient : APIClient {
-    
-    var error: NSError?
-    var stubPhotos: Array<Photo>?
-    var didCallFetchContent = false;
-    
-    var parser: PhotoParser?
-    
-    func fetchPhotosWithTags(tags: Array<String>, page: Int, completionBlock: (response: APIResponse?, error: NSError?) -> Void) {
-        didCallFetchContent = true
-        let response = APIResponse(metadata: nil, responseObject: stubPhotos)
-        completionBlock(response: response, error: error)
-    }
-    
-    func fetchPhotosWithTags(tags: Array<String>, location: CLLocationCoordinate2D?, page: Int, completionBlock: (response: APIResponse?, error: NSError?) -> Void) {
-        // TODO: implement me
-    }
-    
-}
+class NearbyPartyPhotosDataSourceTests: XCTest {
 
-class MockDataSourceDelegate : ViewDataSourceDelegate {
-    
-    var didCallDelegateForSuccess = false
-    var didCallDelegateForFailure = false
-    var didCallDelegateForInvalidation = false
-    
-    func viewDataSourceDidFetchContent(dataSource: ViewDataSource) {
-        didCallDelegateForSuccess = true
-    }
-    
-    func viewDataSourceWillFetchContent(dataSource: ViewDataSource) {
-        // do nothing
-    }
-    
-    func viewDataSourceDidInvalidateContent(dataSource: ViewDataSource) {
-        didCallDelegateForInvalidation = true
-    }
-    
-    func viewDataSourceDidFailFetchingContent(dataSource: ViewDataSource, error: NSError) {
-        didCallDelegateForFailure = true
-    }
-    
-}
-
-class PhotosDataSourceTests: XCTestCase {
-
-    var dataSource: PhotosDataSource?
+    var dataSource: NearbyPartyPhotosDataSource?
     
     override func setUp() {
         super.setUp()
-        dataSource = PartyPhotosDataSource(apiClient: MockAPIClient())
+        dataSource = NearbyPartyPhotosDataSource(apiClient: MockAPIClient())
     }
     
     override func tearDown() {
         dataSource = nil
         super.tearDown()
     }
-
+    
     func testAsksAPIClientToFetchPhotosWhenAskedToFetchContent() {
         dataSource?.fetchContent()
         let apiClient = dataSource!.apiClient as? MockAPIClient
-        XCTAssertEqual(true, apiClient!.didCallFetchContent)
+        XCTAssertEqual(true, apiClient!.didCallFetchTaggedPhotosWithLocation)
     }
     
     func testDataSourceReturnsCorrectNumberOfItemsAfterFetchingPhotos() {
@@ -98,6 +54,4 @@ class PhotosDataSourceTests: XCTestCase {
         XCTAssertTrue(delegate.didCallDelegateForFailure, "PhotosDataSource didn't call the delegate after successfully fetching content")
     }
     
-    // TODO: needs tests for caching photos
-
 }

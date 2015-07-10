@@ -6,7 +6,32 @@
 //  Copyright (c) 2015 Gianluca Tranchedone. All rights reserved.
 //
 
+import Foundation
 import FlickrParty
+
+class MockDataSourceDelegate : ViewDataSourceDelegate {
+    
+    var didCallDelegateForSuccess = false
+    var didCallDelegateForFailure = false
+    var didCallDelegateForInvalidation = false
+    
+    func viewDataSourceDidFetchContent(dataSource: ViewDataSource) {
+        didCallDelegateForSuccess = true
+    }
+    
+    func viewDataSourceWillFetchContent(dataSource: ViewDataSource) {
+        // do nothing
+    }
+    
+    func viewDataSourceDidInvalidateContent(dataSource: ViewDataSource) {
+        didCallDelegateForInvalidation = true
+    }
+    
+    func viewDataSourceDidFailFetchingContent(dataSource: ViewDataSource, error: NSError) {
+        didCallDelegateForFailure = true
+    }
+    
+}
 
 class MockDataSource : ViewDataSource {
     
@@ -30,6 +55,16 @@ class MockDataSource : ViewDataSource {
     
     override func invalidateContent() {
         didInvalidate = true
+    }
+    
+}
+
+class MockNearbyPartyPhotosDataSource: NearbyPartyPhotosDataSource {
+    
+    var fetchedContent = false
+    
+    override func fetchContent(#page: Int) {
+        fetchedContent = true
     }
     
 }
