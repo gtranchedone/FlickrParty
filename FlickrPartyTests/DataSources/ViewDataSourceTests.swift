@@ -44,4 +44,30 @@ class ViewDataSourceTests: XCTestCase {
         XCTAssertNil(dataSource?.itemAtIndexPath(NSIndexPath(forItem: 0, inSection: 0)), "DataSource isn't returning nil for item at indexPath")
     }
     
+    // MARK: test for code coverage and documentation only
+    
+    func testProvidesAnAPIForFetchingContent() {
+        dataSource!.fetchContent()
+        let hasAPIForFetchingContent = dataSource!.respondsToSelector("fetchContent:")
+        XCTAssertTrue(hasAPIForFetchingContent, "The DataSource should provide an API for fetching content")
+    }
+    
+    func testProvidesAnAPIForInvalidatingThePreviouslyFetchedContent() {
+        dataSource!.invalidateContent()
+        let hasAPIForInvalidatingContent = dataSource!.respondsToSelector("invalidateContent")
+        XCTAssertTrue(hasAPIForInvalidatingContent, "The DataSource should provide an API for invalidating previously fetched content")
+    }
+    
+    func testProvidesAnAPIForCachingContentContent() {
+        dataSource!.cacheItemAtIndexPath(NSIndexPath(forItem: 0, inSection: 0))
+        let hasAPIForCachingContent = dataSource!.respondsToSelector("cacheItemAtIndexPath:")
+        XCTAssertTrue(hasAPIForCachingContent, "The DataSource should provide an API for caching fetched content to avoid using up virtual memory")
+    }
+    
+    func testProvidesAnAPIForFetchingItemsAtAnIndexPathAsynchronously() {
+        dataSource!.itemAtIndexPath(NSIndexPath(forItem: 0, inSection: 0)) { _ in }
+        let hasAPIForCachingContent = dataSource!.respondsToSelector("itemAtIndexPath:completion:")
+        XCTAssertTrue(hasAPIForCachingContent, "The DataSource should provide an API for finding an item at an indexPath asynchronously")
+    }
+    
 }

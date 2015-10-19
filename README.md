@@ -2,6 +2,7 @@
 [![Coverage Status](https://coveralls.io/repos/gtranchedone/FlickrParty/badge.svg?branch=master&service=github)](https://coveralls.io/github/gtranchedone/FlickrParty?branch=master)
 
 # FlickrParty
+![Flickr Party Icon](https://github.com/gtranchedone/FlickrParty/blob/develop/FlickrParty/Resouces/Images.xcassets/AppIcon.appiconset/Icon-60%402x.png)
 A simple photo gallery implemented using Flickr API written in Swift
 
 ## Project Setup
@@ -23,11 +24,11 @@ Moreover, it would be adviced that you used your own Flickr API Key. You can get
 
 ## TODO
 
-- [x] Implement simple UI and logic for photos tagged 'Party'
-- [x] Implement simple UI for photo details
-- [x] Add support for multiple results pages
-- [x] Improve image caching by setting a limit on the cache
-- [x] Improve memory usage by responding to -didReceiveMemoryWarning and dropping all photos. Then reload to display content. (temporary solution)
-- [x] Improve performance when scrolling many pages by temporarily dropping Photos that aren't being displayed (final memory usage solution)
-- [x] Add tab for photos near current location
+- [x] ~Implement simple UI and logic for photos tagged 'Party'~
+- [x] ~Implement simple UI for photo details~
+- [x] ~Add support for multiple results pages~
+- [x] ~Improve image caching by setting a limit on the cache~
+- [x] ~Improve memory usage by responding to -didReceiveMemoryWarning and dropping all photos. Then reload to display content. (temporary solution)~
+- [x] ~Improve performance when scrolling many pages by temporarily dropping Photos that aren't being displayed (final memory usage solution)~
+- [x] ~Add tab for photos near current location~
 - [ ] Improve test coverage to make it >= 90%

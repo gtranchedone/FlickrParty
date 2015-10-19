@@ -8,8 +8,8 @@
 
 import UIKit
 import XCTest
-import FlickrParty
 import CoreLocation
+@testable import FlickrParty
 
 class PartyPhotosDataSourceTests: XCTestCase {
 

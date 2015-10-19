@@ -21,6 +21,13 @@ public class FlickrAPIClient: APIClient {
         static let TagsAndGeoSearchFormat = "https://api.flickr.com/services/rest/?format=json&nojsoncallback=?&method=flickr.photos.search&tags=%@&extras=description,owner_name,url_s,url_l,url_o,geo&has_geo=1&api_key=%@&page=%d&lat=%f&long=%f"
     }
     
+    struct FlickerAPIMetadataKeys {
+        static let Status = "stat"
+        static let FailedStatusValue = "fail"
+        static let FailureStatusMessage = "message"
+        static let FailureStatusCode = "code"
+    }
+    
     public convenience init() {
         self.init(parser: FlickrPhotoParser())
     }
@@ -63,11 +70,11 @@ public class FlickrAPIClient: APIClient {
     func parseAPIResponse(response: Response<AnyObject, NSError>, completionBlock: (response: APIResponse?, error: NSError?) -> ()) {
         guard parser != nil else { return }
         if let jsonObject = response.result.value as? [String : AnyObject] {
-            let status = jsonObject["stat"] as? String
+            let status = jsonObject[FlickerAPIMetadataKeys.Status] as? String
             if let status = status {
-                if status == "fail" {
-                    let message = jsonObject["message"] as! String
-                    let code = jsonObject["code"] as! Int
+                if status == FlickerAPIMetadataKeys.FailedStatusValue {
+                    let code = jsonObject[FlickerAPIMetadataKeys.FailureStatusCode] as! Int
+                    let message = jsonObject[FlickerAPIMetadataKeys.FailureStatusMessage] as! String
                     let userInfo = [NSLocalizedDescriptionKey: message, NSUnderlyingErrorKey: jsonObject.description]
                     let apiError = NSError(domain: FlickrAPIClient.FlickrAPIDomain, code: code, userInfo: userInfo)
                     completionBlock(response: nil, error: apiError)
