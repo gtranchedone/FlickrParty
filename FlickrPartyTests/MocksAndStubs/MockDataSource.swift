@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import FlickrParty
+@testable import FlickrParty
 
 class MockDataSourceDelegate : ViewDataSourceDelegate {
     
@@ -61,10 +61,11 @@ class MockDataSource : ViewDataSource {
 
 class MockNearbyPartyPhotosDataSource: NearbyPartyPhotosDataSource {
     
-    var fetchedContent = false
-    
-    override func fetchContent(#page: Int) {
-        fetchedContent = true
+    var didFetchContent = false
+
+    override func performFetch(page: Int, completionBlock: (APIResponse?, NSError?) -> Void) -> Void {
+        didFetchContent = true
+        completionBlock(nil, nil)
     }
-    
+
 }

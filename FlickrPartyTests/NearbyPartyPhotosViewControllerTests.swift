@@ -82,7 +82,6 @@ class NearbyPartyPhotosViewControllerTests: XCTestCase {
     func testDoesNotDisplayAnyMessageIfUserChangesPermissionsToUseLocationToAuthorized() {
         updateLocationAuthorizationStatusFromDeniedToAuthorized(false)
         if let backgroundView = viewController?.collectionView?.backgroundView as? CollectionBackgroundView {
-            let expectedMessage = "You've denied usage of location services, therefore we're unable to show you photos of nearby parties"
             XCTAssertNil(backgroundView.textLabel.text, "Is showing an unappropriate message to users who allow usage of location service")
         }
         else {
@@ -153,7 +152,7 @@ class NearbyPartyPhotosViewControllerTests: XCTestCase {
     }
     
     func testUpdatesDataSourceWhenUserLocationIsFound() {
-        viewController?.locationManager(viewController?.locationManager, didUpdateLocations: [CLLocation(latitude: 10.0, longitude: 10.0)])
+        viewController?.locationManager((viewController?.locationManager)!, didUpdateLocations: [CLLocation(latitude: 10.0, longitude: 10.0)])
         let dataSource = viewController?.dataSource as! MockNearbyPartyPhotosDataSource
         if let coordinate = dataSource.locationCoordinate {
             XCTAssertEqual(coordinate.latitude, 10.0, "The dataSource wasn't updated when the user location was determined")

@@ -49,7 +49,7 @@ public class NearbyPartyPhotosViewController: PhotosViewController, CLLocationMa
     
     // MARK: CLLocationManagerDelegate
     
-    public func locationManager(manager: CLLocationManager!, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
+    public func locationManager(manager: CLLocationManager, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
         switch (status) {
         case .AuthorizedAlways, .AuthorizedWhenInUse:
             if let backgroundView = self.collectionView?.backgroundView as? CollectionBackgroundView {
@@ -72,10 +72,10 @@ public class NearbyPartyPhotosViewController: PhotosViewController, CLLocationMa
         }
     }
     
-    public func locationManager(manager: CLLocationManager!, didUpdateLocations locations: [AnyObject]!) {
+    public func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if let dataSource = dataSource as? NearbyPartyPhotosDataSource {
             // if a location is found, stop getting location updates and update the dataSource
-            if let location = locations.first as? CLLocation {
+            if let location = locations.first {
                 dataSource.locationCoordinate = location.coordinate
                 manager.stopUpdatingLocation()
             }
@@ -83,7 +83,7 @@ public class NearbyPartyPhotosViewController: PhotosViewController, CLLocationMa
         reloadData()
     }
     
-    public func locationManager(manager: CLLocationManager!, didFailWithError error: NSError!) {
+    public func locationManager(manager: CLLocationManager, didFailWithError error: NSError) {
         if let backgroundView = self.collectionView?.backgroundView as? CollectionBackgroundView {
             backgroundView.activityIndicator.stopAnimating()
             backgroundView.textLabel.text = "Sorry, your location cannot be determined. Please try again later."

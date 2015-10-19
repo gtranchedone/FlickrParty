@@ -30,4 +30,4 @@ Moreover, it would be adviced that you used your own Flickr API Key. You can get
 - [x] Improve memory usage by responding to -didReceiveMemoryWarning and dropping all photos. Then reload to display content. (temporary solution)
 - [x] Improve performance when scrolling many pages by temporarily dropping Photos that aren't being displayed (final memory usage solution)
 - [x] Add tab for photos near current location
-- [ ] ~~Improve test coverage to make it >= 90%~~ Measures cannot be taken using Xcode 6.
+- [ ] Improve test coverage to make it >= 90%

@@ -9,7 +9,7 @@
 import Foundation
 import Haneke
 
-public class Photo : Equatable, DebugPrintable, DataConvertible, DataRepresentable {
+public class Photo : Equatable, CustomDebugStringConvertible, DataConvertible, DataRepresentable {
     
     public let imageURL: NSURL?
     public let thumbnailURL: NSURL?
@@ -48,26 +48,33 @@ public class Photo : Equatable, DebugPrintable, DataConvertible, DataRepresentab
     // MARK: DataConvertible
     
     public static func convertFromData(data: NSData) -> Photo? {
-        if let dictionary = NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments, error: nil) as? Dictionary<String, String> {
-            let identifier = dictionary["identifier"]!
-            let title = dictionary["title"]!
-            let description = dictionary["description"]!
-            let ownerName = dictionary["ownerName"]!
-            let imageURLString = (dictionary["imageURL"] != nil) ? dictionary["imageURL"]! : ""
-            let thumbnailURLString = (dictionary["thumbnailURL"] != nil) ? dictionary["thumbnailURL"]! : ""
-            let imageURL = NSURL(string: imageURLString)
-            let thumbnailURL = NSURL(string: thumbnailURLString)
-            return Photo(identifier: identifier, title: title, description: description, ownerName: ownerName, imageURL: imageURL, thumbnailURL: thumbnailURL)
+        do {
+            let result = try NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments)
+            if let dictionary = result as? [String : String] {
+                let identifier = dictionary["identifier"]!
+                let title = dictionary["title"]!
+                let description = dictionary["description"]!
+                let ownerName = dictionary["ownerName"]!
+                let imageURLString = (dictionary["imageURL"] != nil) ? dictionary["imageURL"]! : ""
+                let thumbnailURLString = (dictionary["thumbnailURL"] != nil) ? dictionary["thumbnailURL"]! : ""
+                let imageURL = NSURL(string: imageURLString)
+                let thumbnailURL = NSURL(string: thumbnailURLString)
+                return Photo(identifier: identifier, title: title, description: description, ownerName: ownerName, imageURL: imageURL, thumbnailURL: thumbnailURL)
+            }
+            else {
+                return nil
+            }
         }
-        else {
-            return nil
+        catch {
+            print("An error has occurred: -> \(error)") // TODO: improve error handling
         }
+        return nil
     }
     
     // MARK: DataRepresentable
     
     public func asData() -> NSData! {
-        return NSJSONSerialization.dataWithJSONObject(dictionaryValue(), options: NSJSONWritingOptions.PrettyPrinted, error: nil)!
+        return try! NSJSONSerialization.dataWithJSONObject(dictionaryValue(), options: NSJSONWritingOptions.PrettyPrinted)
     }
     
 }

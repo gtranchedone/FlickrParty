@@ -21,30 +21,29 @@ public class PhotosDataSource: ViewDataSource {
     }
     
     override public func fetchContent(page: Int = 1) {
-        if let apiClient = self.apiClient {
-            loading = true
-            performFetch(page) { [unowned self] response, possibleError in
-                if let error = possibleError {
-                    self.delegate?.viewDataSourceDidFailFetchingContent(self, error: error)
-                }
-                else {
-                    self.lastMetadata = response?.metadata
-                    let photos = response?.responseObject as? Array<Photo>
-                    if let page = self.lastMetadata?.page {
-                        if page > 1 {
-                            self.photos = self.photos! + photos!
-                        }
-                        else {
-                            self.photos = photos
-                        }
+        guard apiClient != nil else { return }
+        loading = true
+        performFetch(page) { [unowned self] response, possibleError in
+            if let error = possibleError {
+                self.delegate?.viewDataSourceDidFailFetchingContent(self, error: error)
+            }
+            else {
+                self.lastMetadata = response?.metadata
+                let photos = response?.responseObject as? Array<Photo>
+                if let page = self.lastMetadata?.page {
+                    if page > 1 {
+                        self.photos = self.photos! + photos!
                     }
                     else {
                         self.photos = photos
                     }
-                    self.delegate?.viewDataSourceDidFetchContent(self)
                 }
-                self.loading = false
+                else {
+                    self.photos = photos
+                }
+                self.delegate?.viewDataSourceDidFetchContent(self)
             }
+            self.loading = false
         }
     }
     
@@ -83,7 +82,7 @@ public class PhotosDataSource: ViewDataSource {
             let photo = photos[indexPath.item]
             if photo === placeholderPhoto {
                 photosCache.fetch(key: indexPath.description, formatName: HanekeGlobals.Cache.OriginalFormatName).onFailure({ error in
-                    println("\(error)")
+                    print("\(error)")
                     completion(photo)
                 }).onSuccess { fetchedPhoto in
                     self.photos?[indexPath.item] = fetchedPhoto

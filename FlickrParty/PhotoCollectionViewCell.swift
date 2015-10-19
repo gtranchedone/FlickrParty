@@ -14,7 +14,7 @@ public class PhotoCollectionViewCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        imageView.autoresizingMask = .FlexibleHeight | .FlexibleWidth
+        imageView.autoresizingMask = [.FlexibleHeight, .FlexibleWidth]
         imageView.backgroundColor = UIColor.lightGrayColor()
         imageView.contentMode = .ScaleAspectFill
         imageView.frame = self.contentView.bounds
@@ -22,7 +22,7 @@ public class PhotoCollectionViewCell: UICollectionViewCell {
         self.contentView.addSubview(imageView)
     }
 
-    required public init(coder aDecoder: NSCoder) {
+    required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
     

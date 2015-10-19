@@ -21,8 +21,8 @@ public class PhotoDetailsViewController: UIViewController, UIScrollViewDelegate 
         self.photo = photo
         super.init(nibName: nil, bundle: nil)
     }
-    
-    public required init(coder aDecoder: NSCoder) {
+
+    required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
     
@@ -48,7 +48,7 @@ public class PhotoDetailsViewController: UIViewController, UIScrollViewDelegate 
     // MARK: Helpers
     
     private func setUpScrollView() {
-        scrollView.autoresizingMask = .FlexibleHeight | .FlexibleWidth
+        scrollView.autoresizingMask = [.FlexibleHeight, .FlexibleWidth]
         scrollView.backgroundColor = UIColor.clearColor()
         scrollView.frame = self.view.bounds
         scrollView.minimumZoomScale = 1
@@ -58,7 +58,7 @@ public class PhotoDetailsViewController: UIViewController, UIScrollViewDelegate 
     }
     
     private func setUpImageView() {
-        imageView.autoresizingMask = .FlexibleHeight | .FlexibleWidth
+        imageView.autoresizingMask = [.FlexibleHeight, .FlexibleWidth]
         imageView.backgroundColor = UIColor.clearColor()
         imageView.contentMode = .ScaleAspectFit
         imageView.frame = scrollView.bounds
@@ -70,7 +70,7 @@ public class PhotoDetailsViewController: UIViewController, UIScrollViewDelegate 
         title = photo?.title
         view.backgroundColor = UIColor.whiteColor()
         view.insertSubview(activityIndicator, belowSubview: scrollView)
-        activityIndicator.setTranslatesAutoresizingMaskIntoConstraints(false)
+        activityIndicator.translatesAutoresizingMaskIntoConstraints = false
         let centerXContraint = NSLayoutConstraint(item: view, attribute: .CenterX, relatedBy: .Equal, toItem: activityIndicator, attribute: .CenterX, multiplier: 1, constant: 0)
         let centerYContraint = NSLayoutConstraint(item: view, attribute: .CenterY, relatedBy: .Equal, toItem: activityIndicator, attribute: .CenterY, multiplier: 1, constant: 0)
         view.addConstraints([centerXContraint, centerYContraint])

@@ -34,7 +34,7 @@ class FlickrPhotoParserTests: XCTestCase {
     private func sampleJSONObject() -> AnyObject? {
         let filePath = NSBundle(forClass: FlickrAPIClientTests.self).pathForResource("FlickrSearchAPIResponse", ofType: "json")
         let sampleData = NSData(contentsOfFile: filePath!)
-        let jsonObject = NSJSONSerialization.JSONObjectWithData(sampleData!, options: .AllowFragments, error: nil) as? Dictionary<String, AnyObject>
+        let jsonObject = (try? NSJSONSerialization.JSONObjectWithData(sampleData!, options: .AllowFragments)) as? Dictionary<String, AnyObject>
         return jsonObject
     }
     

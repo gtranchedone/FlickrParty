@@ -45,14 +45,14 @@ class PhotoTests: XCTestCase {
         let photo = makePhoto()
         let dataValue = photo.asData()
         let dictionaryValue = photo.dictionaryValue()
-        let dataAsDictionary = NSJSONSerialization.JSONObjectWithData(dataValue, options: NSJSONReadingOptions.AllowFragments, error: nil) as? Dictionary<String, String>
+        let dataAsDictionary = try! NSJSONSerialization.JSONObjectWithData(dataValue, options: NSJSONReadingOptions.AllowFragments) as? [String : String]
         XCTAssertEqual(dictionaryValue, dataAsDictionary!, "Photo doesn't implement the DataRepresentable protocol correctly")
     }
     
     func testPhotoImplementsDataConvertibleProtocolCorrectly() {
         let photo = makePhoto()
         let photoDictionary = makePhotoDictionary()
-        let photoDictionaryData = NSJSONSerialization.dataWithJSONObject(photoDictionary, options: NSJSONWritingOptions.PrettyPrinted, error: nil)
+        let photoDictionaryData = try? NSJSONSerialization.dataWithJSONObject(photoDictionary, options: NSJSONWritingOptions.PrettyPrinted)
         let convertedPhoto = Photo.convertFromData(photoDictionaryData!)
         XCTAssertEqual(photo, convertedPhoto!, "Photo doesn't implement the DataRepresentable protocol correctly")
     }

@@ -35,7 +35,7 @@ public class PhotosViewController: BaseCollectionViewController, UICollectionVie
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "didBecomeActive", name: UIApplicationDidBecomeActiveNotification, object: nil)
     }
     
-    required public init(coder aDecoder: NSCoder) {
+    required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
     
@@ -97,7 +97,7 @@ public class PhotosViewController: BaseCollectionViewController, UICollectionVie
         if (indexPath.item == (self.dataSource!.numberOfItems() - 1)) {
             if let metadata = self.dataSource!.lastMetadata {
                 if metadata.page < metadata.numberOfPages {
-                    self.dataSource!.fetchContent(page: metadata.page + 1)
+                    self.dataSource!.fetchContent(metadata.page + 1)
                 }
             }
         }
@@ -105,11 +105,9 @@ public class PhotosViewController: BaseCollectionViewController, UICollectionVie
     
     private func cachePhotosThatAreNotNeededForDisplayInCollectionView(collectionView: UICollectionView, referenceIndexPath indexPath: NSIndexPath) {
         let visibleIndexPaths = collectionView.indexPathsForVisibleItems()
-        if visibleIndexPaths.isEmpty {
-            return
-        }
+        guard !visibleIndexPaths.isEmpty else { return }
         
-        let firstVisibleIndexPath = visibleIndexPaths.first as! NSIndexPath
+        let firstVisibleIndexPath = visibleIndexPaths.first!
         let scrollingDown = (indexPath.item - firstVisibleIndexPath.item) > 0
         var indexPathToCache: NSIndexPath!
         if scrollingDown {

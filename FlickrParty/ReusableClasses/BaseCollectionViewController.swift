@@ -27,7 +27,7 @@ public class BaseCollectionViewController: UICollectionViewController, ViewDataS
         super.init(collectionViewLayout: layout)
     }
     
-    required public init(coder aDecoder: NSCoder) {
+    required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
     
@@ -46,7 +46,7 @@ public class BaseCollectionViewController: UICollectionViewController, ViewDataS
 
     override public func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        println("\n\n!!! Received Memory Warning !!!\n\n")
+        print("\n\n!!! Received Memory Warning !!!\n\n")
     }
     
     public override func willRotateToInterfaceOrientation(toInterfaceOrientation: UIInterfaceOrientation, duration: NSTimeInterval) {
@@ -84,7 +84,7 @@ public class BaseCollectionViewController: UICollectionViewController, ViewDataS
     }
 
     override public func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(DefaultCellReuseIdentifier, forIndexPath: indexPath) as! UICollectionViewCell
+        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(DefaultCellReuseIdentifier, forIndexPath: indexPath) 
         cell.backgroundColor = UIColor.yellowColor()
         return cell
     }
@@ -112,17 +112,19 @@ public class BaseCollectionViewController: UICollectionViewController, ViewDataS
     
     public func viewDataSourceDidFailFetchingContent(dataSource: ViewDataSource, error: NSError) {
         var message = "We were unable to load any photo"
-        if let userInfo = error.userInfo {
-            if let errorMessage = userInfo[NSLocalizedDescriptionKey] as? String {
-                message = errorMessage
-            }
-            let alertController = UIAlertController(title: "An error occurred", message: message, preferredStyle: .Alert)
-            alertController.addAction(UIAlertAction(title: "Dismiss", style: .Cancel, handler: nil))
-            self.presentViewController(alertController, animated: true, completion: nil)
+        if let errorMessage = error.userInfo[NSLocalizedDescriptionKey] as? String {
+            message = errorMessage
         }
+        presentAlertWithMessage(message)
         stopAnimatingActivityIndicator()
         updateBackgroundLabelWithMessage(message)
         UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+    }
+    
+    private func presentAlertWithMessage(message: String) {
+        let alertController = UIAlertController(title: "An error occurred", message: message, preferredStyle: .Alert)
+        alertController.addAction(UIAlertAction(title: "Dismiss", style: .Cancel, handler: nil))
+        presentViewController(alertController, animated: true, completion: nil)
     }
     
     private func updateBackgroundLabelWithMessage(message: String?) {

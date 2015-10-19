@@ -34,7 +34,7 @@ public class FlickrAPIClient: APIClient {
     }
     
     public func fetchPhotosWithTags(tags: Array<String>, location: CLLocationCoordinate2D?, page: Int, completionBlock: (response: APIResponse?, error: NSError?) -> Void) {
-        let tagsString = join(",", tags)
+        let tagsString = tags.joinWithSeparator(",")
         let arguments: [CVarArgType]
         let format: String
         if let coordinate = location {
@@ -47,11 +47,15 @@ public class FlickrAPIClient: APIClient {
         }
         let photosURL = String(format: format, arguments: arguments)
         
-        performRequest(.GET, URLString: photosURL) { [unowned self] (_, _, jsonResponse, error) -> Void in
-            if let error = error {
+        performRequest(.GET, URLString: photosURL) { [weak self] response -> Void in
+            if let error = response.result.error {
                 completionBlock(response: nil, error: error)
             }
-            else if let jsonObject = jsonResponse as? Dictionary<String, AnyObject> {
+            else if let jsonObject = response.result.value as? [String : AnyObject] {
+                var photoParser: PhotoParser? = nil
+                if let strongSelf = self {
+                    photoParser = strongSelf.parser
+                }
                 let status = jsonObject["stat"] as? String
                 if let status = status {
                     if status == "fail" {
@@ -61,10 +65,10 @@ public class FlickrAPIClient: APIClient {
                         let apiError = NSError(domain: FlickrAPIClient.FlickrAPIDomain, code: code, userInfo: userInfo)
                         completionBlock(response: nil, error: apiError)
                     }
-                    else {
-                        let metadata = self.parser?.parseMetadata(jsonObject)
-                        let photos = self.parser?.parsePhotos(jsonObject)
-                        let response = APIResponse(metadata: metadata!, responseObject: photos!)
+                    else if let photoParser = photoParser {
+                        let metadata = photoParser.parseMetadata(jsonObject)
+                        let photos = photoParser.parsePhotos(jsonObject)
+                        let response = APIResponse(metadata: metadata, responseObject: photos)
                         completionBlock(response: response, error: nil)
                     }
                 }
@@ -76,8 +80,8 @@ public class FlickrAPIClient: APIClient {
         
     }
     
-    public func performRequest(method: Alamofire.Method, URLString: URLStringConvertible, completionHandler: (NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void) {
-        println("- Perofming request with URL \(URLString)")
+    public func performRequest(method: Alamofire.Method, URLString: URLStringConvertible, completionHandler: (Response<AnyObject, NSError>) -> Void) {
+        print("- Perofming request with URL \(URLString)")
         Alamofire.request(method, URLString).responseJSON(options: .AllowFragments, completionHandler: completionHandler)
     }
    

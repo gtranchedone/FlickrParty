@@ -71,7 +71,7 @@ public class FlickrPhotoParser: PhotoParser {
         let title = parseStringFromJSONObject(jsonObject, key: PhotoKeys.Title.rawValue)
         let ownerName = parseStringFromJSONObject(jsonObject, key: PhotoKeys.OwnerName.rawValue)
         var imageURL = NSURL(string: parseStringFromJSONObject(jsonObject, key: PhotoKeys.OriginalURL.rawValue))
-        if imageURL?.absoluteString?.isEmpty == true {
+        if imageURL?.absoluteString.isEmpty == true {
             imageURL = NSURL(string: parseStringFromJSONObject(jsonObject, key: PhotoKeys.LargeImageURL.rawValue))
         }
         let thumbnailURL = NSURL(string: parseStringFromJSONObject(jsonObject, key: PhotoKeys.SmallImageURL.rawValue))
