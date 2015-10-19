@@ -49,44 +49,31 @@ class NearbyPartyPhotosViewControllerTests: XCTestCase {
         mockLocationManager.dynamicType.stubAuthorizationStatus = .Denied
         viewController?.beginAppearanceTransition(true, animated: false)
         viewController?.endAppearanceTransition()
-        if let backgroundView = viewController?.collectionView?.backgroundView as? CollectionBackgroundView {
-            let expectedMessage = "You've denied usage of location services, therefore we're unable to show you photos of nearby parties"
-            if let message = backgroundView.textLabel.text {
-                XCTAssertEqual(message, expectedMessage, "Isn't showing the expected message to users who deny usage of location service")
-            }
-            else {
-                XCTFail("Isn't showing the expected message to users who deny usage of location service")
-            }
-        }
-        else {
-            XCTFail("Doesn't have an appropriate backgroundView to display messages")
-        }
+        let backgroundView = viewController?.collectionView?.backgroundView as? CollectionBackgroundView
+        let expectedMessage = "You've denied usage of location services, therefore we're unable to show you photos of nearby parties"
+        let message = backgroundView?.textLabel.text
+        XCTAssertEqual(message, expectedMessage, "Isn't showing the expected message to users who deny usage of location service")
+    }
+    
+    func testDoesNothingWhenTheAuthorizationStatusIsStillToBeDetermined() {
+        updateLocationAuthorizationStatusFromStatus(.NotDetermined, toStatus: .NotDetermined, rebuildDataSource: false)
+        let backgroundView = viewController?.collectionView?.backgroundView as? CollectionBackgroundView
+        let message = backgroundView?.textLabel.text
+        XCTAssertNil(message)
     }
     
     func testDisplaysAnAppropriateMessageIfUserChangesPermissionsToUseLocationToDenied() {
         updateLocationAuthorizationStatusFromAuthorizedToDenied(false)
-        if let backgroundView = viewController?.collectionView?.backgroundView as? CollectionBackgroundView {
-            let expectedMessage = "You've denied usage of location services, therefore we're unable to show you photos of nearby parties"
-            if let message = backgroundView.textLabel.text {
-                XCTAssertEqual(message, expectedMessage, "Isn't showing the expected message to users who deny usage of location service")
-            }
-            else {
-                XCTFail("Isn't showing the expected message to users who deny usage of location service")
-            }
-        }
-        else {
-            XCTFail("Doesn't have an appropriate backgroundView to display messages")
-        }
+        let backgroundView = viewController?.collectionView?.backgroundView as? CollectionBackgroundView
+        let expectedMessage = "You've denied usage of location services, therefore we're unable to show you photos of nearby parties"
+        let message = backgroundView?.textLabel.text
+        XCTAssertEqual(expectedMessage, message, "Isn't showing the expected message to users who deny usage of location service")
     }
     
     func testDoesNotDisplayAnyMessageIfUserChangesPermissionsToUseLocationToAuthorized() {
         updateLocationAuthorizationStatusFromDeniedToAuthorized(false)
-        if let backgroundView = viewController?.collectionView?.backgroundView as? CollectionBackgroundView {
-            XCTAssertNil(backgroundView.textLabel.text, "Is showing an unappropriate message to users who allow usage of location service")
-        }
-        else {
-            XCTFail("Doesn't have an appropriate backgroundView to display messages")
-        }
+        let backgroundView = viewController?.collectionView?.backgroundView as? CollectionBackgroundView
+        XCTAssertNil(backgroundView?.textLabel.text, "Is showing an unappropriate message to users who allow usage of location service")
     }
     
     func testInvalidatesPhotosIfUserChangesPermissionsToUseLocationToDenied() {
@@ -110,19 +97,12 @@ class NearbyPartyPhotosViewControllerTests: XCTestCase {
         viewController?.beginAppearanceTransition(true, animated: false)
         viewController?.endAppearanceTransition()
         
-        if let backgroundView = viewController?.collectionView?.backgroundView as? CollectionBackgroundView {
-            let expectedMessage = "Sorry, your location cannot be determined. Please try again later."
-            XCTAssertFalse(backgroundView.activityIndicator.isAnimating(), "Shouldn't be showing the activity indicator anymore")
-            if let message = backgroundView.textLabel.text {
-                XCTAssertEqual(message, expectedMessage, "Isn't showing the expected message to users whose location cannot be determined")
-            }
-            else {
-                XCTFail("Isn't showing the expected message to users who deny usage of location service")
-            }
-        }
-        else {
-            XCTFail("Doesn't have an appropriate backgroundView to display messages")
-        }
+        let backgroundView = viewController?.collectionView?.backgroundView as? CollectionBackgroundView
+        let expectedMessage = "Sorry, your location cannot be determined. Please try again later."
+        let message = backgroundView?.textLabel.text
+        
+        XCTAssertFalse(backgroundView!.activityIndicator.isAnimating(), "Shouldn't be showing the activity indicator anymore")
+        XCTAssertEqual(message, expectedMessage, "Isn't showing the expected message to users whose location cannot be determined")
     }
     
     func testStopsLocationUpdatesWhenUserLocationIsFound() {
@@ -154,38 +134,29 @@ class NearbyPartyPhotosViewControllerTests: XCTestCase {
     func testUpdatesDataSourceWhenUserLocationIsFound() {
         viewController?.locationManager((viewController?.locationManager)!, didUpdateLocations: [CLLocation(latitude: 10.0, longitude: 10.0)])
         let dataSource = viewController?.dataSource as! MockNearbyPartyPhotosDataSource
-        if let coordinate = dataSource.locationCoordinate {
-            XCTAssertEqual(coordinate.latitude, 10.0, "The dataSource wasn't updated when the user location was determined")
-        }
-        else {
-            XCTFail("The dataSource wasn't updated when the user location was determined")
-        }
+        XCTAssertEqual(dataSource.locationCoordinate?.latitude, 10.0, "The dataSource wasn't updated when the user location was determined")
     }
     
     // MARK: Private
     
     func updateLocationAuthorizationStatusFromAuthorizedToDenied(rebuildDataSource: Bool) {
-        let mockLocationManager = viewController?.locationManager as! MockLocationManager
-        mockLocationManager.dynamicType.stubAuthorizationStatus = .AuthorizedWhenInUse
-        viewController?.beginAppearanceTransition(true, animated: false)
-        viewController?.endAppearanceTransition()
-        if (rebuildDataSource) {
-            viewController?.dataSource = MockDataSource()
-        }
-        mockLocationManager.dynamicType.stubAuthorizationStatus = .Denied
-        mockLocationManager.delegate?.locationManager?(mockLocationManager, didChangeAuthorizationStatus: .Denied)
+        updateLocationAuthorizationStatusFromStatus(.AuthorizedWhenInUse, toStatus: .Denied, rebuildDataSource: rebuildDataSource)
     }
 
     func updateLocationAuthorizationStatusFromDeniedToAuthorized(rebuildDataSource: Bool) {
+        updateLocationAuthorizationStatusFromStatus(.Denied, toStatus: .AuthorizedWhenInUse, rebuildDataSource: rebuildDataSource)
+    }
+    
+    func updateLocationAuthorizationStatusFromStatus(fromStatus: CLAuthorizationStatus, toStatus: CLAuthorizationStatus,  rebuildDataSource: Bool) {
         let mockLocationManager = viewController?.locationManager as! MockLocationManager
-        mockLocationManager.dynamicType.stubAuthorizationStatus = .Denied
+        mockLocationManager.dynamicType.stubAuthorizationStatus = fromStatus
         viewController?.beginAppearanceTransition(true, animated: false)
         viewController?.endAppearanceTransition()
         if (rebuildDataSource) {
             viewController?.dataSource = MockDataSource()
         }
-        mockLocationManager.dynamicType.stubAuthorizationStatus = .AuthorizedWhenInUse
-        mockLocationManager.delegate?.locationManager?(mockLocationManager, didChangeAuthorizationStatus: .AuthorizedWhenInUse)
+        mockLocationManager.dynamicType.stubAuthorizationStatus = toStatus
+        mockLocationManager.delegate?.locationManager?(mockLocationManager, didChangeAuthorizationStatus: toStatus)
     }
     
 }
