@@ -28,8 +28,7 @@ class BaseCollectionViewControllerTests: XCTestCase {
         let dataSource = MockDataSource()
         viewController?.dataSource = dataSource
         viewController?.beginAppearanceTransition(true, animated: false)
-        XCTAssertTrue(dataSource.fetchedContent, "The view controller didn't ask the dataSource to fetch the data")
-        
+        XCTAssertTrue(dataSource.fetchedContent, "The view controller didn't ask the dataSource to fetch the data")   
     }
     
     func testViewControllerSetsItselfAsDelegateOfTheDataSourceOnSet() {
@@ -39,33 +38,48 @@ class BaseCollectionViewControllerTests: XCTestCase {
         XCTAssertEqual(delegate!, viewController!, "The viewController didn't set itself as the delegate of the dataSource")
     }
     
-    func testRespondsToCollectionViewDataSourceMethodsUsingDataSource() {
-        let dataSource = MockDataSource()
-        dataSource.sections = 2
-        dataSource.items = 3
-        
-        viewController!.dataSource = dataSource
-        let numberOfSections = viewController!.numberOfSectionsInCollectionView(viewController!.collectionView!)
-        let numberOfItemsInSection = viewController!.collectionView(viewController!.collectionView!, numberOfItemsInSection: 0)
-        XCTAssertEqual(numberOfSections, 2, "Displaying unexpected number of section")
-        XCTAssertEqual(numberOfItemsInSection, 3, "Displaying unexpected number of section")
+    // MARK: - UICollectionViewDataSouce
+    
+    func testHasNoSectionsByDefault() {
+        XCTAssertEqual(0, viewController!.numberOfSectionsInCollectionView(viewController!.collectionView!))
     }
     
-    func testRespondsToCollectionViewDataSourceMethodsUsingDataSource2() {
-        let dataSource = MockDataSource()
-        dataSource.sections = 1
-        dataSource.items = 2
-        
-        viewController!.dataSource = dataSource
-        let numberOfSections = viewController!.numberOfSectionsInCollectionView(viewController!.collectionView!)
-        let numberOfItemsInSection = viewController!.collectionView(viewController!.collectionView!, numberOfItemsInSection: 0)
-        XCTAssertEqual(numberOfSections, 1, "Displaying unexpected number of section")
-        XCTAssertEqual(numberOfItemsInSection, 2, "Displaying unexpected number of section")
+    func testHasNoItemsByDefault() {
+        XCTAssertEqual(0, viewController!.collectionView(viewController!.collectionView!, numberOfItemsInSection: 0))
     }
+    
+    func testDisplaysSectionsProvidedByDataSourceWhenAvailable() {
+        let stubDataSource = MockDataSource()
+        stubDataSource.sectionsCount = 3
+        viewController?.dataSource = stubDataSource
+        XCTAssertEqual(3, viewController!.numberOfSectionsInCollectionView(viewController!.collectionView!))
+    }
+    
+    func testDisplaysItemsProvidedByDataSourceWhenAvailable() {
+        let stubDataSource = MockDataSource()
+        stubDataSource.itemsCount = 2
+        viewController?.dataSource = stubDataSource
+        XCTAssertEqual(2, viewController!.collectionView(viewController!.collectionView!, numberOfItemsInSection: 0))
+    }
+    
+    func testIsAlwaysAbleToDisplayCells() {
+        let collectionView = MockCollectionView()
+        let indexPath = NSIndexPath(forItem: 0, inSection: 0)
+        XCTAssertNotNil(viewController?.collectionView(collectionView, cellForItemAtIndexPath: indexPath))
+    }
+
+    // MARK: View Hierarchy
     
     func testCollectionViewHasBackgroundViewAfterViewIsLoaded() {
         viewController?.view
         XCTAssertTrue(viewController!.collectionView!.backgroundView!.isKindOfClass(CollectionBackgroundView.self), "The CollectionView has no backgroundView")
+    }
+    
+    func testInvalidatesCollectionViewLayoutWhenDeviceIsRotated() {
+        let mockLayout = MockCollectionViewLayout()
+        viewController = BaseCollectionViewController(collectionViewLayout: mockLayout)
+        viewController?.willRotateToInterfaceOrientation(.LandscapeLeft, duration: 0.3)
+        XCTAssertTrue(mockLayout.didInvalidateLayout)
     }
     
 }

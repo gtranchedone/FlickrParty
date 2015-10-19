@@ -11,6 +11,8 @@
 		990A472D1AF81D5A00CC4E3E /* Photo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 990A472C1AF81D5A00CC4E3E /* Photo.swift */; };
 		990A47331AF8242100CC4E3E /* PhotoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 990A47321AF8242100CC4E3E /* PhotoTests.swift */; };
 		9960E0C61AF7C45400107687 /* AppDelegateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9960E0C51AF7C45400107687 /* AppDelegateTests.swift */; };
+		998000741BD532C20032467C /* MockCollectionViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 998000731BD532C20032467C /* MockCollectionViewLayout.swift */; settings = {ASSET_TAGS = (); }; };
+		998000761BD536B10032467C /* MockCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 998000751BD536B10032467C /* MockCollectionView.swift */; settings = {ASSET_TAGS = (); }; };
 		9983C7FE1AF7BE77003AEEF9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9983C7FD1AF7BE77003AEEF9 /* AppDelegate.swift */; };
 		998BCE501B4FB54700EA638B /* MockLocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 998BCE4F1B4FB54700EA638B /* MockLocationManager.swift */; };
 		998BCE521B4FB85900EA638B /* MockAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 998BCE511B4FB85900EA638B /* MockAPIClient.swift */; };
@@ -60,6 +62,8 @@
 		990A47321AF8242100CC4E3E /* PhotoTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoTests.swift; sourceTree = "<group>"; };
 		993421381BD5281700AA75C8 /* FlickrPartyTests-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "FlickrPartyTests-Bridging-Header.h"; sourceTree = "<group>"; };
 		9960E0C51AF7C45400107687 /* AppDelegateTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegateTests.swift; sourceTree = "<group>"; };
+		998000731BD532C20032467C /* MockCollectionViewLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockCollectionViewLayout.swift; sourceTree = "<group>"; };
+		998000751BD536B10032467C /* MockCollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockCollectionView.swift; sourceTree = "<group>"; };
 		9983C7F81AF7BE77003AEEF9 /* FlickrParty.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FlickrParty.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9983C7FC1AF7BE77003AEEF9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9983C7FD1AF7BE77003AEEF9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -287,6 +291,8 @@
 				998BCE511B4FB85900EA638B /* MockAPIClient.swift */,
 				99F12F7A1B4D643F00F682DD /* MockDataSource.swift */,
 				998BCE4F1B4FB54700EA638B /* MockLocationManager.swift */,
+				998000731BD532C20032467C /* MockCollectionViewLayout.swift */,
+				998000751BD536B10032467C /* MockCollectionView.swift */,
 			);
 			path = MocksAndStubs;
 			sourceTree = "<group>";
@@ -472,10 +478,12 @@
 				99F12F761B4D54FE00F682DD /* NearbyPartyPhotosViewControllerTests.swift in Sources */,
 				99F12F741B4D446300F682DD /* PhotosViewControllerTests.swift in Sources */,
 				990A47331AF8242100CC4E3E /* PhotoTests.swift in Sources */,
+				998000741BD532C20032467C /* MockCollectionViewLayout.swift in Sources */,
 				99F12F3C1B4D30FC00F682DD /* FlickrPhotoParserTests.swift in Sources */,
 				998BCE521B4FB85900EA638B /* MockAPIClient.swift in Sources */,
 				9960E0C61AF7C45400107687 /* AppDelegateTests.swift in Sources */,
 				998BCE541B4FBBE200EA638B /* NearbyPartyPhotosDataSourceTests.swift in Sources */,
+				998000761BD536B10032467C /* MockCollectionView.swift in Sources */,
 				99F12F7B1B4D643F00F682DD /* MockDataSource.swift in Sources */,
 				99F12F561B4D3F9000F682DD /* BaseCollectionViewControllerTests.swift in Sources */,
 				99F12F731B4D446300F682DD /* ViewDataSourceTests.swift in Sources */,

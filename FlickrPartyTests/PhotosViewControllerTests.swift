@@ -10,16 +10,6 @@ import UIKit
 import XCTest
 import FlickrParty
 
-class MockCollectionView : UICollectionView {
-    
-    var didCallReloadData = false
-    
-    override func reloadData() {
-        didCallReloadData = true
-    }
-    
-}
-
 class MockPhotosViewController : PhotosViewController {
     
     var viewControllerAttemptedToPresent: UIViewController?

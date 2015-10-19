@@ -79,16 +79,11 @@ public class FlickrPhotoParser: PhotoParser {
         if let descriptionObject = jsonObject[PhotoKeys.Description.rawValue] as? Dictionary<String, String> {
             description = parseStringFromJSONObject(descriptionObject, key: PhotoKeys.DescriptionContent.rawValue)
         }
-        return Photo(identifier: identifier, title: title, description: description, ownerName: ownerName, imageURL: imageURL, thumbnailURL: thumbnailURL)
+        return Photo(identifier: identifier, title: title, details: description, ownerName: ownerName, imageURL: imageURL, thumbnailURL: thumbnailURL)
     }
     
-    private func parseStringFromJSONObject(jsonObject: Dictionary<String, AnyObject>, key: String) -> String {
-        if let parsedString = jsonObject[key] as? String {
-            return parsedString
-        }
-        else {
-            return ""
-        }
+    private func parseStringFromJSONObject(jsonObject: [String : AnyObject], key: String) -> String {
+        return jsonObject[key] as? String ?? ""
     }
     
 }

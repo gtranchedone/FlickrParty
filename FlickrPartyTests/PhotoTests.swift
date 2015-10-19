@@ -23,22 +23,35 @@ class PhotoTests: XCTestCase {
     }
 
     func testTwoDifferentPhotosAreNotEqual() {
-        let photo1 = Photo(identifier: "photo1", title: "", description: "", ownerName: "", imageURL: NSURL(string: "apple.com")!, thumbnailURL: NSURL(string: "apple.com")!)
-        let photo2 = Photo(identifier: "photo2", title: "", description: "", ownerName: "", imageURL: NSURL(string: "apple.com")!, thumbnailURL: NSURL(string: "apple.com")!)
+        let photo1 = Photo(identifier: "photo1", title: "", details: "", ownerName: "", imageURL: NSURL(string: "apple.com")!, thumbnailURL: NSURL(string: "apple.com")!)
+        let photo2 = Photo(identifier: "photo2", title: "", details: "", ownerName: "", imageURL: NSURL(string: "apple.com")!, thumbnailURL: NSURL(string: "apple.com")!)
         XCTAssertNotEqual(photo1, photo2, "Two different Photos are believed to be equal")
     }
     
     func testTwoPhotosAreEqualIfIdentifiersAreEqual() {
-        let photo1 = Photo(identifier: "photo", title: "", description: "", ownerName: "", imageURL: NSURL(string: "apple.com")!, thumbnailURL: NSURL(string: "apple.com")!)
-        let photo2 = Photo(identifier: "photo", title: "", description: "", ownerName: "", imageURL: NSURL(string: "apple.com")!, thumbnailURL: NSURL(string: "apple.com")!)
+        let photo1 = Photo(identifier: "photo", title: "", details: "", ownerName: "", imageURL: NSURL(string: "apple.com")!, thumbnailURL: NSURL(string: "apple.com")!)
+        let photo2 = Photo(identifier: "photo", title: "", details: "", ownerName: "", imageURL: NSURL(string: "apple.com")!, thumbnailURL: NSURL(string: "apple.com")!)
         XCTAssertEqual(photo1, photo2, "Two supposedly equal Photos aren't recognized as equal")
     }
     
-    func testPhotoIsConvertableToDictionary() {
+    func testPhotoCanBeConvertedToDictionary() {
         let photo = makePhoto()
         let dictionaryValue = photo.dictionaryValue()
         let expectedDictionary = makePhotoDictionary()
-        XCTAssertEqual(dictionaryValue, expectedDictionary, "Photo isn't convertible to a dictionary")
+        XCTAssertEqual(expectedDictionary, dictionaryValue)
+    }
+    
+    func testPhotoWithNoURLsCanBeConvertedToDictionary() {
+        let photo = makePhotoWithNoURLs()
+        let dictionaryValue = photo.dictionaryValue()
+        let expectedDictionary = makePhotoDictionaryWithNoURLs()
+        XCTAssertEqual(expectedDictionary, dictionaryValue)
+    }
+    
+    func testPhotoCanBePrintedInConsoleWithMeaningfulDescription() {
+        let photo = makePhoto()
+        let dictionaryValue = photo.dictionaryValue()
+        XCTAssertEqual(photo.description, dictionaryValue.description)
     }
     
     func testPhotoImplementsDataRepresentableProtocolCorrectly() {
@@ -51,26 +64,41 @@ class PhotoTests: XCTestCase {
     
     func testPhotoImplementsDataConvertibleProtocolCorrectly() {
         let photo = makePhoto()
-        let photoDictionary = makePhotoDictionary()
-        let photoDictionaryData = try? NSJSONSerialization.dataWithJSONObject(photoDictionary, options: NSJSONWritingOptions.PrettyPrinted)
-        let convertedPhoto = Photo.convertFromData(photoDictionaryData!)
+        var photoDictionary = makePhotoDictionary()
+        photoDictionary["description"] = photoDictionary["details"]
+        let photoDictionaryData = try! NSJSONSerialization.dataWithJSONObject(photoDictionary, options: NSJSONWritingOptions.PrettyPrinted)
+        let convertedPhoto = Photo.convertFromData(photoDictionaryData)
         XCTAssertEqual(photo, convertedPhoto!, "Photo doesn't implement the DataRepresentable protocol correctly")
     }
     
     private func makePhoto() -> Photo {
         let imageURL = NSURL(string: "https://apple.com/imageURL.jpg")
         let thumbnailURL = NSURL(string: "https://apple.com/thumbnailURL.jpg")
-        let photo = Photo(identifier: "123", title: "Photo 123", description: "Some Description", ownerName: "Some Owner", imageURL: imageURL, thumbnailURL: thumbnailURL)
+        let photo = Photo(identifier: "123", title: "Photo 123", details: "Some Description", ownerName: "Some Owner", imageURL: imageURL, thumbnailURL: thumbnailURL)
+        return photo
+    }
+    
+    private func makePhotoWithNoURLs() -> Photo {
+        let photo = Photo(identifier: "123", title: "Photo 123", details: "Some Description", ownerName: "Some Owner")
         return photo
     }
 
     private func makePhotoDictionary() -> [String: String] {
         return ["identifier": "123",
                 "title": "Photo 123",
-                "description": "Some Description",
+                "details": "Some Description",
                 "ownerName": "Some Owner",
                 "imageURL": "https://apple.com/imageURL.jpg",
                 "thumbnailURL": "https://apple.com/thumbnailURL.jpg"]
+    }
+    
+    private func makePhotoDictionaryWithNoURLs() -> [String: String] {
+        return ["identifier": "123",
+            "title": "Photo 123",
+            "details": "Some Description",
+            "ownerName": "Some Owner",
+            "imageURL": "",
+            "thumbnailURL": ""]
     }
     
 }

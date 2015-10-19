@@ -31,13 +31,5 @@ public class CollectionBackgroundView: UIView {
         self.addSubview(label)
         return label
     }()
-    
-    public override init(frame: CGRect) {
-        super.init(frame: frame)
-    }
-
-    required public init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-    }
 
 }

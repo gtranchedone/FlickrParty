@@ -23,14 +23,6 @@ public class BaseCollectionViewController: UICollectionViewController, ViewDataS
         self.init(collectionViewLayout: flowLayout)
     }
     
-    public override init(collectionViewLayout layout: UICollectionViewLayout) {
-        super.init(collectionViewLayout: layout)
-    }
-    
-    required public init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-    }
-    
     override public func viewDidLoad() {
         super.viewDidLoad()
         self.collectionView!.registerClass(UICollectionViewCell.self, forCellWithReuseIdentifier: DefaultCellReuseIdentifier)
@@ -42,11 +34,6 @@ public class BaseCollectionViewController: UICollectionViewController, ViewDataS
         if (dataSource?.numberOfItems() <= 0) {
             reloadData()
         }
-    }
-
-    override public func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        print("\n\n!!! Received Memory Warning !!!\n\n")
     }
     
     public override func willRotateToInterfaceOrientation(toInterfaceOrientation: UIInterfaceOrientation, duration: NSTimeInterval) {
@@ -65,22 +52,12 @@ public class BaseCollectionViewController: UICollectionViewController, ViewDataS
     // MARK: UICollectionViewDataSource
 
     override public func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
-        if let dataSource = self.dataSource {
-            return dataSource.numberOfSections()
-        }
-        else {
-            return 0
-        }
+        return dataSource?.numberOfSections() ?? 0
     }
 
 
     override public func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if let dataSource = self.dataSource {
-            return dataSource.numberOfItemsInSection(section)
-        }
-        else {
-            return 0
-        }
+        return dataSource?.numberOfItemsInSection(section) ?? 0
     }
 
     override public func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {

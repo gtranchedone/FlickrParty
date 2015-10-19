@@ -37,8 +37,8 @@ class MockDataSource : ViewDataSource {
     
     var fetchedContent = false
     var didInvalidate = false
-    var sections = 0
-    var items = 0
+    var sectionsCount = 0
+    var itemsCount = 0
     
     override func fetchContent(page: Int = 1) {
         fetchedContent = true
@@ -46,11 +46,11 @@ class MockDataSource : ViewDataSource {
     }
     
     override func numberOfSections() -> Int {
-        return sections
+        return sectionsCount
     }
     
     override func numberOfItemsInSection(section: Int) -> Int {
-        return items
+        return itemsCount
     }
     
     override func invalidateContent() {

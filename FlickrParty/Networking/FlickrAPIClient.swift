@@ -29,11 +29,11 @@ public class FlickrAPIClient: APIClient {
         self.parser = parser
     }
     
-    public func fetchPhotosWithTags(tags: Array<String>, page: Int = 1, completionBlock: (response: APIResponse?, error: NSError?) -> Void) {
+    public func fetchPhotosWithTags(tags: Array<String>, page: Int = 1, completionBlock: (response: APIResponse?, error: NSError?) -> ()) {
         fetchPhotosWithTags(tags, location: nil, page: page, completionBlock: completionBlock)
     }
     
-    public func fetchPhotosWithTags(tags: Array<String>, location: CLLocationCoordinate2D?, page: Int, completionBlock: (response: APIResponse?, error: NSError?) -> Void) {
+    public func fetchPhotosWithTags(tags: [String], location: CLLocationCoordinate2D?, page: Int, completionBlock: (response: APIResponse?, error: NSError?) -> ()) {
         let tagsString = tags.joinWithSeparator(",")
         let arguments: [CVarArgType]
         let format: String
@@ -49,35 +49,40 @@ public class FlickrAPIClient: APIClient {
         
         performRequest(.GET, URLString: photosURL) { [weak self] response -> Void in
             if let error = response.result.error {
-                completionBlock(response: nil, error: error)
-            }
-            else if let jsonObject = response.result.value as? [String : AnyObject] {
-                var photoParser: PhotoParser? = nil
                 if let strongSelf = self {
-                    photoParser = strongSelf.parser
-                }
-                let status = jsonObject["stat"] as? String
-                if let status = status {
-                    if status == "fail" {
-                        let message = jsonObject["message"] as! String
-                        let code = jsonObject["code"] as! Int
-                        let userInfo = [NSLocalizedDescriptionKey: message, NSUnderlyingErrorKey: jsonObject.description]
-                        let apiError = NSError(domain: FlickrAPIClient.FlickrAPIDomain, code: code, userInfo: userInfo)
-                        completionBlock(response: nil, error: apiError)
-                    }
-                    else if let photoParser = photoParser {
-                        let metadata = photoParser.parseMetadata(jsonObject)
-                        let photos = photoParser.parsePhotos(jsonObject)
-                        let response = APIResponse(metadata: metadata, responseObject: photos)
-                        completionBlock(response: response, error: nil)
-                    }
+                    strongSelf.parseAPIResponse(response, completionBlock: completionBlock)
                 }
                 else {
-                    completionBlock(response: nil, error: nil)
+                    completionBlock(response: nil, error: error)
                 }
             }
         }
         
+    }
+    
+    func parseAPIResponse(response: Response<AnyObject, NSError>, completionBlock: (response: APIResponse?, error: NSError?) -> ()) {
+        guard parser != nil else { return }
+        if let jsonObject = response.result.value as? [String : AnyObject] {
+            let status = jsonObject["stat"] as? String
+            if let status = status {
+                if status == "fail" {
+                    let message = jsonObject["message"] as! String
+                    let code = jsonObject["code"] as! Int
+                    let userInfo = [NSLocalizedDescriptionKey: message, NSUnderlyingErrorKey: jsonObject.description]
+                    let apiError = NSError(domain: FlickrAPIClient.FlickrAPIDomain, code: code, userInfo: userInfo)
+                    completionBlock(response: nil, error: apiError)
+                }
+                else {
+                    let metadata = parser!.parseMetadata(jsonObject)
+                    let photos = parser!.parsePhotos(jsonObject)
+                    let response = APIResponse(metadata: metadata, responseObject: photos)
+                    completionBlock(response: response, error: nil)
+                }
+            }
+            else {
+                completionBlock(response: nil, error: nil)
+            }
+        }
     }
     
     public func performRequest(method: Alamofire.Method, URLString: URLStringConvertible, completionHandler: (Response<AnyObject, NSError>) -> Void) {

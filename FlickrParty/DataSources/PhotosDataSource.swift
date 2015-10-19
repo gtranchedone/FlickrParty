@@ -13,7 +13,7 @@ public class PhotosDataSource: ViewDataSource {
    
     private var photos: Array<Photo>?
     public var photosCache = Cache<Photo>(name: "PhotoObjectsCache")
-    private let placeholderPhoto = Photo(identifier: "", title: "", description: "", ownerName: "", imageURL: nil, thumbnailURL: nil)
+    private let placeholderPhoto = Photo(identifier: "", title: "", details: "", ownerName: "", imageURL: nil, thumbnailURL: nil)
     
     override public func invalidateContent() {
         photos = nil
