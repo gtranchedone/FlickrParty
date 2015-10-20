@@ -7,7 +7,20 @@
 //
 
 import UIKit
+import Alamofire
 import CoreLocation
+
+public protocol APIRequest {
+    
+    func responseJSON(options options: NSJSONReadingOptions, completionHandler: Response<AnyObject, NSError> -> Void) -> Self
+    
+}
+
+public protocol APIRequestManager {
+    
+    func makeRequest(method: Alamofire.Method, _ URLString: URLStringConvertible, parameters: [String : AnyObject]?, encoding: ParameterEncoding, headers: [String : String]?) -> APIRequest
+    
+}
 
 public struct APIResponseMetadata: Equatable {
     
@@ -39,11 +52,13 @@ public struct APIResponse {
     
 }
 
+public typealias APIClientCompletionBlock = (response: APIResponse?, error: NSError?) -> ()
+
 public protocol APIClient {
     
-    var parser: PhotoParser? { get set }
+    var parser: PhotoParser { get set }
     
-    func fetchPhotosWithTags(tags: [String], page: Int, completionBlock: (response: APIResponse?, error: NSError?) -> ())
-    func fetchPhotosWithTags(tags: [String], location: CLLocationCoordinate2D?, page: Int, completionBlock: (response: APIResponse?, error: NSError?) -> ())
+    func fetchPhotosWithTags(tags: [String], page: Int, completionBlock: APIClientCompletionBlock)
+    func fetchPhotosWithTags(tags: [String], location: CLLocationCoordinate2D?, page: Int, completionBlock: APIClientCompletionBlock)
     
 }
