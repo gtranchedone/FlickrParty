@@ -13,26 +13,27 @@ import FlickrParty
 class BaseCollectionViewControllerTests: XCTestCase {
 
     var viewController: BaseCollectionViewController?
+    var dataSource: MockDataSource?
     
     override func setUp() {
         super.setUp()
         viewController = BaseCollectionViewController()
+        dataSource = MockDataSource(apiClient: MockAPIClient())
     }
     
     override func tearDown() {
         viewController = nil
+        dataSource = nil
         super.tearDown()
     }
     
     func testFetchContentWhenViewIsAboutToAppear() {
-        let dataSource = MockDataSource()
         viewController?.dataSource = dataSource
         viewController?.beginAppearanceTransition(true, animated: false)
-        XCTAssertTrue(dataSource.fetchedContent, "The view controller didn't ask the dataSource to fetch the data")   
+        XCTAssertTrue(dataSource!.fetchedContent, "The view controller didn't ask the dataSource to fetch the data")
     }
     
     func testViewControllerSetsItselfAsDelegateOfTheDataSourceOnSet() {
-        let dataSource = MockDataSource()
         viewController?.dataSource = dataSource
         let delegate = viewController?.dataSource?.delegate as? BaseCollectionViewController
         XCTAssertEqual(delegate!, viewController!, "The viewController didn't set itself as the delegate of the dataSource")
@@ -49,16 +50,14 @@ class BaseCollectionViewControllerTests: XCTestCase {
     }
     
     func testDisplaysSectionsProvidedByDataSourceWhenAvailable() {
-        let stubDataSource = MockDataSource()
-        stubDataSource.sectionsCount = 3
-        viewController?.dataSource = stubDataSource
+        dataSource!.sectionsCount = 3
+        viewController?.dataSource = dataSource
         XCTAssertEqual(3, viewController!.numberOfSectionsInCollectionView(viewController!.collectionView!))
     }
     
     func testDisplaysItemsProvidedByDataSourceWhenAvailable() {
-        let stubDataSource = MockDataSource()
-        stubDataSource.itemsCount = 2
-        viewController?.dataSource = stubDataSource
+        dataSource!.itemsCount = 2
+        viewController?.dataSource = dataSource
         XCTAssertEqual(2, viewController!.collectionView(viewController!.collectionView!, numberOfItemsInSection: 0))
     }
     

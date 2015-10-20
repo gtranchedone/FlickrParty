@@ -11,53 +11,51 @@ import Haneke
 
 public class PhotosDataSource: ViewDataSource {
    
-    private var photos: Array<Photo>?
     public var photosCache = Cache<Photo>(name: "PhotoObjectsCache")
-    private let placeholderPhoto = Photo(identifier: "", title: "", details: "", ownerName: "", imageURL: nil, thumbnailURL: nil)
+    
+    private var photos: [Photo] = []
+    private let placeholderPhoto = Photo(identifier: "placeholder", title: "", details: "", ownerName: "", imageURL: nil, thumbnailURL: nil)
     
     override public func invalidateContent() {
-        photos = nil
-        self.delegate?.viewDataSourceDidInvalidateContent(self)
+        photos = []
+        delegate?.viewDataSourceDidInvalidateContent(self)
     }
     
     override public func fetchContent(page: Int = 1) {
-        guard apiClient != nil else { return }
         loading = true
-        performFetch(page) { [unowned self] response, possibleError in
-            if let error = possibleError {
-                self.delegate?.viewDataSourceDidFailFetchingContent(self, error: error)
+        performFetch(page) { [weak self] response, possibleError in
+            if let strongSelf = self {
+                strongSelf.parseAPIResponse(response, error: possibleError)
+                strongSelf.loading = false
             }
-            else {
-                self.lastMetadata = response?.metadata
-                let photos = response?.responseObject as? Array<Photo>
-                if let page = self.lastMetadata?.page {
-                    if page > 1 {
-                        self.photos = self.photos! + photos!
-                    }
-                    else {
-                        self.photos = photos
-                    }
-                }
-                else {
-                    self.photos = photos
-                }
-                self.delegate?.viewDataSourceDidFetchContent(self)
-            }
-            self.loading = false
         }
     }
     
-    internal func performFetch(page: Int, completionBlock: (APIResponse?, NSError?) -> Void) -> Void {
+    internal func performFetch(page: Int, completionBlock: (APIResponse?, NSError?) -> ()) -> Void {
         // TODO: subclassing hook
+        completionBlock(nil, nil)
+    }
+    
+    internal func parseAPIResponse(response: APIResponse?, error: NSError?) {
+        if let error = error {
+            delegate?.viewDataSourceDidFailFetchingContent(self, error: error)
+        }
+        else {
+            lastMetadata = response?.metadata
+            let photos = response?.responseObject as? [Photo] ?? []
+            let page = lastMetadata?.page ?? 0
+            if page > 1 {
+                self.photos = self.photos + photos
+            }
+            else {
+                self.photos = photos
+            }
+            delegate?.viewDataSourceDidFetchContent(self)
+        }
     }
     
     public override func numberOfItems() -> Int {
-        if let photos = self.photos {
-            return photos.count
-        }
-        else {
-            return 0
-        }
+        return photos.count
     }
     
     public override func numberOfSections() -> Int {
@@ -69,42 +67,35 @@ public class PhotosDataSource: ViewDataSource {
     }
     
     override public func itemAtIndexPath(indexPath: NSIndexPath) -> AnyObject? {
-        if let photos = self.photos {
-            return photos[indexPath.item]
-        }
-        else {
-            return nil
-        }
+        guard indexPath.item < photos.count else { return nil }
+        return photos[indexPath.item]
     }
     
     override public func itemAtIndexPath(indexPath: NSIndexPath, completion: ((AnyObject?) -> ())) {
-        if let photos = self.photos {
-            let photo = photos[indexPath.item]
-            if photo === placeholderPhoto {
-                photosCache.fetch(key: indexPath.description, formatName: HanekeGlobals.Cache.OriginalFormatName).onFailure({ error in
-                    print("\(error)")
-                    completion(photo)
-                }).onSuccess { fetchedPhoto in
-                    self.photos?[indexPath.item] = fetchedPhoto
-                    completion(fetchedPhoto)
-                }
-            }
-            else {
+        guard indexPath.item < photos.count else {
+            completion(nil)
+            return
+        }
+        let photo = photos[indexPath.item]
+        if photo === placeholderPhoto {
+            photosCache.fetch(key: indexPath.description, formatName: HanekeGlobals.Cache.OriginalFormatName, failure: { error in
+                print("\(error)")
                 completion(photo)
-            }
+            }, success: { fetchedPhoto in
+                self.photos[indexPath.item] = fetchedPhoto
+                completion(fetchedPhoto)
+            })
+        }
+        else {
+            completion(photo)
         }
     }
     
     public override func cacheItemAtIndexPath(indexPath: NSIndexPath) {
-        if let thePhotos = photos {
-            let photo = thePhotos[indexPath.item]
-            if photo === placeholderPhoto {
-                return
-            }
-            
-            photosCache.set(value: photo, key: indexPath.description, formatName: HanekeGlobals.Cache.OriginalFormatName, success: { fetchedPhoto in
-                self.photos?[indexPath.item] = self.placeholderPhoto
-            })
+        let photo = photos[indexPath.item]
+        guard photo !== placeholderPhoto else { return }
+        photosCache.set(value: photo, key: indexPath.description, formatName: HanekeGlobals.Cache.OriginalFormatName) { _ in
+            self.photos[indexPath.item] = self.placeholderPhoto
         }
     }
     

@@ -11,7 +11,7 @@ import Foundation
 public class PartyPhotosDataSource: PhotosDataSource {
 
     override internal func performFetch(page: Int, completionBlock: (APIResponse?, NSError?) -> Void) -> Void {
-        apiClient?.fetchPhotosWithTags(["party"], page: page, completionBlock: completionBlock)
+        apiClient.fetchPhotosWithTags(["party"], page: page, completionBlock: completionBlock)
     }
     
 }

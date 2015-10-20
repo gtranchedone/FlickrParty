@@ -19,7 +19,7 @@ class NearbyPartyPhotosViewControllerTests: XCTestCase {
         super.setUp()
         viewController = NearbyPartyPhotosViewController()
         viewController?.locationManager = MockLocationManager()
-        viewController?.dataSource = MockNearbyPartyPhotosDataSource()
+        viewController?.dataSource = MockNearbyPartyPhotosDataSource(apiClient: MockAPIClient())
     }
     
     override func tearDown() {
@@ -77,7 +77,7 @@ class NearbyPartyPhotosViewControllerTests: XCTestCase {
     }
     
     func testInvalidatesPhotosIfUserChangesPermissionsToUseLocationToDenied() {
-        viewController?.dataSource = MockDataSource()
+        viewController?.dataSource = MockDataSource(apiClient: MockAPIClient())
         updateLocationAuthorizationStatusFromAuthorizedToDenied(true)
         let mockDataSource = viewController?.dataSource as! MockDataSource
         XCTAssertTrue(mockDataSource.didInvalidate, "Did not invalidate dataSource when authorization for using location service changed to 'denied'")
@@ -153,7 +153,7 @@ class NearbyPartyPhotosViewControllerTests: XCTestCase {
         viewController?.beginAppearanceTransition(true, animated: false)
         viewController?.endAppearanceTransition()
         if (rebuildDataSource) {
-            viewController?.dataSource = MockDataSource()
+            viewController?.dataSource = MockDataSource(apiClient: MockAPIClient())
         }
         mockLocationManager.dynamicType.stubAuthorizationStatus = toStatus
         mockLocationManager.delegate?.locationManager?(mockLocationManager, didChangeAuthorizationStatus: toStatus)

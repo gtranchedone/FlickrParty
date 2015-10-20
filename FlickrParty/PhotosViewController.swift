@@ -32,7 +32,6 @@ public class PhotosViewController: BaseCollectionViewController, UICollectionVie
     public override init(collectionViewLayout layout: UICollectionViewLayout) {
         super.init(collectionViewLayout: layout)
         imageCache.addFormat(Format<UIImage>(name: ThumbailsFormatName, diskCapacity: 50 * 1024 * 1024, transform: nil)) // capacity of 50MB
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "didBecomeActive", name: UIApplicationDidBecomeActiveNotification, object: nil)
     }
     
     required public init?(coder aDecoder: NSCoder) {
@@ -44,6 +43,7 @@ public class PhotosViewController: BaseCollectionViewController, UICollectionVie
         super.viewDidLoad()
         self.collectionView?.backgroundColor = UIColor.whiteColor()
         self.collectionView!.registerClass(PhotoCollectionViewCell.self, forCellWithReuseIdentifier: PhotoCellReuseIdentifier)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "didBecomeActive", name: UIApplicationDidBecomeActiveNotification, object: nil)
     }
     
     // MARK: - UICollectionViewDelegate -

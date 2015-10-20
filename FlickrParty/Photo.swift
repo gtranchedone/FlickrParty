@@ -21,7 +21,7 @@ public class Photo : Equatable, CustomStringConvertible, DataConvertible, DataRe
     
     public var description: String {
         get {
-            return dictionaryValue().debugDescription
+            return dictionaryValue().description
         }
     }
     

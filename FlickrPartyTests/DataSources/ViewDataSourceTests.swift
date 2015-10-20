@@ -16,7 +16,7 @@ class ViewDataSourceTests: XCTestCase {
     
     override func setUp() {
         super.setUp()
-        dataSource = ViewDataSource()
+        dataSource = ViewDataSource(apiClient: MockAPIClient())
     }
     
     override func tearDown() {

@@ -14,6 +14,7 @@ class MockAPIClient : APIClient {
     
     var error: NSError?
     var stubPhotos: Array<Photo>?
+    var canCallCompletionBlock = true
     var didCallFetchTaggedPhotos = false;
     var didCallFetchTaggedPhotosWithLocation = false;
     
@@ -21,14 +22,18 @@ class MockAPIClient : APIClient {
     
     func fetchPhotosWithTags(tags: Array<String>, page: Int, completionBlock: (response: APIResponse?, error: NSError?) -> Void) {
         didCallFetchTaggedPhotos = true
-        let response = APIResponse(metadata: nil, responseObject: stubPhotos)
-        completionBlock(response: response, error: error)
+        if canCallCompletionBlock {
+            let response = APIResponse(metadata: nil, responseObject: stubPhotos)
+            completionBlock(response: response, error: error)
+        }
     }
     
     func fetchPhotosWithTags(tags: Array<String>, location: CLLocationCoordinate2D?, page: Int, completionBlock: (response: APIResponse?, error: NSError?) -> Void) {
         didCallFetchTaggedPhotosWithLocation = true
-        let response = APIResponse(metadata: nil, responseObject: stubPhotos)
-        completionBlock(response: response, error: error)
+        if canCallCompletionBlock {
+            let response = APIResponse(metadata: nil, responseObject: stubPhotos)
+            completionBlock(response: response, error: error)
+        }
     }
     
 }

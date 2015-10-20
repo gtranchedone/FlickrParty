@@ -21,17 +21,13 @@ public class ViewDataSource: NSObject {
     
     public var delegate: ViewDataSourceDelegate?
     public var lastMetadata: APIResponseMetadata?
-    public var apiClient: APIClient?
+    public var apiClient: APIClient
     public var loading = false {
         didSet {
             if loading {
                 self.delegate?.viewDataSourceWillFetchContent(self)
             }
         }
-    }
-    
-    public override init() {
-        super.init()
     }
     
     public init(apiClient: APIClient) {

@@ -14,7 +14,7 @@ public class NearbyPartyPhotosDataSource: PhotosDataSource {
 
     override internal func performFetch(page: Int, completionBlock: (APIResponse?, NSError?) -> Void) -> Void {
         if let locationCoordinate = locationCoordinate {
-            apiClient?.fetchPhotosWithTags(["party"], location: locationCoordinate, page: page, completionBlock: completionBlock)
+            apiClient.fetchPhotosWithTags(["party"], location: locationCoordinate, page: page, completionBlock: completionBlock)
         }
     }
     

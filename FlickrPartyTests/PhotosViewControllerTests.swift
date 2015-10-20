@@ -45,7 +45,7 @@ class PhotosViewControllerTests: XCTestCase {
     func testViewControllerReloadsDataWhenReceivingNoticeThatDataSourceFetchedData() {
         let collectionView = MockCollectionView(frame: CGRectZero, collectionViewLayout: UICollectionViewFlowLayout())
         viewController?.collectionView = collectionView
-        viewController?.viewDataSourceDidFetchContent(PhotosDataSource())
+        viewController?.viewDataSourceDidFetchContent(PhotosDataSource(apiClient: MockAPIClient()))
         XCTAssertTrue(collectionView.didCallReloadData, "PartyPhotosViewController didn't reload the collectionView after photos were fetched")
     }
     
@@ -54,7 +54,7 @@ class PhotosViewControllerTests: XCTestCase {
         let userInfo = [NSLocalizedDescriptionKey: errorMessage]
         let error = NSError(domain: "TestDomain", code: 1, userInfo: userInfo)
         let mockViewController = MockPhotosViewController()
-        mockViewController.viewDataSourceDidFailFetchingContent(PhotosDataSource(), error: error)
+        mockViewController.viewDataSourceDidFailFetchingContent(PhotosDataSource(apiClient: MockAPIClient()), error: error)
         let alertController = mockViewController.viewControllerAttemptedToPresent as? UIAlertController
         XCTAssertEqual(alertController!.message!, errorMessage, "PhotosViewController didn't present the right error message to the user")
     }
@@ -62,7 +62,7 @@ class PhotosViewControllerTests: XCTestCase {
     func testAnimatesActivityIndicatorWhileFetchingPhotos() {
         let backgroundView = viewController?.collectionView?.backgroundView as? CollectionBackgroundView
         let activityIndicator = backgroundView?.activityIndicator
-        viewController?.dataSource = MockDataSource()
+        viewController?.dataSource = MockDataSource(apiClient: MockAPIClient())
         viewController?.reloadData()
         XCTAssertTrue(activityIndicator!.isAnimating(), "PhotosViewController isn't animating activity indicator while fetching photos")
     }
@@ -70,7 +70,7 @@ class PhotosViewControllerTests: XCTestCase {
     func testStopsAnimatingActivityIndicatorAfterFetchingPhotos() {
         let backgroundView = viewController?.collectionView?.backgroundView as? CollectionBackgroundView
         let activityIndicator = backgroundView?.activityIndicator
-        viewController?.dataSource = MockDataSource()
+        viewController?.dataSource = MockDataSource(apiClient: MockAPIClient())
         viewController?.beginAppearanceTransition(true, animated: false)
         viewController?.viewDataSourceDidFetchContent(viewController!.dataSource!)
         XCTAssertFalse(activityIndicator!.isAnimating(), "PhotosViewController didn't stop activity indicator after fetching photos")
@@ -79,7 +79,7 @@ class PhotosViewControllerTests: XCTestCase {
     func testStopsAnimatingActivityIndicatorAfterFailingToFetchingPhotos() {
         let backgroundView = viewController?.collectionView?.backgroundView as? CollectionBackgroundView
         let activityIndicator = backgroundView?.activityIndicator
-        viewController?.dataSource = MockDataSource()
+        viewController?.dataSource = MockDataSource(apiClient: MockAPIClient())
         viewController?.beginAppearanceTransition(true, animated: false)
         let error = NSError(domain: "TestDomain", code: 0, userInfo: nil)
         viewController?.viewDataSourceDidFailFetchingContent(viewController!.dataSource!, error: error)

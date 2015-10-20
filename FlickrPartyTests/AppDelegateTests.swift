@@ -59,7 +59,7 @@ class AppDelegateTests: XCTestCase {
         let rootViewController = window?.rootViewController as? UITabBarController
         let navigationController: UINavigationController? = rootViewController?.viewControllers?.first as? UINavigationController
         let viewController = navigationController?.viewControllers.first as? PhotosViewController
-        XCTAssertTrue(viewController!.dataSource!.apiClient! is FlickrAPIClient, "The photosDataSource wasn't setup properly")
+        XCTAssertTrue(viewController!.dataSource!.apiClient is FlickrAPIClient, "The photosDataSource wasn't setup properly")
     }
     
     // MARK: Second Tab (Photos from Parties Near You)

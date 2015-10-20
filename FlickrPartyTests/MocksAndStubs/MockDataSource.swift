@@ -14,13 +14,14 @@ class MockDataSourceDelegate : ViewDataSourceDelegate {
     var didCallDelegateForSuccess = false
     var didCallDelegateForFailure = false
     var didCallDelegateForInvalidation = false
+    var didCallDelegateForStartingFetch = false
     
     func viewDataSourceDidFetchContent(dataSource: ViewDataSource) {
         didCallDelegateForSuccess = true
     }
     
     func viewDataSourceWillFetchContent(dataSource: ViewDataSource) {
-        // do nothing
+        didCallDelegateForStartingFetch = true
     }
     
     func viewDataSourceDidInvalidateContent(dataSource: ViewDataSource) {
