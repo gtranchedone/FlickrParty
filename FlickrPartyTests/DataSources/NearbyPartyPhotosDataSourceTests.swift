@@ -11,28 +11,36 @@ import XCTest
 import FlickrParty
 import CoreLocation
 
-class NearbyPartyPhotosDataSourceTests: XCTest {
+class NearbyPartyPhotosDataSourceTests: XCTestCase {
 
+    var apiClient: MockAPIClient?
     var dataSource: NearbyPartyPhotosDataSource?
     
     override func setUp() {
         super.setUp()
-        dataSource = NearbyPartyPhotosDataSource(apiClient: MockAPIClient())
+        apiClient = MockAPIClient()
+        dataSource = NearbyPartyPhotosDataSource(apiClient: apiClient!)
+        dataSource?.locationCoordinate = CLLocationCoordinate2D(latitude: 0.0, longitude: 0.0)
     }
     
     override func tearDown() {
         dataSource = nil
+        apiClient = nil
         super.tearDown()
+    }
+    
+    func testDoesNotAskAPIClientToFetchPhotosWhenAskedToFetchContentIfHasNoCoordinate() {
+        dataSource = NearbyPartyPhotosDataSource(apiClient: apiClient!)
+        dataSource?.fetchContent()
+        XCTAssertFalse(apiClient!.didCallFetchTaggedPhotosWithLocation)
     }
     
     func testAsksAPIClientToFetchPhotosWhenAskedToFetchContent() {
         dataSource?.fetchContent()
-        let apiClient = dataSource!.apiClient as? MockAPIClient
-        XCTAssertEqual(true, apiClient!.didCallFetchTaggedPhotosWithLocation)
+        XCTAssertTrue(apiClient!.didCallFetchTaggedPhotosWithLocation)
     }
     
     func testDataSourceReturnsCorrectNumberOfItemsAfterFetchingPhotos() {
-        let apiClient = dataSource!.apiClient as? MockAPIClient
         apiClient?.stubPhotos = [Photo(identifier: "", title: "", details: "", ownerName: "", imageURL: NSURL(string: "apple.com")!, thumbnailURL: NSURL(string: "apple.com")!)]
         dataSource?.fetchContent()
         XCTAssertEqual(1, dataSource!.numberOfItems(), "PhotosDataSource not returning correct number of items")
@@ -47,7 +55,6 @@ class NearbyPartyPhotosDataSourceTests: XCTest {
     
     func testCallsDelegateWithDidFailFetchingDataMessage() {
         let delegate = MockDataSourceDelegate()
-        let apiClient = dataSource?.apiClient as? MockAPIClient
         apiClient?.error = NSError(domain: "TestsDomain", code: 1, userInfo: nil)
         dataSource?.delegate = delegate
         dataSource?.fetchContent()
